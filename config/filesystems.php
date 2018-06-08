@@ -55,6 +55,13 @@ return [
             'visibility' => 'public',
         ],
 
+        'assets' => [
+            'driver' => 'local',
+            'root' => config('view.paths').'\\assets',
+            'url' => env('APP_URL').'/assets',
+            'visibility' => 'public',
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
