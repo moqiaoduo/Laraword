@@ -13,9 +13,7 @@
 
 use Illuminate\Support\Facades\App;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'IndexController@index');
 
 Auth::routes();
 
