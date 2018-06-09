@@ -35,6 +35,6 @@ function setSetting($key,$val){
     return DB::table('settings')->insert(['key'=>$key,'val'=>$val]);
 }
 
-function assets($file){
+function theme($file){
     return env('APP_URL').'/theme/'.env('APP_THEME','default').'/'.$file;
 }
