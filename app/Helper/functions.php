@@ -36,5 +36,5 @@ function setSetting($key,$val){
 }
 
 function assets($file){
-    return env('APP_URL').'/theme/'.env('APP_THEME').'/'.$file;
+    return env('APP_URL').'/theme/'.env('APP_THEME','default').'/'.$file;
 }
