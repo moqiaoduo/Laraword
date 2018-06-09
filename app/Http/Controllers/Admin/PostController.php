@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 class PostController extends Controller
 {
     public function index(){
-        return view('admin.index');
+        return view('admin.post.list');
     }
 
     public function create(){

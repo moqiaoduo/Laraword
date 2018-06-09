@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>@yield('title') &lt; {{config('app.name','Laraword')}} -- Laraword</title>
+    <title>@yield('title') - {{config('app.name','Laraword')}} - Laraword</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="{{vendor('bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
@@ -15,11 +15,10 @@
     <!-- MetisMenu CSS -->
     <link href="{{vendor('metisMenu/metisMenu.min.css')}}" rel="stylesheet">
 
+    @yield('head')
+
     <!-- Custom CSS -->
     <link href="{{asset('dist/css/sb-admin-2.css')}}" rel="stylesheet">
-
-    <!-- Morris Charts CSS -->
-    <link href="{{vendor('morrisjs/morris.css')}}" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="{{vendor('font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
@@ -263,31 +262,44 @@
         <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse">
                 <ul class="nav" id="side-menu">
-                    <li class="sidebar-search">
-                        <div class="input-group custom-search-form">
-                            <input type="text" class="form-control" placeholder="Search...">
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
-                        </div>
-                        <!-- /input-group -->
+                    <li style="margin: 10px 0;">
+                        <a href="{{url('/admin')}}"><i class="fa fa-dashboard fa-fw"></i> {{__('admin.dashboard')}}</a>
                     </li>
                     <li>
-                        <a href="{{url('/admin')}}"><i class="fa fa-dashboard fa-fw"></i> {{__('messages.dashboard')}}</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-book fa-fw"></i> @lang('messages.posts')<span class="fa arrow"></span></a>
+                        <a href="#"><i class="fa fa-book fa-fw"></i> @lang('admin.posts')<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="{{url('/admin/post')}}">@lang('messages.all_posts')</a>
+                                <a href="{{url('/admin/post')}}">@lang('admin.all_posts')</a>
                             </li>
                             <li>
-                                <a href="{{url('/admin/post/create')}}">@lang('messages.new_post')</a>
+                                <a href="{{url('/admin/post/create')}}">@lang('admin.new_post')</a>
                             </li>
                             <li>
-                                <a href="{{url('/admin/category')}}">@lang('messages.category')</a>
+                                <a href="{{url('/admin/category')}}">@lang('admin.category')</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-camera fa-fw"></i> @lang('admin.media')<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="{{url('/admin/media')}}">@lang('admin.media_library')</a>
+                            </li>
+                            <li>
+                                <a href="{{url('/admin/media/create')}}">@lang('admin.add')</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-file-text fa-fw"></i> @lang('admin.page')<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="{{url('/admin/page')}}">@lang('admin.all_pages')</a>
+                            </li>
+                            <li>
+                                <a href="{{url('/admin/page/create')}}">@lang('admin.new_page')</a>
                             </li>
                         </ul>
                         <!-- /.nav-second-level -->
@@ -389,23 +401,15 @@
 <!-- Metis Menu Plugin JavaScript -->
 <script src="{{vendor('metisMenu/metisMenu.min.js')}}"></script>
 
-<!-- Morris Charts JavaScript -->
-<script src="{{vendor('raphael/raphael.min.js')}}"></script>
-
 <!-- Custom Theme JavaScript -->
 <script src="{{asset('dist/js/sb-admin-2.js')}}"></script>
 
-<script>
-    // 当网页加载的时候，激活首页选中
-    $(function () {
-        $('ul.navbar-nav li:first-child').addClass("active");
-    });
-    // 点击导航栏图标的时候，将点击的当前菜单激活（class设置成“active”）
-    $('ul.navbar-nav li').click(function (e){
-        $('ul.navbar-nav li').removeClass("active");
-        $(this).addClass("active");
-    });
+@yield('js')
 
+<script>
+    $(document).ready(function () {
+        $("body").resize();
+    })
 </script>
 
 </body>

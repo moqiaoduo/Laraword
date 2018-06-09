@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\UserPemission;
 
 class User extends Authenticatable
 {
@@ -26,4 +27,12 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function isAdmin(){
+        return $this->is_admin;
+    }
+
+    public function permission(){
+        return $this->hasMany(UserPermission::class,'uid','id');
+    }
 }

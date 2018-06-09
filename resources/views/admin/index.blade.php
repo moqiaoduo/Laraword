@@ -1,17 +1,27 @@
 @extends('admin.layout')
 
-@section('title',__('messages.dashboard'))
+@section('title',__('admin.dashboard'))
+
+@section('head')
+    <!-- Morris Charts CSS -->
+    <link href="{{vendor('morrisjs/morris.css')}}" rel="stylesheet">
+@endsection
+
+@section('js')
+    <!-- Morris Charts JavaScript -->
+    <script src="{{vendor('raphael/raphael.min.js')}}"></script>
+@endsection
 
 @section('content')
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">{{__('messages.dashboard')}}</h1>
+            <h1 class="page-header">{{__('admin.dashboard')}}</h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
     <!-- /.row -->
     <div class="row">
-        <div class="col-lg-3 col-md-6">
+        <div class="col-lg-4 col-md-4">
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <div class="row">
@@ -20,7 +30,7 @@
                         </div>
                         <div class="col-xs-9 text-right">
                             <div class="huge">26</div>
-                            <div>@lang('messages.new_comments')</div>
+                            <div>@lang('admin.new_comments')</div>
                         </div>
                     </div>
                 </div>
@@ -33,16 +43,16 @@
                 </a>
             </div>
         </div>
-        <div class="col-lg-3 col-md-6">
+        <div class="col-lg-4 col-md-4">
             <div class="panel panel-green">
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-xs-3">
-                            <i class="fa fa-tasks fa-5x"></i>
+                            <i class="fa fa-users fa-5x"></i>
                         </div>
                         <div class="col-xs-9 text-right">
                             <div class="huge">12</div>
-                            <div>New Tasks!</div>
+                            <div>@lang('admin.new_visitors')</div>
                         </div>
                     </div>
                 </div>
@@ -55,38 +65,16 @@
                 </a>
             </div>
         </div>
-        <div class="col-lg-3 col-md-6">
+        <div class="col-lg-4 col-md-4">
             <div class="panel panel-yellow">
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-xs-3">
-                            <i class="fa fa-shopping-cart fa-5x"></i>
+                            <i class="fa fa-user fa-5x"></i>
                         </div>
                         <div class="col-xs-9 text-right">
                             <div class="huge">124</div>
-                            <div>New Orders!</div>
-                        </div>
-                    </div>
-                </div>
-                <a href="#">
-                    <div class="panel-footer">
-                        <span class="pull-left">View Details</span>
-                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                        <div class="clearfix"></div>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-            <div class="panel panel-red">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-xs-3">
-                            <i class="fa fa-support fa-5x"></i>
-                        </div>
-                        <div class="col-xs-9 text-right">
-                            <div class="huge">13</div>
-                            <div>Support Tickets!</div>
+                            <div>@lang('admin.new_users')</div>
                         </div>
                     </div>
                 </div>
