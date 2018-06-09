@@ -54,3 +54,7 @@ function getPostCategory($category){
     if(empty($category) || $category[0]==0) return 'uncategoried';
     return DB::table('category')->find($category[0])->slug;
 }
+
+function vendor($file){
+    return env('APP_URL').'/vendor/'.$file;
+}

@@ -1,8 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="zh_CN">
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,19 +10,19 @@
     <title>@yield('title') &lt; {{config('app.name','Laraword')}} -- Laraword</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{vendor('bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
 
     <!-- MetisMenu CSS -->
-    <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+    <link href="{{vendor('metisMenu/metisMenu.min.css')}}" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+    <link href="{{asset('dist/css/sb-admin-2.css')}}" rel="stylesheet">
 
     <!-- Morris Charts CSS -->
-    <link href="../vendor/morrisjs/morris.css" rel="stylesheet">
+    <link href="{{vendor('morrisjs/morris.css')}}" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="{{vendor('font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -48,7 +46,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="index.html">SB Admin v2.0</a>
+            <a class="navbar-brand" href="{{url('/')}}">{{config('app.name','Laraword')}}</a>
         </div>
         <!-- /.navbar-header -->
 
@@ -277,16 +275,19 @@
                         <!-- /input-group -->
                     </li>
                     <li>
-                        <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        <a href="{{url('/admin')}}"><i class="fa fa-dashboard fa-fw"></i> {{__('messages.dashboard')}}</a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
+                        <a href="#"><i class="fa fa-book fa-fw"></i> @lang('messages.posts')<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="flot.html">Flot Charts</a>
+                                <a href="{{url('/admin/post')}}">@lang('messages.all_posts')</a>
                             </li>
                             <li>
-                                <a href="morris.html">Morris.js Charts</a>
+                                <a href="{{url('/admin/post/create')}}">@lang('messages.new_post')</a>
+                            </li>
+                            <li>
+                                <a href="{{url('/admin/category')}}">@lang('messages.category')</a>
                             </li>
                         </ul>
                         <!-- /.nav-second-level -->
@@ -372,7 +373,7 @@
 
     <div id="page-wrapper">
         @yield('content')
-        Copyright &copy; 2018.Company name All rights reserved.<a target="_blank" href="http://sc.chinaz.com/moban/">&#x7F51;&#x9875;&#x6A21;&#x677F;</a>
+        Copyright &copy; 2018.{{config('app.name','Laraword')}} All rights reserved. Powered by <a target="_blank" href="https://github.com/moqiaoduo/Laraword">Laraword</a>
     </div>
     <!-- /#page-wrapper -->
 
@@ -380,21 +381,32 @@
 <!-- /#wrapper -->
 
 <!-- jQuery -->
-<script src="../vendor/jquery/jquery.min.js"></script>
+<script src="{{vendor('jquery/jquery.min.js')}}"></script>
 
 <!-- Bootstrap Core JavaScript -->
-<script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="{{vendor('bootstrap/js/bootstrap.min.js')}}"></script>
 
 <!-- Metis Menu Plugin JavaScript -->
-<script src="../vendor/metisMenu/metisMenu.min.js"></script>
+<script src="{{vendor('metisMenu/metisMenu.min.js')}}"></script>
 
 <!-- Morris Charts JavaScript -->
-<script src="../vendor/raphael/raphael.min.js"></script>
-<script src="../vendor/morrisjs/morris.min.js"></script>
-<script src="../data/morris-data.js"></script>
+<script src="{{vendor('raphael/raphael.min.js')}}"></script>
 
 <!-- Custom Theme JavaScript -->
-<script src="../dist/js/sb-admin-2.js"></script>
+<script src="{{asset('dist/js/sb-admin-2.js')}}"></script>
+
+<script>
+    // 当网页加载的时候，激活首页选中
+    $(function () {
+        $('ul.navbar-nav li:first-child').addClass("active");
+    });
+    // 点击导航栏图标的时候，将点击的当前菜单激活（class设置成“active”）
+    $('ul.navbar-nav li').click(function (e){
+        $('ul.navbar-nav li').removeClass("active");
+        $(this).addClass("active");
+    });
+
+</script>
 
 </body>
 

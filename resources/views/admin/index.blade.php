@@ -1,11 +1,11 @@
-@extends('layout')
+@extends('admin.layout')
 
 @section('title',__('messages.dashboard'))
 
 @section('content')
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Dashboard</h1>
+            <h1 class="page-header">{{__('messages.dashboard')}}</h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -20,7 +20,7 @@
                         </div>
                         <div class="col-xs-9 text-right">
                             <div class="huge">26</div>
-                            <div>New Comments!</div>
+                            <div>@lang('messages.new_comments')</div>
                         </div>
                     </div>
                 </div>
