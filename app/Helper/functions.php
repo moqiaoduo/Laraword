@@ -34,3 +34,7 @@ function setSetting($key,$val){
     DB::table('settings')->where('key',$key)->delete();
     return DB::table('settings')->insert(['key'=>$key,'val'=>$val]);
 }
+
+function assets($file){
+    return env('APP_URL').'/theme/'.env('APP_THEME').'/'.$file;
+}
