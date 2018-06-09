@@ -9,12 +9,11 @@
                     <div class="card">
 
                         <div class="card-body">
-                            <a href=""><h1>{{$v['title']}}</h1></a>
+                            <a href="{{getCustomContentRoute($v)}}"><h1>{{$v['title']}}</h1></a>
                             <p>{{$v['content']}}</p>
                         </div>
                     </div>
                 @endforeach
-
                     {{ $data->links() }}
             </div>
 
