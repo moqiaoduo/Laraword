@@ -10,6 +10,7 @@
 
                         <div class="card-body">
                             <h1>{{$v['title']}}</h1>
+                            <p>{{$v['content']}}</p>
                         </div>
                     </div>
                 @endforeach
