@@ -8,7 +8,7 @@ use App\Post;
 class IndexController extends Controller
 {
     public function index(){
-        if(getSetting('indexPage')>0){
+        if(getSetting('indexPage',0)>0){
 
         }else{
             $data=Post::paginate(10);
