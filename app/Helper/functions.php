@@ -25,7 +25,9 @@ function modifyEnv(array $data)
 
 function getSetting($key='',$default=''){
     if(empty($key)) $val=DB::table('settings')->get();
-    else $val=DB::table('settings')->where('key',$key)->get();
+    else{
+        $val=DB::table('settings')->where('key',$key)->get()->toArray();
+    };
     if(empty($val)) return $default;
     return $val;
 }

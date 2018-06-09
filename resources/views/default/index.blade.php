@@ -9,7 +9,11 @@
                     <div class="card">
 
                         <div class="card-body">
-                            <h1>{{$v['title']}}</h1>
+                            <a href="{{route('content',[
+                            'id'=>$v['id'],
+                            'year'=>date('Y',strtotime($v['created_at'])),
+                            'month'=>date('m',strtotime($v['created_at'])),
+                            ],false)}}"><h1>{{$v['title']}}</h1></a>
                             <p>{{$v['content']}}</p>
                         </div>
                     </div>
