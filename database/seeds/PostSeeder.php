@@ -11,11 +11,8 @@ class PostSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('posts')->insert([
-            "title"=>str_random(),
-            "content"=>str_random(300),
-            "created_at"=>now(),
-            "updated_at"=>now()
-        ]);
+        factory(App\Post::class)->times(25)->make()->each(function($user,$index){
+            $user->save();
+        });
     }
 }
