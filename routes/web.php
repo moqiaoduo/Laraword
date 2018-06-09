@@ -22,3 +22,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 //dd(getSetting('route.post','/archive/{id}'));
 
 Route::get(getSetting('route.post','/archive/{id}'),'PostController@content')->name('content');
+
+Route::prefix('admin')->group(function () {
+    Route::resource('/', 'Admin\IndexController');
+});
