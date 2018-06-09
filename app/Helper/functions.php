@@ -40,3 +40,8 @@ function setSetting($key,$val){
 function theme($file){
     return env('APP_URL').'/theme/'.env('APP_THEME','default').'/'.$file;
 }
+
+function getCustomContentRoute($arr=array()){
+    $route=getSetting('route.post','/archive/{id}');
+    return str_replace(['{id}','{year}','{month}','{day}','{date}','{slug}'],[$arr['id'],date("Y",strtotime($arr['created_at'])),date("m",strtotime($arr['created_at'])),date("d",strtotime($arr['created_at'])),date("Ymd",strtotime($arr['created_at'])),$arr['slug']],$route);
+}
