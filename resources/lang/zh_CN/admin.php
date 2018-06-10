@@ -19,4 +19,6 @@ return [
     'title'=>'标题',
     'author'=>'作者',
     'created_at'=>'创建时间',
+    'selected_item'=>'选中项',
+    'delete'=>'删除',
 ];

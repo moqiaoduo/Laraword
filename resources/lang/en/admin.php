@@ -19,4 +19,6 @@ return [
     'title'=>'Title',
     'author'=>'Author',
     'created_at'=>'Created At',
+    'selected_item'=>'Selected Item',
+    'delete'=>'Delete',
 ];
