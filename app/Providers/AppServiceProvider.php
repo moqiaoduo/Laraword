@@ -14,8 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if(!File::exists(base_path() . DIRECTORY_SEPARATOR.'install.lock'))
-            dd('Please install before using. 请在使用前安装。');
+        //
     }
 
     /**
