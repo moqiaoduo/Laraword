@@ -19,8 +19,6 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-//dd(getSetting('route.post','/archive/{id}'));
-
 Route::get(getSetting('route.post','/archive/{id}'),'PostController@content')->name('content');
 
 Route::group(['middleware'=>'admin','prefix'=>'admin','as'=>'admin::'],function () {
