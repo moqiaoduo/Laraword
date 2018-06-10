@@ -17,8 +17,6 @@ Route::get('/', 'IndexController@index')->name('index');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-
 Route::get(getSetting('route.post','/archive/{id}'),'PostController@content')->name('content');
 
 Route::group(['middleware'=>'admin','prefix'=>'admin','as'=>'admin::'],function () {

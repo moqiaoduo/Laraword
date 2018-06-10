@@ -154,6 +154,7 @@ return [
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
         Stevenyangecho\UEditor\UEditorServiceProvider::class,
+        LaravelChen\Editormd\EditorMdProvider::class,
 
         /*
          * Application Service Providers...

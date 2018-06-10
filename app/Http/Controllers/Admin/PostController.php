@@ -29,7 +29,18 @@ class PostController extends Controller
         $route=getSetting('route.post','/archive/{id}');
         if(strpos($route,'{slug}')) $have_slug=true;
         $url=config('app.url').str_replace('{slug}','<input type="text" name="slug" class="slug">',$route);
-        return view('admin.post.create')->with('have_slug',$have_slug)->with('url',$url);
+        $editor=env('APP_EDITOR','none');
+        $editor_head='';$editor_container='';$editor_js='';
+        if($editor=='ueditor'){
+            $editor_head='UEditor::head';
+            $editor_container='editor.ueditor.container';
+            $editor_js='editor.ueditor.js';
+        }elseif($editor=='editormd'){
+
+        }else{
+
+        }
+        return view('admin.post.create')->with('have_slug',$have_slug)->with('url',$url)->with('head',$editor_head)->with('editor_container',$editor_container)->with('js',$editor_js);
     }
 
     public function store(Request $request){

@@ -3,6 +3,7 @@
 @section('title',__('admin.new_post'))
 
 @section('head')
+    @include($head)
     <style>
         .slug{
             height: 20px;
@@ -14,6 +15,10 @@
     </style>
 @endsection
 
+@section('js')
+    @include($js)
+@endsection
+
 @section('content')
     <div class="row">
         <div class="col-lg-12">
@@ -22,7 +27,7 @@
         <!-- /.col-lg-12 -->
     </div>
     <div class="row">
-        <form class="form-horizontal" role="form">
+        <form class="form-horizontal" role="form" method="post">
             <div class="col-sm-8">
                 <div class="form-group">
                     <div class="col-sm-12">
@@ -35,6 +40,14 @@
                         @if($have_slug)
                         <p>{!! $url !!}</p>
                         @endif
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <!-- 加载编辑器的容器 -->
+                        @component($editor_container)
+
+                        @endcomponent
                     </div>
                 </div>
                 <div class="form-group">
