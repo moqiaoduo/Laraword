@@ -16,4 +16,7 @@ return [
     'all_pages'=>'所有页面',
     'new_page'=>'新建页面',
     'comments'=>'评论',
+    'title'=>'标题',
+    'author'=>'作者',
+    'created_at'=>'创建时间',
 ];

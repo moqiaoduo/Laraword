@@ -23,7 +23,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get(getSetting('route.post','/archive/{id}'),'PostController@content')->name('content');
 
-Route::middleware('admin')->prefix('admin')->group(function () {
-    Route::get('/', 'Admin\IndexController@index');
+Route::group(['middleware'=>'admin','prefix'=>'admin','as'=>'admin::'],function () {
+    Route::get('/', 'Admin\IndexController@index')->name('index');
     Route::resource('post','Admin\PostController');
 });

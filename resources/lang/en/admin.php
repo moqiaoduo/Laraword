@@ -16,4 +16,7 @@ return [
     'all_pages'=>'All Pages',
     'new_page'=>'New Page',
     'comments'=>'Comments',
+    'title'=>'Title',
+    'author'=>'Author',
+    'created_at'=>'Created At',
 ];
