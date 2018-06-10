@@ -24,6 +24,7 @@ function modifyEnv(array $data)
 }
 
 function getSetting($key='',$default=''){
+    if(empty(DB::select("SELECT table_name FROM information_schema.TABLES WHERE table_name ='settings';"))) return $default;
     if(empty($key)) $val=DB::table('settings')->get();
     else{
         $val=DB::table('settings')->where('key',$key)->get()->toArray();
