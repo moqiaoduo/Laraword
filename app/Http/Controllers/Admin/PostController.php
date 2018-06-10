@@ -25,7 +25,11 @@ class PostController extends Controller
     }
 
     public function create(){
-
+        $have_slug=false;
+        $route=getSetting('route.post','/archive/{id}');
+        if(strpos($route,'{slug}')) $have_slug=true;
+        $url=config('app.url').str_replace('{slug}','<input type="text" name="slug" class="slug">',$route);
+        return view('admin.post.create')->with('have_slug',$have_slug)->with('url',$url);
     }
 
     public function store(Request $request){
@@ -33,7 +37,7 @@ class PostController extends Controller
     }
 
     public function show($id){
-        dd($id);
+
     }
 
     public function edit($id){
