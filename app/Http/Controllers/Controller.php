@@ -19,4 +19,10 @@ class Controller extends BaseController
         $editor_js="editor.{$editor}.js";
         return array($editor_head,$editor_container,$editor_js);
     }
+
+    protected function loadSlugInput($value=''){
+        return <<<EOT
+        <div style="position: relative; display: inline-block;margin-left: -5px;"><input type="text" id="slug" name="slug" autocomplete="off" value="{$value}" class="mono" style="left: 0px; top: 0px; min-width: 5px; position: absolute; width: 100%;"><pre id="preview" style="display: block; visibility: hidden; height: 15px; padding: 0px 2px; margin: 0px;white-space: pre-wrap;font-size: 1em;-ms-word-break: break-word;word-break: break-word;overflow-y:hidden;">{$value}</pre></div>
+EOT;
+    }
 }

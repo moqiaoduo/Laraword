@@ -21,5 +21,7 @@ Route::get(getSetting('route.post','/archive/{id}'),'PostController@content')->n
 
 Route::group(['middleware'=>'admin','prefix'=>'admin','as'=>'admin::'],function () {
     Route::get('/', 'Admin\IndexController@index')->name('index');
-    Route::resource('post','Admin\PostController');
+    Route::resource('post','Admin\PostController', ['except'=>[
+        'show'
+    ]]);
 });

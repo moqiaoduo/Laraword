@@ -21,4 +21,5 @@ return [
     'created_at'=>'创建时间',
     'selected_item'=>'选中项',
     'delete'=>'删除',
+    'edit_post'=>'编辑文章',
 ];

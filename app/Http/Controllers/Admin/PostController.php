@@ -28,7 +28,7 @@ class PostController extends Controller
         $have_slug=false;
         $route=getSetting('route.post','/archive/{id}');
         if(strpos($route,'{slug}')) $have_slug=true;
-        $url=config('app.url').str_replace('{slug}','<input type="text" name="slug" class="slug">',$route);
+        $url=config('app.url').str_replace('{slug}',self::loadSlugInput(),$route);
         $editor=self::loadEditor();
         return view('admin.post.create')->with('have_slug',$have_slug)->with('url',$url)->with('head',$editor[0])->with('editor_container',$editor[1])->with('js',$editor[2]);
     }
@@ -37,12 +37,14 @@ class PostController extends Controller
 
     }
 
-    public function show($id){
-        return view('');
-    }
-
     public function edit($id){
-
+        $data=Post::find($id);
+        $have_slug=false;
+        $route=getSetting('route.post','/archive/{id}');
+        if(strpos($route,'{slug}')) $have_slug=true;
+        $url=config('app.url').str_replace('{slug}',self::loadSlugInput($data['slug']),$route);
+        $editor=self::loadEditor();
+        return view('admin.post.edit')->with('have_slug',$have_slug)->with('url',$url)->with('head',$editor[0])->with('editor_container',$editor[1])->with('js',$editor[2])->with('data',$data);
     }
 
     public function update(Request $request){

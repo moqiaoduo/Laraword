@@ -1,3 +1,3 @@
 <div id="editormd_id">
-    <textarea name="content" style="display:none;"></textarea>
+    <textarea name="content" style="display:none;">{{$slot}}</textarea>
 </div>
