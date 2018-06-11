@@ -29,11 +29,8 @@ class PostController extends Controller
         $route=getSetting('route.post','/archive/{id}');
         if(strpos($route,'{slug}')) $have_slug=true;
         $url=config('app.url').str_replace('{slug}','<input type="text" name="slug" class="slug">',$route);
-        $editor=env('APP_EDITOR','none');
-        $editor_head="editor.{$editor}.head";
-        $editor_container="editor.{$editor}.container";
-        $editor_js="editor.{$editor}.js";
-        return view('admin.post.create')->with('have_slug',$have_slug)->with('url',$url)->with('head',$editor_head)->with('editor_container',$editor_container)->with('js',$editor_js);
+        $editor=self::loadEditor();
+        return view('admin.post.create')->with('have_slug',$have_slug)->with('url',$url)->with('head',$editor[0])->with('editor_container',$editor[1])->with('js',$editor[2]);
     }
 
     public function store(Request $request){
@@ -41,7 +38,7 @@ class PostController extends Controller
     }
 
     public function show($id){
-
+        return view('');
     }
 
     public function edit($id){

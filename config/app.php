@@ -155,6 +155,7 @@ return [
         Barryvdh\Debugbar\ServiceProvider::class,
         Stevenyangecho\UEditor\UEditorServiceProvider::class,
         LaravelChen\Editormd\EditorMdProvider::class,
+        zgldh\QiniuStorage\QiniuFilesystemServiceProvider::class,
 
         /*
          * Application Service Providers...

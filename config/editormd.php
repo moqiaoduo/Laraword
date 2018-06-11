@@ -2,7 +2,7 @@
 return [
     'upload_path' => 'uploads/images/',//上传文件的地址
     'upload_type' => '',//上传的方式qiniu或者本地,默认为本地
-    'upload_http' => 'https',//https或者为空
+    'upload_http' => '',//https或者为空
     //本地:'',七牛:'qiniu'
     'width' => '100%',//宽度建议100%
     'height' => '700',//高度
