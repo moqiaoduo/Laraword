@@ -12,6 +12,7 @@
 
     <!-- Scripts -->
     <script src="{{ theme('js/app.js') }}" defer></script>
+    <script src="{{vendor('jquery/jquery.min.js')}}"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">

@@ -31,22 +31,22 @@
         <!-- /.col-lg-12 -->
     </div>
     <div class="row">
-        <form class="form-horizontal" role="form" method="post">
+        <form class="form-horizontal" role="form" method="post" action="{{route('admin::post.update',$data['id'])}}">
+            {{ method_field('PUT') }}
+            @csrf
             <div class="col-sm-8">
                 <div class="form-group">
                     <div class="col-sm-12">
-                        <input type="text" class="form-control" id="title"
+                        <input type="text" class="form-control" id="title" name="title"
                                placeholder="请输入标题" value="{{$data['title']}}">
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-12">
-                        @if($have_slug)
-                            <p class="mono url-slug">
-                                <label for="slug" class="sr-only">网址缩略名</label>
-                                <div class="mono url-slug">{!! $url !!}</div>
-                            </p>
-                        @endif
+                        <p class="mono url-slug">
+                            <label for="slug" class="sr-only">网址缩略名</label>
+                            <div class="mono url-slug">{!! $url !!}</div>
+                        </p>
                     </div>
                 </div>
                 <div class="form-group">

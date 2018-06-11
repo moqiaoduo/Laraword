@@ -5,18 +5,22 @@
 @section('head')
     @include($head)
     <style>
-        .slug{
-            height: 20px;
-            padding: 2px;
-            background: #FFFBCC;
-            border: none;
-            margin-left: 2px;
-        }
+        .url-slug{margin-top:-0.5em;color:#AAA;font-size:.92857em;word-break:break-word;}
+        #slug{padding:2px;border:none;background:#FFFBCC;color:#666;box-sizing: border-box;line-height: normal;font-size: 100%;}
+        .mono{font-family:Menlo,Monaco,Consolas,"Courier New",monospace;}
+        .sr-only{border:0;height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;}
     </style>
 @endsection
 
 @section('js')
     @include($js)
+    <script type="text/javascript">
+        $(function(){
+            $('#slug').bind('input propertychange',function(){
+                $("#preview").html($(this).val())
+            });
+        })
+    </script>
 @endsection
 
 @section('content')
@@ -28,6 +32,7 @@
     </div>
     <div class="row">
         <form class="form-horizontal" role="form" method="post">
+            @csrf
             <div class="col-sm-8">
                 <div class="form-group">
                     <div class="col-sm-12">
@@ -37,9 +42,10 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-12">
-                        @if($have_slug)
-                        <p>{!! $url !!}</p>
-                        @endif
+                        <p class="mono url-slug">
+                            <label for="slug" class="sr-only">网址缩略名</label>
+                            <div class="mono url-slug">{!! $url !!}</div>
+                        </p>
                     </div>
                 </div>
                 <div class="form-group">

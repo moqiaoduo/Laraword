@@ -25,12 +25,10 @@ class PostController extends Controller
     }
 
     public function create(){
-        $have_slug=false;
         $route=getSetting('route.post','/archive/{id}');
-        if(strpos($route,'{slug}')) $have_slug=true;
         $url=config('app.url').str_replace('{slug}',self::loadSlugInput(),$route);
         $editor=self::loadEditor();
-        return view('admin.post.create')->with('have_slug',$have_slug)->with('url',$url)->with('head',$editor[0])->with('editor_container',$editor[1])->with('js',$editor[2]);
+        return view('admin.post.create')->with('url',$url)->with('head',$editor[0])->with('editor_container',$editor[1])->with('js',$editor[2]);
     }
 
     public function store(Request $request){
@@ -39,16 +37,27 @@ class PostController extends Controller
 
     public function edit($id){
         $data=Post::find($id);
-        $have_slug=false;
         $route=getSetting('route.post','/archive/{id}');
-        if(strpos($route,'{slug}')) $have_slug=true;
         $url=config('app.url').str_replace('{slug}',self::loadSlugInput($data['slug']),$route);
+        $url=str_replace('{id}',$id,$url);
         $editor=self::loadEditor();
-        return view('admin.post.edit')->with('have_slug',$have_slug)->with('url',$url)->with('head',$editor[0])->with('editor_container',$editor[1])->with('js',$editor[2])->with('data',$data);
+        return view('admin.post.edit')->with('url',$url)->with('head',$editor[0])->with('editor_container',$editor[1])->with('js',$editor[2])->with('data',$data);
     }
 
     public function update(Request $request){
-
+        $submit=$request->post('submit');
+        $slug=$request->post('slug');
+        $id=$request->route('post');
+        if(empty($slug)) $slug=$id;
+        $post=Post::find($id);
+        $post->title=$request->post('title');
+        $post->content=$request->post('content');
+        $post->slug=$slug;
+        $post->updated_at=now();
+        if($submit=='publish') $post->status=0;
+        elseif($submit=='save') $post->status=1;
+        $post->save();
+        return redirect()->route('admin::post.edit',$id);
     }
 
     public function destroy(Request $request){
