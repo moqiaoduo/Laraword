@@ -43,11 +43,19 @@ class ThemeManager extends Command
         if(!Storage::disk('theme')->exists($file)) die("文件不存在，无法继续。\nFile doesn't exist, please try another file. \n");
         if($ext!=='zip') die("文件类型不符，无法继续。\nFile extension isn't zip, please try another file. \n");
         $zip = new \ZipArchive;
-        $res = $zip->open(storage_path('app/theme/'.$file));
+        $zip->open(storage_path('app/theme/'.$file));
         $toDir = storage_path('app/theme/tmp');
         @mkdir($toDir);
-        $s = $zip->extractTo($toDir);
-        print_r(scandir($toDir));
-        echo "\n";
+        $zip->extractTo($toDir);
+        $json=json_decode(Storage::disk('theme')->read('tmp/theme.json'),true);
+        Storage::disk('theme')->rename('tmp/assets','tmp/'.$json['slug']);
+        doMoveDir(storage_path('app/theme/tmp/'.$json['slug'].'/'),public_path('theme/'));
+        delDir(storage_path('app/theme/tmp/'.$json['slug'].'/'));
+        Storage::disk('theme')->rename('tmp/views','tmp/'.$json['slug']);
+        doMoveDir(storage_path('app/theme/tmp/'.$json['slug'].'/'),resource_path('views/'));
+        rename(storage_path('app/theme/tmp/theme.json'),resource_path('views/'.$json['slug'].'/theme.json'));
+        delDir(storage_path('app/theme/tmp/'));
+        fwrite(STDOUT,'Would you like to delete zip file? 是否删除主题安装包？(Y/N)');
+        if(fgets(STDIN)=="Y\r\n") @unlink(storage_path('app/theme/'.$file));
     }
 }

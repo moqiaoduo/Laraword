@@ -13,7 +13,7 @@ class Controller extends BaseController
 
     protected function loadEditor(){
         $editor=env('APP_EDITOR','none');
-        if(!is_dir(resource_path("views\\editor\\{$editor}"))) $editor='none';
+        if(!is_dir(resource_path("views/editor/{$editor}"))) $editor='none';
         $editor_head="editor.{$editor}.head";
         $editor_container="editor.{$editor}.container";
         $editor_js="editor.{$editor}.js";
