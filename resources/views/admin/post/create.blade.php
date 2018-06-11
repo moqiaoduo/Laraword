@@ -31,12 +31,12 @@
         <!-- /.col-lg-12 -->
     </div>
     <div class="row">
-        <form class="form-horizontal" role="form" method="post">
+        <form class="form-horizontal" role="form" method="post" action="{{route('admin::post.store')}}">
             @csrf
             <div class="col-sm-8">
                 <div class="form-group">
                     <div class="col-sm-12">
-                        <input type="text" class="form-control" id="title"
+                        <input type="text" class="form-control" id="title" name="title"
                                placeholder="请输入标题">
                     </div>
                 </div>
@@ -58,7 +58,7 @@
                 </div>
                 <div class="form-group">
                     <div style="text-align: right" class="col-sm-12">
-                        <button type="submit" class="btn btn-default" name="submit" value="save">保存草稿</button>
+                        <button type="submit" class="btn btn-default" name="submit" value="save">保存但不发布</button>
                         <button type="submit" class="btn btn-primary" name="submit" value="publish">发布文章</button>
                     </div>
                 </div>

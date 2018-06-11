@@ -11,7 +11,7 @@ class IndexController extends Controller
         if(getSetting('indexPage',0)>0){
 
         }else{
-            $data=Post::paginate(10);
+            $data=Post::where('status',0)->orWhere('status',3)->paginate(10);
             foreach ($data as $key=>$val){
                 $data[$key]['content']=strip_tags($val['content']);
                 $data[$key]['content']=mb_substr($val['content'],0,150,'UTF-8').'...';

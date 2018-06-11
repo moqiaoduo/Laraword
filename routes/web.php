@@ -24,4 +24,5 @@ Route::group(['middleware'=>'admin','prefix'=>'admin','as'=>'admin::'],function 
     Route::resource('post','Admin\PostController', ['except'=>[
         'show'
     ]]);
+    Route::post('post/del','Admin\PostController@delete')->name('post.del');
 });

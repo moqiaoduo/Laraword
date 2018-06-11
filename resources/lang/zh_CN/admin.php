@@ -22,4 +22,5 @@ return [
     'selected_item'=>'选中项',
     'delete'=>'删除',
     'edit_post'=>'编辑文章',
+    'status' => '状态',
 ];

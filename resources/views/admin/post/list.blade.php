@@ -31,13 +31,16 @@
     </div>
     <div class="row">
         <div class="col-lg-12">
+            <form action="{{route('admin::post.del')}}" method="post" name="operations">
+                @csrf
             <div class="btn-group">
                 <button type="button" class="btn btn-default dropdown-toggle"
                         data-toggle="dropdown">
                     @lang('admin.selected_item') <span class="caret"></span>
                 </button>
+
                 <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">@lang('admin.delete')</a></li>
+                    <li><a href="javascript:document.operations.submit();">@lang('admin.delete')</a></li>
                 </ul>
             </div>
             <div class="btn-group">
@@ -52,6 +55,7 @@
                         @endif
                     </th>
                     <th>@lang('admin.title')</th>
+                    <th>@lang('admin.status')</th>
                     <th>@lang('admin.author')</th>
                     <th>@lang('admin.category')</th>
                     <th>@lang('admin.created_at')</th>
@@ -62,6 +66,15 @@
                     <tr>
                         <td><input type="checkbox" name="del[]" value="{{$v['id']}}"></td>
                         <td><a href="{{route('admin::post.edit',[$v['id']])}}">{{$v['title']}}</a></td>
+                        <td>
+                            @switch($v['status'])
+                                @case(0) 已发布 @break
+                                @case(1) 未发布 @break
+                                @case(2) 隐藏 @break
+                                @case(3) 加密 @break
+                                @case(4) 私密 @break
+                            @endswitch
+                        </td>
                         <td>{{$v['author']}}</td>
                         <td>{{$v['c']}}</td>
                         <td>{{$v['created_at']}}</td>
@@ -69,6 +82,7 @@
                 @endforeach
                 </tbody>
             </table>
+        </form>
             {{$data->links()}}
         </div>
     </div>

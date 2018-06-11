@@ -26,7 +26,13 @@
 @section('content')
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">@lang('admin.edit_post')</h1>
+            <h1 class="page-header">@lang('admin.edit_post')
+                <span style="font-size: 15px">
+                    @if(count($draft)>0)
+                        您正在编辑的是该文章的草稿
+                    @endif
+                </span>
+            </h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -38,7 +44,7 @@
                 <div class="form-group">
                     <div class="col-sm-12">
                         <input type="text" class="form-control" id="title" name="title"
-                               placeholder="请输入标题" value="{{$data['title']}}">
+                               placeholder="请输入标题" value="@if(count($draft)>0){{$draft[0]['title']}}@else{{$data['title']}}@endif">
                     </div>
                 </div>
                 <div class="form-group">
@@ -53,13 +59,23 @@
                     <div class="col-sm-12">
                         <!-- 加载编辑器的容器 -->
                         @component($editor_container)
-                            {{$data['content']}}
+                            @if(count($draft)>0)
+                                {!! $draft[0]['content'] !!}
+                            @else
+                                {!! $data['content'] !!}
+                            @endif
                         @endcomponent
                     </div>
                 </div>
                 <div class="form-group">
                     <div style="text-align: right" class="col-sm-12">
-                        <button type="submit" class="btn btn-default" name="submit" value="save">保存草稿</button>
+                        <button type="submit" class="btn btn-default" name="submit" value="save">
+                            @if($data['status']==0)
+                                保存草稿
+                            @else
+                            保存但不发布
+                            @endif
+                        </button>
                         <button type="submit" class="btn btn-primary" name="submit" value="publish">发布文章</button>
                     </div>
                 </div>
