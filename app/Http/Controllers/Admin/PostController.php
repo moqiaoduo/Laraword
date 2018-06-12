@@ -11,7 +11,9 @@ use App\Draft;
 
 class PostController extends Controller
 {
-    public function index($info='',$alert=''){
+    public function index(Request $request){
+        $info=$request->get('info');
+        $alert=$request->get('alert');
         $data=Post::paginate(10);
         foreach ($data as $key=>$val){
             if(Draft::where('post_id',$val['id'])->count()>0) $data[$key]['title']='(草稿)'.$val['title'];
@@ -49,8 +51,7 @@ class PostController extends Controller
         if(empty($slug)) $slug=$post->id;
         $post->slug=$slug;
         $post->save();
-        return redirect()->action('Admin\PostController@index',['文章已保存或发布','success']);
-        //return redirect()->route('admin::post.index');
+        return redirect()->route('admin::post.index',['info'=>'文章已保存或发布','alert'=>'success']);
     }
 
     public function edit(Request $request){
