@@ -22,30 +22,31 @@
     </script>
 @endsection
 
+@section('breadcrumb')
+    <li class="breadcrumb-item active">@lang('admin.posts')</li>
+@endsection
+
 @section('content')
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">@lang('admin.posts')</h1>
+            <h1>@lang('admin.posts')</h1>
+            <hr>
         </div>
-        <!-- /.col-lg-12 -->
     </div>
     <div class="row">
         <div class="col-lg-12">
             <form action="{{route('admin::post.del')}}" method="post" name="operations">
                 @csrf
-            <div class="btn-group">
-                <button type="button" class="btn btn-default dropdown-toggle"
-                        data-toggle="dropdown">
-                    @lang('admin.selected_item') <span class="caret"></span>
-                </button>
-
-                <ul class="dropdown-menu" role="menu">
-                    <li><a href="javascript:document.operations.submit();">@lang('admin.delete')</a></li>
-                </ul>
-            </div>
-            <div class="btn-group">
-                <a href="{{route('admin::post.create')}}" class="btn btn-success">@lang('admin.new_post')</a>
-            </div>
+                <div class="dropdown">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                        @lang('admin.selected_item')
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="javascript:document.operations.submit();">@lang('admin.delete')</a>
+                    </div>
+                    <a href="{{route('admin::post.create')}}" class="btn btn-success" style="margin-left: 5px;">@lang('admin.new_post')</a>
+                </div>
+                <div class="row"><br></div>
             <table width="100%" class="table">
                 <thead>
                 <tr>

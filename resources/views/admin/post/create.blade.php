@@ -23,15 +23,20 @@
     </script>
 @endsection
 
+@section('breadcrumb')
+    <li class="breadcrumb-item active">@lang('admin.new_post')</li>
+@endsection
+
 @section('content')
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">@lang('admin.new_post')</h1>
+            <h1>@lang('admin.new_post')</h1>
+            <hr>
         </div>
         <!-- /.col-lg-12 -->
     </div>
-    <div class="row">
-        <form class="form-horizontal" role="form" method="post" action="{{route('admin::post.store')}}">
+    <form role="form" method="post" action="{{route('admin::post.store')}}">
+        <div class="row">
             @csrf
             <div class="col-sm-8">
                 <div class="form-group">
@@ -64,8 +69,11 @@
                 </div>
             </div>
             <div class="col-sm-4">
-
+                <div class="panel">
+                    <div class="panel-header">信息</div>
+                    <div class="panel-body"></div>
+                </div>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 @endsection

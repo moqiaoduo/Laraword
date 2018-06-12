@@ -23,21 +23,26 @@
     </script>
 @endsection
 
+@section('breadcrumb')
+    <li class="breadcrumb-item active">@lang('admin.edit_post')</li>
+@endsection
+
 @section('content')
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">@lang('admin.edit_post')
+            <h1>@lang('admin.edit_post')
                 <span style="font-size: 15px">
                     @if(count($draft)>0)
                         您正在编辑的是该文章的草稿
                     @endif
                 </span>
             </h1>
+            <hr>
         </div>
         <!-- /.col-lg-12 -->
     </div>
-    <div class="row">
-        <form class="form-horizontal" role="form" method="post" action="{{route('admin::post.update',$data['id'])}}">
+    <form class="form-horizontal" role="form" method="post" action="{{route('admin::post.update',$data['id'])}}">
+        <div class="row">
             {{ method_field('PUT') }}
             @csrf
             <div class="col-sm-8">
@@ -83,6 +88,6 @@
             <div class="col-sm-4">
 
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 @endsection
