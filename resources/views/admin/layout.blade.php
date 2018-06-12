@@ -45,7 +45,7 @@
                         <a href="{{route('admin::post.create')}}">@lang('admin.new_post')</a>
                     </li>
                     <li>
-                        <a href="cards.html">@lang('admin.category')</a>
+                        <a href="{{route('admin::category.index')}}">@lang('admin.category')</a>
                     </li>
                 </ul>
             </li>
@@ -320,6 +320,17 @@
     <script src="{{asset('js/sb-admin.min.js')}}"></script>
 
     @yield('js')
+
+    <script>
+        $('#mainNav').find('a').each(function () {
+            if (this.href == document.location.href) {
+                $(this).parent().parent().parent().children('a').attr('aria-expanded',true);
+                $(this).parent().parent().parent().children('a').removeClass('collapsed');
+                $(this).parent().parent().addClass('show');
+                $(this).parent().addClass('active'); // this.className = 'active';
+            }
+        });
+    </script>
 </div>
 </body>
 

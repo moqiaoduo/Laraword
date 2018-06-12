@@ -25,4 +25,7 @@ Route::group(['middleware'=>'admin','prefix'=>'admin','as'=>'admin::'],function 
         'show'
     ]]);
     Route::post('post/del','Admin\PostController@delete')->name('post.del');
+    Route::group(['prefix'=>'category','as'=>'category.'],function (){
+        Route::get('/','Admin\CategoryController@index')->name('index');
+    });
 });
