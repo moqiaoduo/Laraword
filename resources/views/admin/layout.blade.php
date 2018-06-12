@@ -20,7 +20,7 @@
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
 <!-- Navigation-->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-    <a class="navbar-brand" href="index.html">Start Bootstrap</a>
+    <a class="navbar-brand" href="index.html">{{config('app.name','Laraword')}}</a>
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -32,12 +32,12 @@
                     <span class="nav-link-text">@lang('admin.dashboard')</span>
                 </a>
             </li>
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
-                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents" data-parent="#exampleAccordion">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="@lang('admin.posts')">
+                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#posts" data-parent="#posts">
                     <i class="fa fa-fw fa-wrench"></i>
                     <span class="nav-link-text">@lang('admin.posts')</span>
                 </a>
-                <ul class="sidenav-second-level collapse" id="collapseComponents">
+                <ul class="sidenav-second-level collapse" id="posts">
                     <li>
                         <a href="{{route('admin::post.index')}}">@lang('admin.all_posts')</a>
                     </li>
@@ -49,17 +49,17 @@
                     </li>
                 </ul>
             </li>
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
-                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents" data-parent="#exampleAccordion">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="@lang('admin.media')">
+                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#media" data-parent="#media">
                     <i class="fa fa-fw fa-wrench"></i>
-                    <span class="nav-link-text">Components</span>
+                    <span class="nav-link-text">@lang('admin.media')</span>
                 </a>
-                <ul class="sidenav-second-level collapse" id="collapseComponents">
+                <ul class="sidenav-second-level collapse" id="media">
                     <li>
-                        <a href="navbar.html">Navbar</a>
+                        <a href="navbar.html">@lang('admin.media_library')</a>
                     </li>
                     <li>
-                        <a href="cards.html">Cards</a>
+                        <a href="cards.html">@lang('admin.add')</a>
                     </li>
                 </ul>
             </li>

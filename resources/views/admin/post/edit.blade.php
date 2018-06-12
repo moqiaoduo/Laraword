@@ -28,6 +28,9 @@
 @endsection
 
 @section('content')
+    @if($info!='' && $alert!='')
+        @include('admin.alert',['type'=>$alert,'info'=>$info])
+    @endif
     <div class="row">
         <div class="col-lg-12">
             <h1>@lang('admin.edit_post')

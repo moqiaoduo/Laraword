@@ -5,7 +5,7 @@ return [
     'posts' => '文章',
     'all_posts' => '所有文章',
     'new_post' => '写文章',
-    'category' => '文章目录',
+    'category' => '文章分类',
     'new_comments' => '今日新评论',
     'new_visitors' => '今日新访客',
     'new_users' => '今日新用户',

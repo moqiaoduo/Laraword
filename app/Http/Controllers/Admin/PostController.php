@@ -11,7 +11,7 @@ use App\Draft;
 
 class PostController extends Controller
 {
-    public function index(){
+    public function index($info='',$alert=''){
         $data=Post::paginate(10);
         foreach ($data as $key=>$val){
             if(Draft::where('post_id',$val['id'])->count()>0) $data[$key]['title']='(草稿)'.$val['title'];
@@ -23,7 +23,7 @@ class PostController extends Controller
             }
             $data[$key]['c']=$t;
         }
-        return view('admin.post.list')->with('data',$data);
+        return view('admin.post.list')->with('data',$data)->with('info',$info)->with('alert',$alert);
     }
 
     public function create(){
@@ -49,17 +49,21 @@ class PostController extends Controller
         if(empty($slug)) $slug=$post->id;
         $post->slug=$slug;
         $post->save();
-        return redirect()->route('admin::post.index');
+        return redirect()->action('Admin\PostController@index',['文章已保存或发布','success']);
+        //return redirect()->route('admin::post.index');
     }
 
-    public function edit($id){
+    public function edit(Request $request){
+        $id=$request->route('post');
+        $info=$request->get('info');
+        $alert=$request->get('alert');
         $data=Post::find($id);
         $draft=Draft::where('post_id',$id)->get()->toArray();
         $route=getSetting('route.post','/archive/{id}');
         $url=config('app.url').str_replace('{slug}',self::loadSlugInput($data['slug']),$route);
         $url=str_replace('{id}',$id,$url);
         $editor=self::loadEditor();
-        return view('admin.post.edit')->with('url',$url)->with('head',$editor[0])->with('editor_container',$editor[1])->with('js',$editor[2])->with('data',$data)->with('draft',$draft);
+        return view('admin.post.edit')->with('url',$url)->with('head',$editor[0])->with('editor_container',$editor[1])->with('js',$editor[2])->with('data',$data)->with('draft',$draft)->with('info',$info)->with('alert',$alert);
     }
 
     public function update(Request $request){
@@ -88,7 +92,7 @@ class PostController extends Controller
             }
         }
         $post->save();
-        return redirect()->route('admin::post.edit',$id);
+        return redirect()->route('admin::post.edit',[$id,'info'=>'文章已保存或发布','alert'=>'success']);
     }
 
     public function destroy(Request $request){
