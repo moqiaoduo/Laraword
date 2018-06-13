@@ -9,6 +9,7 @@
         #slug{padding:2px;border:none;background:#FFFBCC;color:#666;box-sizing: border-box;line-height: normal;font-size: 100%;}
         .mono{font-family:Menlo,Monaco,Consolas,"Courier New",monospace;}
         .sr-only{border:0;height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;}
+        #category{overflow-y: auto;}
     </style>
     <link rel="stylesheet" href="{{vendor('bootstrap/css/glyphicon.css')}}">
     <link rel="stylesheet" href="{{asset('css/bootstrap-treeview.min.css')}}">
@@ -25,6 +26,7 @@
     </script>
     <script type="text/javascript" src="{{asset('js/bootstrap-treeview.min.js')}}"></script>
     <script type="text/javascript">
+        var category=[];
         function getChildNodeIdArr(node) {
             var ts = [];
             if (node.nodes) {
@@ -71,28 +73,46 @@
                     $('#category').treeview('unselectNode',[node.nodeId])
                 },
                 onNodeSelected: function(event, node) { //选中节点
+                    category.push(node.id)
                     $('#category').treeview('checkNode',[node.nodeId])
                 },
                 onNodeUnselected: function(event, node) { //选中节点
+                    category.remove(node.id)
                     $('#category').treeview('uncheckNode',[node.nodeId])
                 },
             });
         })
+        Array.prototype.indexOf = function(val) {
+            for (var i = 0; i < this.length; i++) {
+                if (this[i] == val) return i;
+            }
+            return -1;
+        };
+        Array.prototype.remove = function(val) {
+            var index = this.indexOf(val);
+            if (index > -1) {
+                this.splice(index, 1);
+            }
+        };
     </script>
     <script>
         $(document).scroll(float)
         $(window).resize(float)
+        $(document).ready(float)
         function float() {
             if($(window).width()>=751){
                 $("#float .card").css('width',$("#float").width());
                 if($(this).scrollTop()>=145){
+                    $("#category").css('max-height',$(window).height()/2-100);
                     $("#float .card").css('position','fixed');
                     $("#float .card").css('top','60px');
                 }else{
+                    $("#category").css('max-height',$(window).height()/2-160);
                     $("#float .card").css('position','');
                     $("#float .card").css('top','');
                 }
             }else{
+                $("#category").css('max-height','');
                 $("#float .card").css('width','');
                 $("#float .card").css('position','');
                 $("#float .card").css('top','');
@@ -133,7 +153,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-sm-12">
+                    <div class="col-sm-12" id="editor">
                         <!-- 加载编辑器的容器 -->
                         @component($editor_container)
 

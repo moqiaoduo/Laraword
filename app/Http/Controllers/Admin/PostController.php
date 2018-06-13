@@ -37,6 +37,8 @@ class PostController extends Controller
 
     public function store(Request $request){
         $submit=$request->post('submit');
+        $categories=json_decode($request->post('category'),true);
+        if(empty($categories)) $categories=[0];
         $slug=$request->post('slug');
         $post=new Post;
         $post->uid=$request->user()->id;
@@ -45,6 +47,7 @@ class PostController extends Controller
         $post->content=$request->post('content');
         $post->slug='';
         $post->updated_at=now();
+        $post->category=$categories;
         if($submit=='publish') $post->status=0;
         elseif($submit=='save') $post->status=1;
         $post->save();
@@ -70,6 +73,8 @@ class PostController extends Controller
     public function update(Request $request){
         $submit=$request->post('submit');
         $slug=$request->post('slug');
+        $categories=json_decode($request->post('category'),true);
+        if(empty($categories)) $categories=[0];
         $id=$request->route('post');
         if(empty($slug)) $slug=$id;
         $title=$request->post('title');
@@ -77,6 +82,7 @@ class PostController extends Controller
         $uid=$request->user()->id;
         $post=Post::find($id);
         $post->slug=$slug;
+        $post->category=$categories;
         if($submit=='publish'){
             $post->title=$title;
             $post->content=$content;
