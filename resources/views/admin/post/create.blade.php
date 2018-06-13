@@ -102,6 +102,7 @@
 @endsection
 
 @section('breadcrumb')
+    <li class="breadcrumb-item"><a href="{{route('admin::post.index')}}">@lang('admin.posts')</a></li>
     <li class="breadcrumb-item active">@lang('admin.new_post')</li>
 @endsection
 

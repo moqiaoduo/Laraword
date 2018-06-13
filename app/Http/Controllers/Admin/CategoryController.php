@@ -17,8 +17,26 @@ class CategoryController extends Controller
         foreach ($data as $key=>$val) {
             $data[$key]['sub']=Category::where('parent',$val['id'])->count();
         }
-        //dd($data);
-        return view('admin.category.list',['data'=>$data,'parent'=>$parent,'parent_parent'=>Category::find($parent)]);
+        $breadcrumb=$this->getBreadCrumb($parent,true);
+        return view('admin.category.list',['data'=>$data,'parent'=>$parent,'parent_parent'=>Category::find($parent),'info'=>$request->get('info'),'alert'=>$request->get('alert')])->with('breadcrumb',$breadcrumb);
+    }
+
+    protected function getBreadCrumb($parent,$first=false){
+        $html='';$active='';$t='';
+        if($first) $active='active';
+        if($parent>0){
+            $data=Category::find($parent);
+            if($first) $t="<li class=\"breadcrumb-item {$active}\">{$data['title']}</li>";
+            else $t="<li class=\"breadcrumb-item {$active}\"><a href=\"".route('admin::category.index',['parent'=>$data['id']])."\">{$data['title']}</a></li>";
+            $html=$t.$html;
+            $html=$this->getBreadCrumb($data['parent']).$html;
+        }else{
+            //dd($first);
+            if($first) $t="<li class=\"breadcrumb-item {$active}\">".__('admin.category')."</li>";
+            else $t="<li class=\"breadcrumb-item {$active}\"><a href=\"".route('admin::category.index')."\">".__('admin.category')."</a></li>";
+            $html=$t.$html;
+        }
+        return $html;
     }
 
     public function getCategories(Request $request){
@@ -58,5 +76,68 @@ class CategoryController extends Controller
 
     public function delete(Request $request){
         Category::destroy($request->post('del'));
+        return redirect()->route('admin::category.index');
+    }
+
+    public function create(){
+        $route=getSetting('route.post','/archive/{id}');
+        $url=config('app.url').str_replace('{slug}',self::loadSlugInput(),$route);
+        $editor=self::loadEditor();
+        return view('admin.category.create')->with('parent_options',$this->getParentOptions(0));
+    }
+
+    public function store(Request $request){
+        $slug=$request->post('slug');
+        $category=new Category;
+        $category->title=$request->post('title');
+        $category->description=$request->post('description');
+        $category->parent=$request->post('parent');
+        $category->slug='';
+        $category->save();
+        if(empty($slug)) $slug=$category->id;
+        $category->slug=$slug;
+        $category->save();
+        return redirect()->route('admin::category.index',['info'=>'分类已保存','alert'=>'success']);
+    }
+
+    public function edit(Request $request){
+        $id=$request->route('category');
+        $info=$request->get('info');
+        $alert=$request->get('alert');
+        $data=Category::find($id);
+        $breadcrumb=$this->getBreadCrumb($data['parent']);
+        return view('admin.category.edit')->with('data',$data)->with('info',$info)->with('alert',$alert)->with('parent_options',$this->getParentOptions(0,$data['parent'],$data['id']))->with('breadcrumb',$breadcrumb);
+    }
+
+    public function update(Request $request){
+        $id=$request->route('category');
+        $slug=$request->post('slug');
+        if(empty($slug)) $slug=$id;
+        $category=Category::find($id);
+        $category->title=$request->post('title');
+        $category->description=$request->post('description');
+        $category->parent=$request->post('parent');
+        $category->slug=$slug;
+        $category->save();
+        return redirect()->route('admin::category.edit',[$id,'info'=>'分类已保存','alert'=>'success']);
+    }
+
+    public function destroy(Request $request){
+        Post::destroy($request->route('category'));
+        return redirect()->route('admin::category.index');
+    }
+
+    protected function getParentOptions($parent,$selected=0,$except=-1,$deep=0){
+        $data=Category::where('parent',$parent)->get()->toArray();
+        $html='';
+        foreach ($data as $val){
+            if($val['id']==$except) continue;
+            $prefix='';$active='';
+            if($selected==$val['id']) $active=' selected';
+            for($i=0;$i<$deep;$i++) $prefix.='--';
+            $html.='<option'.$active.' value="'.$val['id'].'">'.$prefix.$val['title'].'</option>';
+            $html.=$this->getParentOptions($val['id'],$selected,$except,$deep+1);
+        }
+        return $html;
     }
 }

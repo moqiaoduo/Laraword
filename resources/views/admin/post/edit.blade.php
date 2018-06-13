@@ -87,6 +87,7 @@
 @endsection
 
 @section('breadcrumb')
+    <li class="breadcrumb-item"><a href="{{route('admin::post.index')}}">@lang('admin.posts')</a></li>
     <li class="breadcrumb-item active">@lang('admin.edit_post')</li>
 @endsection
 

@@ -23,10 +23,13 @@
 @endsection
 
 @section('breadcrumb')
-    <li class="breadcrumb-item active">@lang('admin.category')</li>
+    {!! $breadcrumb !!}
 @endsection
 
 @section('content')
+    @if($info!='' && $alert!='')
+        @include('admin.alert',['type'=>$alert,'info'=>$info])
+    @endif
     <div class="row">
         <div class="col-lg-12">
             <h1>@lang('admin.category')</h1>
@@ -44,7 +47,7 @@
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="javascript:document.operations.submit();">@lang('admin.delete')</a>
                     </div>
-                    <a href="javascript:refresh()" class="btn btn-success" style="margin-left: 5px;">@lang('admin.new_post')</a>
+                    <a href="{{route('admin::category.create')}}" class="btn btn-success" style="margin-left: 5px;">@lang('admin.new_post')</a>
                 </div>
                 <div class="row"><br></div>
                 @if($parent>0)
@@ -69,7 +72,7 @@
                     @foreach($data as $v)
                         <tr>
                             <td><input type="checkbox" name="del[]" value="{{$v['id']}}"></td>
-                            <td><a href="{{route('admin::post.edit',[$v['id']])}}">{{$v['title']}}</a></td>
+                            <td><a href="{{route('admin::category.edit',[$v['id']])}}">{{$v['title']}}</a></td>
                             <td>{{$v['slug']}}</td>
                             <td>
                                 @if($v['sub']>0)

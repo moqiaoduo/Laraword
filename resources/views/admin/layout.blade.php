@@ -322,14 +322,27 @@
     @yield('js')
 
     <script>
+        var nav_selected=false;
         $('#mainNav').find('a').each(function () {
             if (this.href == document.location.href) {
+                nav_selected=true;
                 $(this).parent().parent().parent().children('a').attr('aria-expanded',true);
                 $(this).parent().parent().parent().children('a').removeClass('collapsed');
                 $(this).parent().parent().addClass('show');
                 $(this).parent().addClass('active'); // this.className = 'active';
             }
         });
+        if(!nav_selected){
+            $('#mainNav').find('a').each(function () {
+                if (document.location.href.search(this.href) >= 0 && this.href!='{{route('admin::index')}}') {
+                    nav_selected=true;
+                    $(this).parent().parent().parent().children('a').attr('aria-expanded',true);
+                    $(this).parent().parent().parent().children('a').removeClass('collapsed');
+                    $(this).parent().parent().addClass('show');
+                    $(this).parent().addClass('active'); // this.className = 'active';
+                }
+            });
+        }
     </script>
 </div>
 </body>
