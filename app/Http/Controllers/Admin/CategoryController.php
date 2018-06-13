@@ -33,7 +33,7 @@ class CategoryController extends Controller
         $json=array();
         if(!empty($data)){
             foreach ($data as $val) {
-                $t=["text"=>$val['title'],"id"=>$val['id'],"selectable"=>"false","nodes"=>$this->getCategoriesNode($val['id'])];
+                $t=["text"=>$val['title'],"id"=>$val['id'],"nodes"=>$this->getCategoriesNode($val['id'])];
                 if(in_array($val['id'],$this->selected)){$t['state']['checked']=true;$t['state']['selected']=true;}
                 if(count($t['nodes'])<=0) unset($t['nodes']);
                 array_push($json,$t);
@@ -47,7 +47,7 @@ class CategoryController extends Controller
         $json=array();
         if(!empty($data)){
             foreach ($data as $val) {
-                $t=["text"=>$val['title'],"id"=>$val['id'],"selectable"=>"false","nodes"=>$this->getCategoriesNode($val['id'])];
+                $t=["text"=>$val['title'],"id"=>$val['id'],"nodes"=>$this->getCategoriesNode($val['id'])];
                 if(in_array($val['id'],$this->selected)){$t['state']['checked']=true;$t['state']['selected']=true;}
                 if(count($t['nodes'])<=0) unset($t['nodes']);
                 array_push($json,$t);

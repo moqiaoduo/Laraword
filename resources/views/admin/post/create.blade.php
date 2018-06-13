@@ -78,7 +78,26 @@
                 },
             });
         })
-
+    </script>
+    <script>
+        $(document).scroll(float)
+        $(window).resize(float)
+        function float() {
+            if($(window).width()>=751){
+                $("#float .card").css('width',$("#float").width());
+                if($(this).scrollTop()>=145){
+                    $("#float .card").css('position','fixed');
+                    $("#float .card").css('top','60px');
+                }else{
+                    $("#float .card").css('position','');
+                    $("#float .card").css('top','');
+                }
+            }else{
+                $("#float .card").css('width','');
+                $("#float .card").css('position','');
+                $("#float .card").css('top','');
+            }
+        }
     </script>
 @endsection
 
@@ -127,7 +146,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 col-xl-3">
+            <div class="col-md-4 col-xl-3" id="float">
                 <div class="card">
                     <div class="card-header">@lang('admin.category')</div>
                     <div class="card-body">
