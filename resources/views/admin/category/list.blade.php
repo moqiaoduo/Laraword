@@ -2,6 +2,11 @@
 
 @section('title',__('admin.posts'))
 
+@section('head')
+    <link rel="stylesheet" href="{{vendor('bootstrap/css/glyphicon.css')}}">
+    <link rel="stylesheet" href="{{asset('css/bootstrap-treeview.min.css')}}">
+@endsection
+
 @section('js')
     <script>
         $(".table input[name='del[]']").change(function () {
@@ -20,6 +25,43 @@
             return allChecked;
         }
     </script>
+    <script type="text/javascript" src="{{asset('js/bootstrap-treeview.min.js')}}"></script>
+    <script type="text/javascript">
+        function getChildNodeIdArr(node) {
+            var ts = [];
+            if (node.nodes) {
+                for (x in node.nodes) {
+                    ts.push(node.nodes[x].nodeId);
+                    if (node.nodes[x].nodes) {
+                        var getNodeDieDai = getChildNodeIdArr(node.nodes[x]);
+                        for (j in getNodeDieDai) {
+                            ts.push(getNodeDieDai[j]);
+                        }
+                    }
+                }
+            } else {
+                ts.push(node.nodeId);
+            }
+            return ts;
+        }
+        function setParentNodeCheck(node) {
+            var parentNode = $("#category").treeview("getNode", node.parentId);
+            if (parentNode.nodes) {
+                var checkedCount = 0;
+                for (x in parentNode.nodes) {
+                    if (parentNode.nodes[x].state.checked) {
+                        checkedCount ++;
+                    } else {
+                        break;
+                    }
+                }
+                if (checkedCount === parentNode.nodes.length) {
+                    $("#category").treeview("checkNode", parentNode.nodeId);
+                    setParentNodeCheck(parentNode);
+                }
+            }
+        }
+    </script>
 @endsection
 
 @section('breadcrumb')
@@ -35,7 +77,7 @@
     </div>
     <div class="row">
         <div class="col-lg-12">
-            <form action="{{route('admin::post.del')}}" method="post" name="operations">
+            <form action="{{route('admin::category.del')}}" method="post" name="operations">
                 @csrf
                 <div class="dropdown">
                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -44,9 +86,12 @@
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="javascript:document.operations.submit();">@lang('admin.delete')</a>
                     </div>
-                    <a href="{{route('admin::post.create')}}" class="btn btn-success" style="margin-left: 5px;">@lang('admin.new_post')</a>
+                    <a href="javascript:refresh()" class="btn btn-success" style="margin-left: 5px;">@lang('admin.new_post')</a>
                 </div>
                 <div class="row"><br></div>
+                @if($parent>0)
+                    <a href="{{route('admin::category.index',['parent'=>$parent_parent['parent']])}}" class="btn btn-success" style="margin-left: 5px;">&lt; @lang('admin.back')</a><div class="row"><br></div>
+                @endif
                 <table width="100%" class="table">
                     <thead>
                     <tr>
@@ -56,8 +101,8 @@
                             @endif
                         </th>
                         <th>@lang('admin.title')</th>
-                        <th>@lang('admin.status')</th>
-                        <th>@lang('admin.author')</th>
+                        <th>@lang('admin.slug')</th>
+                        <th>@lang('admin.sub')</th>
                         <th>@lang('admin.category')</th>
                         <th>@lang('admin.created_at')</th>
                     </tr>
@@ -67,16 +112,12 @@
                         <tr>
                             <td><input type="checkbox" name="del[]" value="{{$v['id']}}"></td>
                             <td><a href="{{route('admin::post.edit',[$v['id']])}}">{{$v['title']}}</a></td>
+                            <td>{{$v['slug']}}</td>
                             <td>
-                                @switch($v['status'])
-                                    @case(0) 已发布 @break
-                                    @case(1) 未发布 @break
-                                    @case(2) 隐藏 @break
-                                    @case(3) 加密 @break
-                                    @case(4) 私密 @break
-                                @endswitch
+                                @if($v['sub']>0)
+                                    <a href="{{route('admin::category.index',['parent'=>$v['id']])}}">查看子分类</a>
+                                @endif
                             </td>
-                            <td>{{$v['author']}}</td>
                             <td>{{$v['c']}}</td>
                             <td>{{$v['created_at']}}</td>
                         </tr>
