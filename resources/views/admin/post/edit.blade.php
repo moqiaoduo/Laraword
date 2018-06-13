@@ -10,6 +10,8 @@
         .mono{font-family:Menlo,Monaco,Consolas,"Courier New",monospace;}
         .sr-only{border:0;height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;}
     </style>
+    <link rel="stylesheet" href="{{vendor('bootstrap/css/glyphicon.css')}}">
+    <link rel="stylesheet" href="{{asset('css/bootstrap-treeview.min.css')}}">
 @endsection
 
 @section('js')
@@ -20,6 +22,67 @@
                 $("#preview").html($(this).val())
             });
         })
+    </script>
+    <script type="text/javascript" src="{{asset('js/bootstrap-treeview.min.js')}}"></script>
+    <script type="text/javascript">
+        function getChildNodeIdArr(node) {
+            var ts = [];
+            if (node.nodes) {
+                for (x in node.nodes) {
+                    ts.push(node.nodes[x].nodeId);
+                    if (node.nodes[x].nodes) {
+                        var getNodeDieDai = getChildNodeIdArr(node.nodes[x]);
+                        for (j in getNodeDieDai) {
+                            ts.push(getNodeDieDai[j]);
+                        }
+                    }
+                }
+            } else {
+                ts.push(node.nodeId);
+            }
+            return ts;
+        }
+        function setParentNodeCheck(node) {
+            var parentNode = $("#category").treeview("getNode", node.parentId);
+            if (parentNode.nodes) {
+                var checkedCount = 0;
+                for (x in parentNode.nodes) {
+                    if (parentNode.nodes[x].state.checked) {
+                        checkedCount ++;
+                    } else {
+                        break;
+                    }
+                }
+                if (checkedCount === parentNode.nodes.length) {
+                    $("#category").treeview("checkNode", parentNode.nodeId);
+                    setParentNodeCheck(parentNode);
+                }
+            }
+        }
+        $.getJSON("{{url('/api/category')}}",{selected:
+            @php
+                print_r(json_encode($data['category']))
+            @endphp
+        },function (data) {
+            $('#category').treeview({
+                data: data,
+                showCheckbox: true,
+                multiSelect: true,
+                onNodeChecked: function(event, node) { //选中节点
+                    $('#category').treeview('selectNode',[node.nodeId])
+                },
+                onNodeUnchecked: function(event, node) { //取消选中节点
+                    $('#category').treeview('unselectNode',[node.nodeId])
+                },
+                onNodeSelected: function(event, node) { //选中节点
+                    $('#category').treeview('checkNode',[node.nodeId])
+                },
+                onNodeUnselected: function(event, node) { //选中节点
+                    $('#category').treeview('uncheckNode',[node.nodeId])
+                },
+            });
+        })
+
     </script>
 @endsection
 
@@ -48,7 +111,7 @@
         <div class="row">
             {{ method_field('PUT') }}
             @csrf
-            <div class="col-sm-8">
+            <div class="col-md-8 col-xl-9">
                 <div class="form-group">
                     <div class="col-sm-12">
                         <input type="text" class="form-control" id="title" name="title"
@@ -88,8 +151,13 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-4">
-
+            <div class="col-md-4 col-xl-3">
+                <div class="card">
+                    <div class="card-header">@lang('admin.category')</div>
+                    <div class="card-body">
+                        <div id="category"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </form>
