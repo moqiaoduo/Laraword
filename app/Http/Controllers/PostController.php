@@ -25,9 +25,8 @@ class PostController extends Controller
                 if(!empty($month) && count($query->get()->toArray())>1) $query->whereMonth('created_at',$month);
                 if(!empty($day) && count($query->get()->toArray())>1) $query->whereDay('created_at',$day);
                 if(!empty($date) && count($query->get()->toArray())>1) $query->whereDate('created_at',$date);
-                if(!empty($category) && $category!='uncategoried' && count($query->get()->toArray())>1){
+                if(!empty($category) && $category!='uncategorized' && count($query->get()->toArray())>1){
                     $category=Category::where('slug',$category)->get()->toArray()[0];
-                    //dd($category);
                     if(!empty($category)) $query->whereJsonContains('category',$category['id']);
                 }
                 $data=$query->get()->toArray()[0];

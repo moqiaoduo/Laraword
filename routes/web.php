@@ -18,6 +18,7 @@ Route::get('/', 'IndexController@index')->name('index');
 Auth::routes();
 
 Route::get(getSetting('route.post','/archive/{id}'),'PostController@content')->name('content');
+Route::get(getSetting('route.category','category').'/{category}','CategoryController@show')->name('category');
 
 Route::group(['middleware'=>'admin','prefix'=>'admin','as'=>'admin::'],function () {
     Route::get('/', 'Admin\IndexController@index')->name('index');
