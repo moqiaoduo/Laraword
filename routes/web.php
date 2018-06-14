@@ -31,6 +31,7 @@ Route::group(['middleware'=>'admin','prefix'=>'admin','as'=>'admin::'],function 
 
 if(empty(DB::select("SELECT table_name FROM information_schema.TABLES WHERE table_name ='settings';"))) dd('未安装，请先安装后使用。 Please install first.');
 
+Auth::routes();
+
 Route::get(getCustomRoutes(array(getSetting('route.post','/archive/{id}'),getSetting('route.page','/page/{slug}'),getSetting('route.category','/category/{category}'))), 'IndexController@index')->name('index');
 
-Auth::routes();

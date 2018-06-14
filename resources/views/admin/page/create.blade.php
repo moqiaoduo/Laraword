@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title',__('admin.new_post'))
+@section('title',__('admin.new_page'))
 
 @section('head')
     @include($head)
@@ -11,8 +11,6 @@
         .sr-only{border:0;height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;}
         #category{overflow-y: auto;}
     </style>
-    <link rel="stylesheet" href="{{vendor('bootstrap/css/glyphicon.css')}}">
-    <link rel="stylesheet" href="{{asset('css/bootstrap-treeview.min.css')}}">
 @endsection
 
 @section('js')
@@ -24,77 +22,6 @@
             });
         })
     </script>
-    <script type="text/javascript" src="{{asset('js/bootstrap-treeview.min.js')}}"></script>
-    <script type="text/javascript">
-        var category=[];
-        function getChildNodeIdArr(node) {
-            var ts = [];
-            if (node.nodes) {
-                for (x in node.nodes) {
-                    ts.push(node.nodes[x].nodeId);
-                    if (node.nodes[x].nodes) {
-                        var getNodeDieDai = getChildNodeIdArr(node.nodes[x]);
-                        for (j in getNodeDieDai) {
-                            ts.push(getNodeDieDai[j]);
-                        }
-                    }
-                }
-            } else {
-                ts.push(node.nodeId);
-            }
-            return ts;
-        }
-        function setParentNodeCheck(node) {
-            var parentNode = $("#category").treeview("getNode", node.parentId);
-            if (parentNode.nodes) {
-                var checkedCount = 0;
-                for (x in parentNode.nodes) {
-                    if (parentNode.nodes[x].state.checked) {
-                        checkedCount ++;
-                    } else {
-                        break;
-                    }
-                }
-                if (checkedCount === parentNode.nodes.length) {
-                    $("#category").treeview("checkNode", parentNode.nodeId);
-                    setParentNodeCheck(parentNode);
-                }
-            }
-        }
-        $.getJSON("{{url('/api/category')}}",function (data) {
-            $('#category').treeview({
-                data: data,
-                showCheckbox: true,
-                multiSelect: true,
-                onNodeChecked: function(event, node) { //选中节点
-                    $('#category').treeview('selectNode',[node.nodeId])
-                },
-                onNodeUnchecked: function(event, node) { //取消选中节点
-                    $('#category').treeview('unselectNode',[node.nodeId])
-                },
-                onNodeSelected: function(event, node) { //选中节点
-                    category.push(node.id)
-                    $('#category').treeview('checkNode',[node.nodeId])
-                },
-                onNodeUnselected: function(event, node) { //选中节点
-                    category.remove(node.id)
-                    $('#category').treeview('uncheckNode',[node.nodeId])
-                },
-            });
-        })
-        Array.prototype.indexOf = function(val) {
-            for (var i = 0; i < this.length; i++) {
-                if (this[i] == val) return i;
-            }
-            return -1;
-        };
-        Array.prototype.remove = function(val) {
-            var index = this.indexOf(val);
-            if (index > -1) {
-                this.splice(index, 1);
-            }
-        };
-    </script>
     <script>
         $(document).scroll(float)
         $(window).resize(float)
@@ -103,16 +30,13 @@
             if($(window).width()>=751){
                 $("#float .card").css('width',$("#float").width());
                 if($(this).scrollTop()>=145){
-                    $("#category").css('max-height',$(window).height()/2-100);
                     $("#float .card").css('position','fixed');
                     $("#float .card").css('top','60px');
                 }else{
-                    $("#category").css('max-height',$(window).height()/2-160);
                     $("#float .card").css('position','');
                     $("#float .card").css('top','');
                 }
             }else{
-                $("#category").css('max-height','');
                 $("#float .card").css('width','');
                 $("#float .card").css('position','');
                 $("#float .card").css('top','');
@@ -122,19 +46,19 @@
 @endsection
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{route('admin::post.index')}}">@lang('admin.posts')</a></li>
-    <li class="breadcrumb-item active">@lang('admin.new_post')</li>
+    <li class="breadcrumb-item"><a href="{{route('admin::page.index')}}">@lang('admin.page')</a></li>
+    <li class="breadcrumb-item active">@lang('admin.new_page')</li>
 @endsection
 
 @section('content')
     <div class="row">
         <div class="col-lg-12">
-            <h1>@lang('admin.new_post')</h1>
+            <h1>@lang('admin.new_page')</h1>
             <hr>
         </div>
         <!-- /.col-lg-12 -->
     </div>
-    <form role="form" method="post" action="{{route('admin::post.store')}}">
+    <form role="form" method="post" action="{{route('admin::page.store')}}">
         <div class="row">
             @csrf
             <div class="col-md-8 col-xl-9">
@@ -163,17 +87,12 @@
                 <div class="form-group">
                     <div style="text-align: right" class="col-sm-12">
                         <button type="submit" class="btn btn-default" name="submit" value="save">保存但不发布</button>
-                        <button type="submit" class="btn btn-primary" name="submit" value="publish">发布文章</button>
+                        <button type="submit" class="btn btn-primary" name="submit" value="publish">发布页面</button>
                     </div>
                 </div>
             </div>
             <div class="col-md-4 col-xl-3" id="float">
-                <div class="card">
-                    <div class="card-header">@lang('admin.category')</div>
-                    <div class="card-body">
-                        <div id="category"></div>
-                    </div>
-                </div>
+
             </div>
         </div>
     </form>

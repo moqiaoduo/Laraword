@@ -70,10 +70,10 @@
                 </a>
                 <ul class="sidenav-second-level collapse" id="page">
                     <li>
-                        <a href="navbar.html">@lang('admin.all_pages')</a>
+                        <a href="{{route('admin::page.index')}}">@lang('admin.all_pages')</a>
                     </li>
                     <li>
-                        <a href="cards.html">@lang('admin.new_page')</a>
+                        <a href="{{route('admin::page.create')}}">@lang('admin.new_page')</a>
                     </li>
                 </ul>
             </li>

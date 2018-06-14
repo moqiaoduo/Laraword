@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title',__('admin.posts'))
+@section('title',__('admin.category'))
 
 @section('js')
     <script>

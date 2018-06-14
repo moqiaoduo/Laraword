@@ -43,11 +43,9 @@ class PostController extends Controller
         $post=new Post;
         $post->uid=$request->user()->id;
         $post->title=$request->post('title');
-        $post->category=[0];
+        $page->category=$categories;
         $post->content=$request->post('content');
         $post->slug='';
-        $post->updated_at=now();
-        $post->category=$categories;
         if($submit=='publish') $post->status=0;
         elseif($submit=='save') $post->status=1;
         $post->save();
@@ -86,7 +84,6 @@ class PostController extends Controller
         if($submit=='publish'){
             $post->title=$title;
             $post->content=$content;
-            $post->updated_at=now();
             $post->status=0;
             Draft::where('type','post')->where('post_id',$id)->delete();
         }elseif($submit=='save'){
@@ -95,7 +92,6 @@ class PostController extends Controller
             else{
                 $post->title=$title;
                 $post->content=$content;
-                $post->updated_at=now();
             }
         }
         $post->save();

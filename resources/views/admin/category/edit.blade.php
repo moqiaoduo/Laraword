@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title',__('admin.edit_post'))
+@section('title',__('admin.edit_category'))
 
 @section('head')
     <style>

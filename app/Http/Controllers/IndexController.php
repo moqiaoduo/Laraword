@@ -27,17 +27,18 @@ class IndexController extends Controller
         if(!empty($params3)){
             $cr=getSetting('route.category','/category/{category}');
             $data=$this->getCategorizedPost($cr,$params3);
-            return view('categorized')->with('data',$data['data'])->with('category',$data['category'])->with('route',$post);
+            if(!empty($data)) return view('categorized')->with('data',$data['data'])->with('category',$data['category'])->with('route',$post);
         }
         if(empty($request->route()->parameters)){
             if(getSetting('indexPage',0)>0){
 
             }else{
-                $data=Post::where('status',0)->orWhere('status',3)->paginate(10);
+                $data=Post::whereIn('status',[0,3])->paginate(10);
                 $cr=getSetting('route.category','/category/{category}');
                 foreach ($data as $key=>$val){
                     $data[$key]['cid']=getPostCategory($val['category'][0]);
-                    $data[$key]['category']=$this->getCategories($cr,$val['category']);
+                    $data[$key]['category']=$this->getCategoriesHTML($cr,$val['category']);
+                    if($val['status']==3) $data[$key]['content']='文章加密，需要输入密码';
                     $data[$key]['content']=strip_tags($val['content']);
                     $data[$key]['content']=mb_substr($val['content'],0,150,'UTF-8').'...';
                 }
@@ -66,7 +67,8 @@ class IndexController extends Controller
             $rs.='/'.$t;
             $i++;
         }
-        if(strtok($uri, '?')==$rs) return $dp;
+        //dd(urldecode($uri),$rs);
+        if(strtok(urldecode($uri), '?')==$rs) return $dp;
         return [];
     }
 
@@ -92,7 +94,10 @@ class IndexController extends Controller
 
     public function getPostContent($params){
         $data=array();
-        if(!empty($params['id'])) $data=Post::find($params['id']);
+        if(!empty($params['id'])){
+            $data=Post::find($params['id']);
+            if($data['status']!=0 && $data['status']!=3) return [];
+        }
         else{
             if(!empty($params['slug'])){
                 $query=Post::where('slug',$params['slug']);
@@ -104,7 +109,8 @@ class IndexController extends Controller
                     $category=Category::where('slug',$params['category'])->get()->toArray()[0];
                     if(!empty($category)) $query->whereJsonContains('category',$category['id']);
                 }
-                $data=$query->get()->toArray()[0];
+                $data=$query->get()->toArray();
+                if(!empty($data)) $data=$data[0];
             }
         }
         return $data;
@@ -130,7 +136,9 @@ class IndexController extends Controller
 
     public function getPageContent($params){
         $query=Page::where('slug',$params['slug']);
-        $data=$query->get()->toArray()[0];
+        $query->WhereIn('status',[0,3]);
+        $data=$query->get()->toArray();
+        if(!empty($data)) $data=$data[0];
         return $data;
     }
 }
