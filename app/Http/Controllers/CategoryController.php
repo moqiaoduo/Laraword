@@ -29,15 +29,5 @@ class CategoryController extends Controller
         return view('categoried')->with('data',$data)->with('category',$category);
     }
 
-    protected function getCategories($data){
-        $html='';
-        foreach ($data as $key=>$val){
-            $info=Category::find($val);
-            if(empty($info)){
-                $info['title']='uncategorized';
-            }
-            $html.="<a href=\"".route('category',$val)."\">{$info['title']}</a>,";
-        }
-        return substr($html,0,strlen($html)-1);;
-    }
+
 }

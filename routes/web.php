@@ -13,13 +13,6 @@
 
 use Illuminate\Support\Facades\App;
 
-Route::get('/', 'IndexController@index')->name('index');
-
-Auth::routes();
-
-Route::get(getSetting('route.post','/archive/{id}'),'PostController@content')->name('content');
-Route::get(getSetting('route.category','category').'/{category}','CategoryController@show')->name('category');
-
 Route::group(['middleware'=>'admin','prefix'=>'admin','as'=>'admin::'],function () {
     Route::get('/', 'Admin\IndexController@index')->name('index');
     Route::resource('post','Admin\PostController', ['except'=>[
@@ -31,3 +24,9 @@ Route::group(['middleware'=>'admin','prefix'=>'admin','as'=>'admin::'],function 
     ]]);
     Route::post('category/del','Admin\CategoryController@delete')->name('category.del');
 });
+
+if(empty(DB::select("SELECT table_name FROM information_schema.TABLES WHERE table_name ='settings';"))) dd('未安装，请先安装后使用。 Please install first.');
+
+Route::get(getCustomRoutes(array(getSetting('route.post','/archive/{id}'),getSetting('route.page','/page/{id}'),getSetting('route.category','/category/{category}'))), 'IndexController@index')->name('index');
+
+Auth::routes();

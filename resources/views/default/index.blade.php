@@ -8,7 +8,7 @@
                 @foreach($data as $v)
                     <div class="card">
                         <div class="card-body">
-                            <a href="{{getCustomContentRoute($v)}}"><h1>{{$v['title']}}</h1></a>
+                            <a href="{{getCustomRoute($route,$v)}}"><h1>{{$v['title']}}</h1></a>
                             <div class="post-meta">
                                 <span class="post-time">发表于 {{$v['created_at']}}</span>
                                 <span class="post-category">
@@ -17,7 +17,7 @@
                                     </span>
                                 </span>
                                 <span class="post-comments-count">
-                                &nbsp; | &nbsp; <a rel="nofollow" href="{{route('content',$v['id']).'#comments'}}">暂无评论</a></span>
+                                &nbsp; | &nbsp; <a rel="nofollow" href="{{getCustomRoute($route,$v).'#comments'}}">暂无评论</a></span>
                             </div>
                             <p>{{$v['content']}}</p>
                         </div>

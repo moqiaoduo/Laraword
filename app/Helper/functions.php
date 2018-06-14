@@ -24,7 +24,6 @@ function modifyEnv(array $data)
 }
 
 function getSetting($key='',$default=''){
-    if(empty(DB::select("SELECT table_name FROM information_schema.TABLES WHERE table_name ='settings';"))) return $default;
     if(empty($key)) $val=DB::table('settings')->get();
     else{
         $val=DB::table('settings')->where('key',$key)->get()->toArray();
@@ -46,13 +45,28 @@ function theme($file){
     return env('APP_URL').'/theme/'.env('APP_THEME','default').'/'.$file;
 }
 
-function getCustomContentRoute($arr=array()){
-    $route=getSetting('route.post','/archive/{id}');
-    return str_replace(['{id}','{year}','{month}','{day}','{date}','{slug}','{category}'],[$arr['id'],date("Y",strtotime($arr['created_at'])),date("m",strtotime($arr['created_at'])),date("d",strtotime($arr['created_at'])),date("Ymd",strtotime($arr['created_at'])),$arr['slug'],getPostCategory($arr['category'])],$route);
+function getCustomRoute($route,$arr=array()){
+    return @str_replace(['{id}','{year}','{month}','{day}','{date}','{slug}','{category}'],[$arr['id'],date("Y",strtotime($arr['created_at'])),date("m",strtotime($arr['created_at'])),date("d",strtotime($arr['created_at'])),date("Ymd",strtotime($arr['created_at'])),$arr['slug'],$arr['category']],$route);
+}
+
+function getCustomRoutes($routes=array()){
+    $tmp=array();
+    $route='';
+    foreach ($routes as $val){
+        $tmp[]=array_filter(explode('/',$val));
+    }
+    $max=0;
+    foreach ($tmp as $val){
+        if($max<count($val)) $max=count($val);
+    }
+    for($i=1;$i<=$max;$i++){
+        $route.='/{param'.$i.'?}';
+    }
+    return $route;
 }
 
 function getPostCategory($category){
-    if(empty($category) || $category[0]==0) return 'uncategoried';
+    if(empty($category) || $category[0]==0) return 'uncategorized';
     return DB::table('category')->find($category[0])->slug;
 }
 
