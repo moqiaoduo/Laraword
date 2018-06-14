@@ -9,12 +9,12 @@ use App\Category;
 class IndexController extends Controller
 {
     public function index(Request $request){
-        $params1=$this->matchRoute($request->getRequestUri(),getSetting('route.post','/archive/{id}'),$request->route()->parameters);
+        //$params1=$this->matchRoute($request->getRequestUri(),getSetting('route.post','/archive/{id}'),$request->route()->parameters);
         if(!empty($params1)){
-
-            return 'post';
+            $data=$this->getPostContent($params1);
+            if(!empty($data)) return view('content')->with('data',$data);
         }
-        $params2=$this->matchRoute($request->getRequestUri(),getSetting('route.page','/page/{id}'),$request->route()->parameters);
+        //$params2=$this->matchRoute($request->getRequestUri(),getSetting('route.page','/page/{id}'),$request->route()->parameters);
         if(!empty($params2)){
             return 'page';
         }
@@ -48,8 +48,13 @@ class IndexController extends Controller
             $t=$val;
             preg_match('/{([^{]+)}/',$arr[$i],$matches);
             if($arr[$i]!=$val && !empty($matches)){
-                $dp[$matches[1]]=$this->removeDuplication($val,$arr[$i]);
-                $t=preg_replace('/{([^{]+)}/',$dp[$matches[1]],$arr[$i]);
+                if(preg_replace('/{([^{]+)}/','',$arr[$i])===''){
+                    $dp[$matches[1]]=$val;
+                }else{
+                    $dp[$matches[1]]=$this->removeDuplication($val,$arr[$i]);
+                    $t=preg_replace('/{([^{]+)}/',$dp[$matches[1]],$arr[$i]);
+                }
+
             }
             $rs.='/'.$t;
             $i++;
@@ -78,28 +83,23 @@ class IndexController extends Controller
         return $str;
     }
 
-    public function content($params){
-        $month=$request->route('month');
-        $day=$request->route('day');
-        $date=$request->route('date');
-        $slug=$request->route('slug');
-        $category=$request->route('category');
+    public function getPostContent($params){
         $data=array();
         if(!empty($params['id'])) $data=Post::find($params['id']);
         else{
             if(!empty($slug)){
-                $query=Post::where('slug',$slug);
+                $query=Post::where('slug',$params['slug']);
                 if(!empty($params['year']) && count($query->get()->toArray())>1) $query->whereYear('created_at',$params['year']);
                 if(!empty($params['month']) && count($query->get()->toArray())>1) $query->whereMonth('created_at',$params['month']);
                 if(!empty($params['day']) && count($query->get()->toArray())>1) $query->whereDay('created_at',$params['day']);
-                if(!empty($date) && count($query->get()->toArray())>1) $query->whereDate('created_at',$date);
-                if(!empty($category) && $category!='uncategorized' && count($query->get()->toArray())>1){
-                    $category=Category::where('slug',$category)->get()->toArray()[0];
+                if(!empty($params['date']) && count($query->get()->toArray())>1) $query->whereDate('created_at',$params['date']);
+                if(!empty($params['category']) && $params['category']!='uncategorized' && count($query->get()->toArray())>1){
+                    $category=Category::where('slug',$params['category'])->get()->toArray()[0];
                     if(!empty($category)) $query->whereJsonContains('category',$category['id']);
                 }
                 $data=$query->get()->toArray()[0];
             }
         }
-        return view('content')->with('data',$data);
+        return $data;
     }
 }
