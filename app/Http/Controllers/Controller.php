@@ -28,14 +28,15 @@ class Controller extends BaseController
 EOT;
     }
 
-    protected function getCategories($cr,$data){
+    protected function getCategoriesHTML($cr,$data){
         $html='';
         foreach ($data as $key=>$val){
             $info=Category::find($val);
             if(empty($info)){
                 $info['title']='uncategorized';
+                $info['slug']='uncategorized';
             }
-            $html.="<a href=\"".getCustomRoute($cr,["title"=>$info['title'],"id"=>$val])."\">{$info['title']}</a>,";
+            $html.="<a href=\"".getCustomRoute($cr,["category"=>$info['slug']])."\">{$info['title']}</a>,";
         }
         return substr($html,0,strlen($html)-1);;
     }

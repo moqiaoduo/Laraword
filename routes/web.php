@@ -23,10 +23,14 @@ Route::group(['middleware'=>'admin','prefix'=>'admin','as'=>'admin::'],function 
         'show'
     ]]);
     Route::post('category/del','Admin\CategoryController@delete')->name('category.del');
+    Route::resource('page','Admin\PageController', ['except'=>[
+        'show'
+    ]]);
+    Route::post('page/del','Admin\PageController@delete')->name('page.del');
 });
 
 if(empty(DB::select("SELECT table_name FROM information_schema.TABLES WHERE table_name ='settings';"))) dd('未安装，请先安装后使用。 Please install first.');
 
-Route::get(getCustomRoutes(array(getSetting('route.post','/archive/{id}'),getSetting('route.page','/page/{id}'),getSetting('route.category','/category/{category}'))), 'IndexController@index')->name('index');
+Route::get(getCustomRoutes(array(getSetting('route.post','/archive/{id}'),getSetting('route.page','/page/{slug}'),getSetting('route.category','/category/{category}'))), 'IndexController@index')->name('index');
 
 Auth::routes();
