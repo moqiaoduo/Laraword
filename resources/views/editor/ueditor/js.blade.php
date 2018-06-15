@@ -1,5 +1,6 @@
-<script type="text/javascript">
-    var ue = UE.getEditor('container',{
+<script>
+    var ueditor_full = UE.getEditor('container', {
+        'serverUrl' : '{{ route('admin_ueditor', ['_token' => csrf_token()]) }}',
         initialFrameWidth: null,
         toolbars: [
             [
@@ -94,8 +95,6 @@
                 'drafts', // 从草稿箱加载
                 'charts', // 图表
             ]
-        ]});
-    ue.ready(function() {
-        ue.execCommand('serverparam', '_token', '{{ csrf_token() }}');//此处为支持laravel5 csrf ,根据实际情况修改,目的就是设置 _token 值.
+        ]
     });
 </script>

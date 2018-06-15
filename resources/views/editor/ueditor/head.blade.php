@@ -1,1 +1,1 @@
-@include('UEditor::head')
+@include("zhangmazi::ueditor")
