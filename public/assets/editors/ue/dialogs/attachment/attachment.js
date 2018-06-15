@@ -512,6 +512,7 @@
                     var responseText = (ret._raw || ret),
                         json = utils.str2json(responseText);
                     if (json.state == 'SUCCESS') {
+                        window.parent.addFiles(file)
                         _this.fileList.push(json);
                         $file.append('<span class="success"></span>');
                     } else {

@@ -9,6 +9,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Media;
 use Zhangmazi\Ueditor\UeditorUploaderAbstract;
 use File;
 
@@ -19,9 +20,16 @@ class UeditorController extends Controller
      * 记录上传日志(这些方法都可以重写覆盖)
      * @return mixed
      */
-    protected function insertRecord()
+    protected function insertRecord($setarr, $request = null)
     {
-
+        $filename=$setarr['file_origin_name'];
+        $user=request()->user();
+        $media=new Media;
+        $media->uid=$user->id;
+        $media->title=$filename;
+        $media->filename=$filename;
+        $media->description="Created by {$user->name}";
+        $media->save();
     }
 
     /**
@@ -65,62 +73,6 @@ class UeditorController extends Controller
         File::delete($file['origin_pic_native_path']);
         //dd($file['file_native_path']);
         return true;
-    }
-
-    /**
-     * 获取附件数据库中的信息.
-     * @param int|string $pk 主键
-     * @return array|object
-     */
-    protected function getRecordInfo($pk)
-    {
-        $info = [
-            // 文件相对路径, 比如http://www.ninja911.com/attachments/xxxxxxx.jpg
-            // attachments/xxxxxxx.jpg 就是相对路径
-            'file_relative_path' => 'uploads',
-        ];
-        return $info;
-    }
-
-    /**
-     * 编辑器获取图库清单
-     * @param int $type
-     * @return \Illuminate\Http\JsonResponse
-     */
-    protected function actionListImage($type = 1)
-    {
-        $new_start = 0;
-        $page = 1;
-        $arr_list = ['safasdf']; // ['url', 'mtime']
-        $arr_return = array(
-            'state' => 'SUCCESS',
-            'list' => array(),
-            'start' => 0,
-            'total' => 0,
-        );
-
-        $cfg = $this->getJsonConfig();
-        $page_size = $cfg['imageManagerListSize'] ? $cfg['imageManagerListSize'] : 20;
-        $size = (int)request('size', $page_size);
-        if ($size < 0) {
-            $size = $page_size;
-        }
-        $start = (int)request('start', 0);
-        if ($start < 0) {
-            $start = 0;
-        }
-
-        $page = ceil($start / $size) + 1;
-        if ($page < 1) {
-            $page = 1;
-        }
-        $arr_return['list'] = $arr_list;
-        $arr_return['page'] = $page;
-        $arr_return['page_size'] = $page_size;
-
-        $arr_return['total'] = 0;
-        $arr_return['start'] = $start;
-        return response()->json($arr_return);
     }
 }
 

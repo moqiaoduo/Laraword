@@ -1,5 +1,5 @@
 <script>
-    var ueditor_full = UE.getEditor('container', {
+    var ueditor = UE.getEditor('container', {
         'serverUrl' : '{{ route('admin_ueditor', ['_token' => csrf_token()]) }}',
         initialFrameWidth: null,
         toolbars: [
@@ -84,7 +84,6 @@
                 'edittip ', //编辑提示
                 'customstyle', //自定义标题
                 'autotypeset', //自动排版
-                'webapp', //百度应用
                 'touppercase', //字母大写
                 'tolowercase', //字母小写
                 'background', //背景
@@ -97,4 +96,8 @@
             ]
         ]
     });
+    function addFiles(file) {
+        console.log(file)
+    }
 </script>
+<input type="hidden" id="testfortest">

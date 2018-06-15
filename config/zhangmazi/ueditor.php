@@ -29,7 +29,7 @@ return [
             'uri' => 'admin/ueditor/service',     //路由URI
             'uses' => 'App\Http\Controllers\UeditorController@service',   //引用控制器以及方法
             'as' => 'admin_ueditor',    //别名
-            'middleware' => [],
+            'middleware' => ['web','admin'],
         ],
     ],
     'upload_field_name' => 'upload_files',  //上传表单中的name
