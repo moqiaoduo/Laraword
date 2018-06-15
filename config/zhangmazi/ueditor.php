@@ -13,21 +13,21 @@ return [
             'group_prefix' => '', //组前缀
             'group_domain' => '', //组域名
             'group_as' => 'zhangmazi_front',    //组里的别名
-            'group_middleware' => ['web'],   //组里的中间件
-            'uri' => 'ueditor/service',   //路由URI
+            'group_middleware' => [],   //组里的中间件
+            'uri' => 'front/ueditor/service',   //路由URI
             'uses' => 'UeditorFrontController@service', //引用控制器以及方法
-            'as' => 'ueditor',  //别名
+            'as' => 'zhangmazi_front_ueditor_service',  //别名
             'middleware' => [], //中间件
         ],
         'end' => [
-            'via_integrate' => true,    //是否使用集成的
+            'via_integrate' => false,    //是否使用集成的
             'group_namespace' => '',  //使用集成,此命名空间将无效
             'group_prefix' => '', //组前缀
             'group_domain' => '', //组域名
             'group_as' => 'zhangmazi_end',      //组里的别名
-            'group_middleware' => ['admin'],       //组里的中间件
+            'group_middleware' => [],       //组里的中间件
             'uri' => 'admin/ueditor/service',     //路由URI
-            'uses' => 'UeditorEndController@service',   //引用控制器以及方法
+            'uses' => 'App\Http\Controllers\UeditorController@service',   //引用控制器以及方法
             'as' => 'admin_ueditor',    //别名
             'middleware' => [],
         ],

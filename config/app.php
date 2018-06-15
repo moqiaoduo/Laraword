@@ -153,9 +153,9 @@ return [
 
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
+        Zhangmazi\Ueditor\UeditorServiceProivder::class,
         LaravelChen\Editormd\EditorMdProvider::class,
         zgldh\QiniuStorage\QiniuFilesystemServiceProvider::class,
-        Zhangmazi\Ueditor\UeditorServiceProivder::class,
 
         /*
          * Application Service Providers...
