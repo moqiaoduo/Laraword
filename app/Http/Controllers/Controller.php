@@ -8,6 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Category;
 use App\Post;
+use App\Media;
 
 class Controller extends BaseController
 {
@@ -41,5 +42,13 @@ EOT;
         return substr($html,0,strlen($html)-1);;
     }
 
-
+    protected function insertUploadRecord($title,$filename){
+        $user=request()->user();
+        $media=new Media;
+        $media->uid=$user->id;
+        $media->title=$title;
+        $media->filename=$filename;
+        $media->description="Created by {$user->name}";
+        $media->save();
+    }
 }

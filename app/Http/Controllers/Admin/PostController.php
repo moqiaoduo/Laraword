@@ -37,13 +37,15 @@ class PostController extends Controller
 
     public function store(Request $request){
         $submit=$request->post('submit');
+        $files=json_decode($request->post('files'),true);
         $categories=json_decode($request->post('category'),true);
         if(empty($categories)) $categories=[0];
         $slug=$request->post('slug');
         $post=new Post;
         $post->uid=$request->user()->id;
         $post->title=$request->post('title');
-        $page->category=$categories;
+        $post->category=$categories;
+        $post->files=$files;
         $post->content=$request->post('content');
         $post->slug='';
         if($submit=='publish') $post->status=0;
@@ -71,6 +73,8 @@ class PostController extends Controller
     public function update(Request $request){
         $submit=$request->post('submit');
         $slug=$request->post('slug');
+        $files=json_decode($request->post('files'),true);
+        //dd($files);
         $categories=json_decode($request->post('category'),true);
         if(empty($categories)) $categories=[0];
         $id=$request->route('post');
@@ -81,6 +85,7 @@ class PostController extends Controller
         $post=Post::find($id);
         $post->slug=$slug;
         $post->category=$categories;
+        $post->files=$files;
         if($submit=='publish'){
             $post->title=$title;
             $post->content=$content;

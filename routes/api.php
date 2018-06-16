@@ -18,3 +18,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('category','Admin\CategoryController@getCategories');
+
+Route::post('basename',function (Request $request){
+    return basename($request->post('url'));
+})->name('basename');
+
+Route::get('getPostAttachment/{id}','APIController@getPostAttachment')->name('getPostAttachment');

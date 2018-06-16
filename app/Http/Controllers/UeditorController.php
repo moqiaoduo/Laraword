@@ -22,14 +22,9 @@ class UeditorController extends Controller
      */
     protected function insertRecord($setarr, $request = null)
     {
-        $filename=$setarr['file_origin_name'];
-        $user=request()->user();
-        $media=new Media;
-        $media->uid=$user->id;
-        $media->title=$filename;
-        $media->filename=$filename;
-        $media->description="Created by {$user->name}";
-        $media->save();
+        $title=$setarr['file_origin_name'];
+        $filename=basename($setarr['file_path']);
+        $this->insertUploadRecord($title,$filename);
     }
 
     /**

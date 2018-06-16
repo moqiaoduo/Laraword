@@ -77,6 +77,12 @@ return [
             'url_root' => '/',   //项目附件服务器URL根,如果是第三方比如S3等,请在默认项目目录config下,填写补充这个url_root
         ],
 
+        'uploads'=>[
+            'driver'=>'local',
+            'root'=>public_path('uploads'),
+            'url'=>env('APP_URL').'/uploads',
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

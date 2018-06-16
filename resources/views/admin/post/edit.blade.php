@@ -26,7 +26,7 @@
     </script>
     <script type="text/javascript" src="{{asset('js/bootstrap-treeview.min.js')}}"></script>
     <script type="text/javascript">
-        var category=[];
+        var category=[];var uploadFiles=[];
         function getChildNodeIdArr(node) {
             var ts = [];
             if (node.nodes) {
@@ -111,23 +111,80 @@
         $(document).ready(float)
         function float() {
             if($(window).width()>=751){
-                $("#float .card").css('width',$("#float").width());
+                $("#float .category, .Filelist").css('width',$("#float").width());
                 if($(this).scrollTop()>=145){
-                    $("#category").css('max-height',$(window).height()/2-100);
-                    $("#float .card").css('position','fixed');
-                    $("#float .card").css('top','60px');
+                    $("#category, #larawordFileList").css('max-height',$(window).height()/2-180);
+                    $("#float .category, .Filelist").css('position','fixed');
+                    $("#float .category").css('top','80px');
+                    $("#float .Filelist").css('top',($(window).height()/2)+'px');
                 }else{
-                    $("#category").css('max-height',$(window).height()/2-160);
-                    $("#float .card").css('position','');
-                    $("#float .card").css('top','');
+                    $("#category, #larawordFileList").css('max-height',$(window).height()/2-200);
+                    $("#float .category, .Filelist").css('position','');
+                    $("#float .category, .Filelist").css('top','');
                 }
             }else{
                 $("#category").css('max-height','');
-                $("#float .card").css('width','');
-                $("#float .card").css('position','');
-                $("#float .card").css('top','');
+                $("#float .category, .Filelist").css('width','');
+                $("#float .category, .Filelist").css('position','');
+                $("#float .category, .Filelist").css('top','');
             }
         }
+        function addFiles(file) {
+            $.post("{{route('basename')}}",{url:file.url},function (data) {
+                uploadFiles.push(data)
+                $("#laraword_file").val(JSON.stringify(uploadFiles))
+                $("#larawordFileList").append('<li file="'+data+'" class="list-group-item">'+file.title+'<div class="options"><a href="javascript:delFile(\''+data+'\')"><i class="fa fa-trash-o" aria-hidden="true"></i></a></div></li>')
+            })
+        }
+        function delFile(fileName) {
+            $.post("{{route('admin::delFile')}}",{"filename":fileName,"_token":"{{csrf_token()}}"},function(data) {
+                $("li[file='"+fileName+"']").remove()
+                uploadFiles.remove(fileName)
+                $("#laraword_file").val(JSON.stringify(uploadFiles))
+            })
+        }
+        function callUploads(){
+            document.getElementById("laraword_upload_files").click();
+        }
+        $("#laraword_upload_files").change(function () {
+            ajaxUpload()
+        })
+        function ajaxUpload() {
+            var files = document.getElementById("laraword_upload_files").files; // js 获取文件对象
+            if (typeof (files[0]) == "undefined" || files[0].size <= 0) {
+                return;
+            }
+            var formFile = new FormData();
+            //console.log(files)
+            formFile.append("action", "UploadVMKImagePath");
+            for(i=0;i<files.length;i++){
+                formFile.append("file[]", files[i]); //加入文件对象
+            }
+            formFile.append("_token","{{csrf_token()}}");
+
+            var data = formFile;
+            $.ajax({
+                url: "{{route('admin::upload')}}",
+                data: data,
+                type: "Post",
+                dataType: "json",
+                cache: false,//上传文件无需缓存
+                processData: false,//用于对data参数进行序列化处理 这里必须false
+                contentType: false, //必须
+                success: function (result) {
+                    result.forEach(function(val){
+                        addFiles(val)
+                    })
+                },
+            })
+        }
+        $(document).ready(function () {
+            $.get("{{route('getPostAttachment',$data['id'])}}",function (data) {
+                for(i=0;i<data.length;i++){
+                    addFiles(data[i])
+                }
+            })
+        })
     </script>
 @endsection
 
@@ -205,7 +262,17 @@
                         <div id="category"></div>
                     </div>
                 </div>
+                <div class="card Filelist">
+                    <div class="card-header">@lang('admin.media') <div style="float: right"><a href="javascript:callUploads();"><span class="badge badge-success">添加附件</span></a></div></div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            <div id="larawordFileList"></div>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
+        <input type="hidden" id="laraword_file" name="files">
     </form>
+    <input type="file" id="laraword_upload_files" style="display:none;" multiple/>
 @endsection

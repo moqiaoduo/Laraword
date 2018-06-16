@@ -9,6 +9,7 @@ class Post extends Model
     protected $table='posts';
 
     protected $casts=[
-        'category'=>'array'
+        'category'=>'array',
+        'files'=>'array'
     ];
 }

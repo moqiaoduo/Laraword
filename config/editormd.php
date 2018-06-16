@@ -1,6 +1,6 @@
 <?php
 return [
-    'upload_path' => 'uploads/images/',//上传文件的地址
+    'upload_path' => 'uploads/',//上传文件的地址
     'upload_type' => '',//上传的方式qiniu或者本地,默认为本地
     'upload_http' => '',//https或者为空
     //本地:'',七牛:'qiniu'
@@ -18,6 +18,6 @@ return [
     'toc' => 'true',  //目录
     'tocm' => 'true',  //目录下拉菜单
     'taskList' => 'true',  //任务列表
-    'imageUpload' => 'true',  //图片本地上传支持
+    'imageUpload' => 'false',  //图片本地上传支持
     'sequenceDiagram' => 'true',  //开启时序/序列图支持
 ];

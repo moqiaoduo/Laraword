@@ -5,12 +5,16 @@
         toolbars: [
             [
                 'source', //源代码
+                'customstyle', //自定义标题
+                'paragraph', //段落格式
+                'fontfamily', //字体
+                'fontsize', //字号
+                'insertcode', //代码语言
                 'anchor', //锚点
                 'undo', //撤销
                 'redo', //重做
                 'bold', //加粗
                 'indent', //首行缩进
-                'snapscreen', //截图
                 'italic', //斜体
                 'underline', //下划线
                 'strikethrough', //删除线
@@ -43,11 +47,6 @@
                 'deletetable', //删除表格
                 'cleardoc', //清空文档
                 'insertparagraphbeforetable', //"表格前插入行"
-                'insertcode', //代码语言
-                'fontfamily', //字体
-                'fontsize', //字号
-                'paragraph', //段落格式
-                'simpleupload', //单图上传
                 'insertimage', //多图上传
                 'edittable', //表格属性
                 'edittd', //单元格属性
@@ -79,10 +78,7 @@
                 'imageright', //右浮动
                 'attachment', //附件
                 'imagecenter', //居中
-                'wordimage', //图片转存
                 'lineheight', //行间距
-                'edittip ', //编辑提示
-                'customstyle', //自定义标题
                 'autotypeset', //自动排版
                 'touppercase', //字母大写
                 'tolowercase', //字母小写
@@ -96,8 +92,4 @@
             ]
         ]
     });
-    function addFiles(file) {
-        console.log(file)
-    }
 </script>
-<input type="hidden" id="testfortest">
