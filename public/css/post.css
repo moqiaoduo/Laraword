@@ -1,0 +1,6 @@
+.url-slug{margin-top:-0.5em;color:#AAA;font-size:.92857em;word-break:break-word;}
+#slug{padding:2px;border:none;background:#FFFBCC;color:#666;box-sizing: border-box;line-height: normal;font-size: 100%;}
+.mono{font-family:Menlo,Monaco,Consolas,"Courier New",monospace;}
+.sr-only{border:0;height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;}
+#category,#larawordFileList{overflow-y: auto;}
+.list-group-item .options{float: right}

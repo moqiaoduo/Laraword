@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Page;
 use Illuminate\Http\Request;
 use Storage;
 use App\Media;
@@ -51,5 +52,21 @@ class APIController extends Controller
             array_push($arr_return,["state"=>"SUCCESS","url"=>$data['filename'],"original"=>$data['title'],"title"=>$data['title']]);
         }
         return $arr_return;
+    }
+
+    public function getPageAttachment($id){
+        $page=Page::find($id);
+        if(empty($page)) return [];
+        $files=$page->files;
+        $arr_return=[];
+        foreach ($files as $val){
+            $data=Media::where('filename',$val)->get()->toArray()[0];
+            array_push($arr_return,["state"=>"SUCCESS","url"=>$data['filename'],"original"=>$data['title'],"title"=>$data['title']]);
+        }
+        return $arr_return;
+    }
+
+    public function getAttachmentUrl(Request $request){
+        return Storage::disk('uploads')->url($request->post('filename'));
     }
 }

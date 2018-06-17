@@ -30,11 +30,13 @@ class PageController extends Controller
 
     public function store(Request $request){
         $submit=$request->post('submit');
+        $files=json_decode($request->post('files'),true);
         $title=$request->post('title');
         $slug=$request->post('slug');
         $page=new Page;
         $page->uid=$request->user()->id;
         $page->title=$title;
+        $page->files=$files;
         $page->content=$request->post('content');
         if(empty($slug)) $slug=str_replace(' ', '', $title);
         $page->slug=$slug;
@@ -60,6 +62,7 @@ class PageController extends Controller
     public function update(Request $request){
         $submit=$request->post('submit');
         $slug=$request->post('slug');
+        $files=json_decode($request->post('files'),true);
         $id=$request->route('page');
         $title=$request->post('title');
         if(empty($slug)) $slug=str_replace(' ', '', $title);
@@ -67,6 +70,7 @@ class PageController extends Controller
         $uid=$request->user()->id;
         $page=Page::find($id);
         $page->slug=$slug;
+        $page->files=$files;
         if($submit=='publish'){
             $page->title=$title;
             $page->content=$content;

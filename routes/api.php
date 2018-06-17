@@ -24,3 +24,5 @@ Route::post('basename',function (Request $request){
 })->name('basename');
 
 Route::get('getPostAttachment/{id}','APIController@getPostAttachment')->name('getPostAttachment');
+Route::get('getPageAttachment/{id}','APIController@getPageAttachment')->name('getPageAttachment');
+Route::post('getAttachmentUrl','APIController@getAttachmentUrl')->name('getAttachmentUrl');
