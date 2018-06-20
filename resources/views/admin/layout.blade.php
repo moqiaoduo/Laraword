@@ -56,10 +56,10 @@
                 </a>
                 <ul class="sidenav-second-level collapse" id="media">
                     <li>
-                        <a href="navbar.html">@lang('admin.media_library')</a>
+                        <a href="{{route('admin::media.index')}}">@lang('admin.media_library')</a>
                     </li>
                     <li>
-                        <a href="cards.html">@lang('admin.add')</a>
+                        <a href="{{route('admin::media.create')}}">@lang('admin.add')</a>
                     </li>
                 </ul>
             </li>

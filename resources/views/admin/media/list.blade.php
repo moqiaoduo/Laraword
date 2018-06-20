@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title',__('admin.posts'))
+@section('title',__('admin.media'))
 
 @section('js')
     <script>
@@ -23,7 +23,7 @@
 @endsection
 
 @section('breadcrumb')
-    <li class="breadcrumb-item active">@lang('admin.posts')</li>
+    <li class="breadcrumb-item active">@lang('admin.media')</li>
 @endsection
 
 @section('content')
@@ -32,13 +32,13 @@
     @endif
     <div class="row">
         <div class="col-lg-12">
-            <h1>@lang('admin.posts')</h1>
+            <h1>@lang('admin.media')</h1>
             <hr>
         </div>
     </div>
     <div class="row">
         <div class="col-lg-12">
-            <form action="{{route('admin::post.del')}}" method="post" name="operations">
+            <form action="{{route('admin::media.del')}}" method="post" name="operations">
                 @csrf
                 <div class="dropdown">
                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -47,7 +47,7 @@
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="javascript:document.operations.submit();">@lang('admin.delete')</a>
                     </div>
-                    <a href="{{route('admin::post.create')}}" class="btn btn-success" style="margin-left: 5px;">@lang('admin.new_post')</a>
+                    <a href="{{route('admin::media.create')}}" class="btn btn-success" style="margin-left: 5px;">@lang('admin.new_media')</a>
                 </div>
                 <div class="row"><br></div>
             <table width="100%" class="table">
@@ -59,9 +59,8 @@
                         @endif
                     </th>
                     <th>@lang('admin.title')</th>
-                    <th>@lang('admin.status')</th>
                     <th>@lang('admin.author')</th>
-                    <th>@lang('admin.category')</th>
+                    <th>@lang('admin.slave')</th>
                     <th>@lang('admin.created_at')</th>
                 </tr>
                 </thead>
@@ -70,17 +69,8 @@
                     <tr>
                         <td><input type="checkbox" name="del[]" value="{{$v['id']}}"></td>
                         <td><a href="{{route('admin::post.edit',[$v['id']])}}">{{$v['title']}}</a></td>
-                        <td>
-                            @switch($v['status'])
-                                @case(0) 已发布 @break
-                                @case(1) 未发布 @break
-                                @case(2) 隐藏 @break
-                                @case(3) 加密 @break
-                                @case(4) 私密 @break
-                            @endswitch
-                        </td>
                         <td>{{$v['author']}}</td>
-                        <td>{{$v['c']}}</td>
+                        <td></td>
                         <td>{{$v['created_at']}}</td>
                     </tr>
                 @endforeach
