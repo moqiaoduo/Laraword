@@ -25,9 +25,9 @@ class CreateContentsTable extends Migration
             $table->string('type')->default('post');
             $table->string('status')->default('publish');  //publish hidden password private waiting
             $table->string('password')->nullable();
-            $table->unsignedInteger('commentsNum');
-            $table->boolean('allowComment');
-            $table->unsignedInteger('parent');
+            $table->unsignedInteger('commentsNum')->default(0);
+            $table->boolean('allowComment')->default(true);
+            $table->unsignedInteger('parent')->default(0);
         });
     }
 

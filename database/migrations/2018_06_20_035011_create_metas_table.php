@@ -14,7 +14,7 @@ class CreateMetasTable extends Migration
     public function up()
     {
         Schema::create('metas', function (Blueprint $table) {
-            $table->increments('id');
+            $table->increments('mid');
             $table->string('name')->nullable();
             $table->string('slug')->nullable();
             $table->string('type');

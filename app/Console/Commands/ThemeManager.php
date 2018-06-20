@@ -55,7 +55,6 @@ class ThemeManager extends Command
         doMoveDir(storage_path('app/theme/tmp/'.$json['slug'].'/'),resource_path('views/'));
         rename(storage_path('app/theme/tmp/theme.json'),resource_path('views/'.$json['slug'].'/theme.json'));
         delDir(storage_path('app/theme/tmp/'));
-        fwrite(STDOUT,'Would you like to delete zip file? 是否删除主题安装包？(Y/N)');
-        if(fgets(STDIN)=="Y\r\n") @unlink(storage_path('app/theme/'.$file));
+        if($this->confirm('Would you like to delete zip file? 是否删除主题安装包？(Y/N)')) @unlink(storage_path('app/theme/'.$file));
     }
 }

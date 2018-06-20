@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddUidToPostsTable extends Migration
+class CreateOptionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class AddUidToPostsTable extends Migration
      */
     public function up()
     {
-        Schema::table('posts', function (Blueprint $table) {
-            $table->integer('uid');
+        Schema::create('options', function (Blueprint $table) {
+            $table->string('name')->default('');
+            $table->unsignedInteger('user')->default(0);
+            $table->longText('value')->nullable();
+            $table->primary(['name','user']);
         });
     }
 
@@ -25,8 +28,6 @@ class AddUidToPostsTable extends Migration
      */
     public function down()
     {
-        Schema::table('posts', function (Blueprint $table) {
-            $table->dropColumn('uid');
-        });
+        Schema::dropIfExists('options');
     }
 }
