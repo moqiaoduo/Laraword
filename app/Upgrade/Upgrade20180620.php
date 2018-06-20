@@ -8,6 +8,7 @@
 
 namespace App\Upgrade;
 use DB;
+use Schema;
 
 class Upgrade20180620
 {
@@ -21,6 +22,7 @@ class Upgrade20180620
                 "created_at"=>$val->created_at,
                 "updated_at"=>$val->updated_at,
                 "description"=>$val->description,
+                "parent"=>$val->parent,
                 "type"=>"category",
             ]);
         }
@@ -106,5 +108,24 @@ class Upgrade20180620
                 ]);
             }
         }
+        $media_old=DB::table('media')->get();
+        foreach ($media_old as $val){
+            DB::table('contents')->insert([
+                "title"=>$val->title,
+                "slug"=>$val->title,
+                "created_at"=>$val->created_at,
+                "updated_at"=>$val->updated_at,
+                "content"=>json_encode(["filename"=>$val->filename,"description"=>$val->description]),
+                "uid"=>$val->uid,
+                "status"=>"publish",
+                "type"=>"attachment",
+            ]);
+        }
+        Schema::dropIfExists('category');
+        Schema::dropIfExists('drafts');
+        Schema::dropIfExists('media');
+        Schema::dropIfExists('pages');
+        Schema::dropIfExists('posts');
+        Schema::dropIfExists('settings');
     }
 }
