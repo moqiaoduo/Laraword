@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Category;
 use App\Post;
 use App\Media;
+use App\Meta;
 
 class Controller extends BaseController
 {
@@ -32,7 +33,7 @@ EOT;
     protected function getCategoriesHTML($cr,$data){
         $html='';
         foreach ($data as $key=>$val){
-            $info=Category::find($val);
+            $info=Meta::where('type','category')->find($val);
             if(empty($info)){
                 $info['title']='uncategorized';
                 $info['slug']='uncategorized';

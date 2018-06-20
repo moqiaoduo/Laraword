@@ -33,7 +33,7 @@ Route::group(['middleware'=>'admin','prefix'=>'admin','as'=>'admin::'],function 
     Route::post('media/del','Admin\MediaController@delete')->name('media.del');
 });
 
-if(empty(DB::select("SELECT table_name FROM information_schema.TABLES WHERE table_name ='settings';"))) dd('未安装，请先安装后使用。 Please install first.');
+if(empty(DB::select("SELECT table_name FROM information_schema.TABLES WHERE table_name ='options';"))) dd('未安装，请先安装后使用。 Please install first.');
 
 Auth::routes();
 

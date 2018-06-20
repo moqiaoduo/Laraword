@@ -24,9 +24,9 @@ function modifyEnv(array $data)
 }
 
 function getSetting($key='',$default=''){
-    if(empty($key)) $val=DB::table('settings')->get();
+    if(empty($key)) $val=DB::table('settings')->where('user',0)->get();
     else{
-        $val=DB::table('settings')->where('key',$key)->get()->toArray();
+        $val=DB::table('options')->where('name',$key)->get()->toArray();
         if(!empty($val)){
             $val=$val[0];
             $val=$val->val;
@@ -37,7 +37,7 @@ function getSetting($key='',$default=''){
 }
 
 function setSetting($key,$val){
-    DB::table('settings')->where('key',$key)->delete();
+    DB::table('options')->where('name',$key)->delete();
     return DB::table('settings')->insert(['key'=>$key,'val'=>$val]);
 }
 

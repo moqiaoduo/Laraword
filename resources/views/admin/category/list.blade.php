@@ -72,7 +72,7 @@
                     @foreach($data as $v)
                         <tr>
                             <td><input type="checkbox" name="del[]" value="{{$v['id']}}"></td>
-                            <td><a href="{{route('admin::category.edit',[$v['id']])}}">{{$v['title']}}</a></td>
+                            <td><a href="{{route('admin::category.edit',[$v['id']])}}">{{$v['name']}}</a></td>
                             <td>{{$v['slug']}}</td>
                             <td>
                                 @if($v['sub']>0)

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Category;
+use App\Meta;
 
 class CategoryController extends Controller
 {
@@ -13,12 +14,13 @@ class CategoryController extends Controller
     public function index(Request $request){
         $parent=$request->get('parent');
         if($parent===null) $parent=0;
-        $data=Category::where('parent',$parent)->paginate(10);
+        $data=Meta::where('type','category')->where('parent',$parent)->paginate(10);
         foreach ($data as $key=>$val) {
-            $data[$key]['sub']=Category::where('parent',$val['id'])->count();
+            $data[$key]['sub']=Meta::where('type','category')->where('parent',$val['id'])->count();
         }
         $breadcrumb=$this->getBreadCrumb($parent,true);
-        return view('admin.category.list',['data'=>$data,'parent'=>$parent,'parent_parent'=>Category::find($parent),'info'=>$request->get('info'),'alert'=>$request->get('alert')])->with('breadcrumb',$breadcrumb);
+        //dd($data);
+        return view('admin.category.list',['data'=>$data,'parent'=>$parent,'parent_parent'=>Meta::where('type','category')->where('mid',$parent)->first(),'info'=>$request->get('info'),'alert'=>$request->get('alert')])->with('breadcrumb',$breadcrumb);
     }
 
     protected function getBreadCrumb($parent,$first=false){
@@ -88,13 +90,13 @@ class CategoryController extends Controller
 
     public function store(Request $request){
         $slug=$request->post('slug');
-        $category=new Category;
-        $category->title=$request->post('title');
+        $category=new Meta;
+        $category->name=$request->post('title');
         $category->description=$request->post('description');
         $category->parent=$request->post('parent');
-        $category->slug='';
+        $category->type='category';
         $category->save();
-        if(empty($slug)) $slug=$category->id;
+        if(empty($slug)) $slug=$category->mid;
         $category->slug=$slug;
         $category->save();
         return redirect()->route('admin::category.index',['info'=>'分类已保存','alert'=>'success']);
@@ -128,15 +130,15 @@ class CategoryController extends Controller
     }
 
     protected function getParentOptions($parent,$selected=0,$except=-1,$deep=0){
-        $data=Category::where('parent',$parent)->get()->toArray();
+        $data=Meta::where('type','category')->where('parent',$parent)->get()->toArray();
         $html='';
         foreach ($data as $val){
-            if($val['id']==$except) continue;
+            if($val['mid']==$except) continue;
             $prefix='';$active='';
-            if($selected==$val['id']) $active=' selected';
+            if($selected==$val['mid']) $active=' selected';
             for($i=0;$i<$deep;$i++) $prefix.='--';
-            $html.='<option'.$active.' value="'.$val['id'].'">'.$prefix.$val['title'].'</option>';
-            $html.=$this->getParentOptions($val['id'],$selected,$except,$deep+1);
+            $html.='<option'.$active.' value="'.$val['mid'].'">'.$prefix.$val['name'].'</option>';
+            $html.=$this->getParentOptions($val['mid'],$selected,$except,$deep+1);
         }
         return $html;
     }
