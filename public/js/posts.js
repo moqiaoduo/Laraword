@@ -4,22 +4,21 @@ $(window).resize(float)
 $(document).ready(float)
 function float() {
     if($(window).width()>=751){
-        $("#float .category, .Filelist").css('width',$("#float").width());
+        $("#float .category, .Filelist").css('width',$(".float").width());
         if($(this).scrollTop()>=145){
             $("#category, #larawordFileList").css('max-height',$(window).height()/2-180);
-            $("#float .category, .Filelist").css('position','fixed');
-            $("#float .category").css('top','80px');
-            $("#float .Filelist").css('top',($(window).height()/2)+'px');
+            $("#float").css('position','fixed');
+            $("#float").css('top','80px');
         }else{
             $("#category, #larawordFileList").css('max-height',$(window).height()/2-200);
-            $("#float .category, .Filelist").css('position','');
-            $("#float .category, .Filelist").css('top','');
+            $("#float").css('position','');
+            $("#float").css('top','');
         }
     }else{
         $("#category").css('max-height','');
         $("#float .category, .Filelist").css('width','');
-        $("#float .category, .Filelist").css('position','');
-        $("#float .category, .Filelist").css('top','');
+        $("#float").css('position','');
+        $("#float").css('top','');
     }
 }
 function getChildNodeIdArr(node) {

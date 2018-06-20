@@ -86,19 +86,21 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 col-xl-3" id="float">
-                <div class="card category">
-                    <div class="card-header">@lang('admin.category')</div>
-                    <div class="card-body">
-                        <div id="category"></div>
+            <div class="col-md-4 col-xl-3 float">
+                <div id="float">
+                    <div class="card category">
+                        <div class="card-header">@lang('admin.category')</div>
+                        <div class="card-body">
+                            <div id="category"></div>
+                        </div>
                     </div>
-                </div>
-                <div class="card Filelist">
-                    <div class="card-header">@lang('admin.media') <div style="float: right"><a href="javascript:callUploads();"><span class="badge badge-success">添加附件</span></a></div></div>
-                    <div class="card-body">
-                        <ul class="list-group">
-                            <div id="larawordFileList"></div>
-                        </ul>
+                    <div class="card Filelist">
+                        <div class="card-header">@lang('admin.media') <div style="float: right"><a href="javascript:callUploads();"><span class="badge badge-success">添加附件</span></a></div></div>
+                        <div class="card-body">
+                            <ul class="list-group">
+                                <div id="larawordFileList"></div>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
