@@ -6,13 +6,14 @@ use App\Media;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Content;
 
 class MediaController extends Controller
 {
     public function index(Request $request){
         $info=$request->get('info');
         $alert=$request->get('alert');
-        $data=Media::paginate(10);
+        $data=Content::where('type','attachment')->paginate(10);
         foreach ($data as $key=>$val){
             $data[$key]['author']=User::find($val['uid'])['name'];
         }
@@ -31,10 +32,10 @@ class MediaController extends Controller
         $files=json_decode($request->post('files'),true);
         $title=$request->post('title');
         $slug=$request->post('slug');
-        $page=new Media;
+        $page=new Content;
         $page->uid=$request->user()->id;
         $page->title=$title;
-        $page->files=$files;
+        $page->type='attachment';
         $page->content=$request->post('content');
         if(empty($slug)) $slug=str_replace(' ', '', $title);
         $page->slug=$slug;
@@ -48,7 +49,7 @@ class MediaController extends Controller
         $id=$request->route('page');
         $info=$request->get('info');
         $alert=$request->get('alert');
-        $data=Media::find($id);
+        $data=Content::where('type','attachment')->find($id);
         $route=getSetting('route.page','/archive/{id}');
         $url=config('app.url').str_replace('{slug}',self::loadSlugInput($data['slug']),$route);
         $url=str_replace('{id}',$id,$url);
@@ -65,7 +66,7 @@ class MediaController extends Controller
         if(empty($slug)) $slug=str_replace(' ', '', $title);
         $content=$request->post('content');
         $uid=$request->user()->id;
-        $page=Media::find($id);
+        $page=Content::where('type','attachment')->find($id);
         $page->slug=$slug;
         $page->files=$files;
         $page->title=$title;
@@ -75,12 +76,12 @@ class MediaController extends Controller
     }
 
     public function destroy(Request $request){
-        Media::destroy($request->route('page'));
+        Content::destroy($request->route('page'));
         return redirect()->route('admin::media.index');
     }
 
     public function delete(Request $request){
-        Media::destroy($request->post('del'));
+        Content::destroy($request->post('del'));
         return redirect()->route('admin::media.index');
     }
 }

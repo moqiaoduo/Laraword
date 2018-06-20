@@ -7,15 +7,20 @@ use App\Http\Controllers\Controller;
 use App\Page;
 use App\Draft;
 use App\User;
+use App\Content;
 
 class PageController extends Controller
 {
     public function index(Request $request){
         $info=$request->get('info');
         $alert=$request->get('alert');
-        $data=Page::paginate(10);
+        $data=Content::where('type','page')->orWhere(function ($query) {
+            $query->where('type', "page_draft")
+                ->where('parent', 0);
+        })->paginate(10);
         foreach ($data as $key=>$val){
-            if(Draft::where('type','page')->where('post_id',$val['id'])->count()>0) $data[$key]['title']='(草稿)'.$val['title'];
+            if(Content::where('type','page_draft')->where('parent',$val['cid'])->count()>0) $data[$key]['title']='(草稿)'.$val['title'];
+            if($val['type']=='page_draft') $data[$key]['title']='(草稿)'.$val['title'];
             $data[$key]['author']=User::find($val['uid'])['name'];
         }
         return view('admin.page.list')->with('data',$data)->with('info',$info)->with('alert',$alert);
@@ -33,15 +38,14 @@ class PageController extends Controller
         $files=json_decode($request->post('files'),true);
         $title=$request->post('title');
         $slug=$request->post('slug');
-        $page=new Page;
+        $page=new Content;
         $page->uid=$request->user()->id;
         $page->title=$title;
-        $page->files=$files;
         $page->content=$request->post('content');
         if(empty($slug)) $slug=str_replace(' ', '', $title);
         $page->slug=$slug;
-        if($submit=='publish') $page->status=0;
-        elseif($submit=='save') $page->status=1;
+        if($submit=='publish') $page->type='page';
+        elseif($submit=='save') $page->type='page_draft';
         $page->save();
         return redirect()->route('admin::page.index',['info'=>'页面已保存或发布','alert'=>'success']);
     }
@@ -50,8 +54,8 @@ class PageController extends Controller
         $id=$request->route('page');
         $info=$request->get('info');
         $alert=$request->get('alert');
-        $data=Page::find($id);
-        $draft=Draft::where('type','page')->where('post_id',$id)->get()->toArray();
+        $data=Content::where('type','page')->find($id);
+        $draft=Content::where('type','page_draft')->where('parent',$id)->get()->toArray();
         $route=getSetting('route.page','/archive/{id}');
         $url=config('app.url').str_replace('{slug}',self::loadSlugInput($data['slug']),$route);
         $url=str_replace('{id}',$id,$url);
@@ -68,14 +72,14 @@ class PageController extends Controller
         if(empty($slug)) $slug=str_replace(' ', '', $title);
         $content=$request->post('content');
         $uid=$request->user()->id;
-        $page=Page::find($id);
+        $page=Content::where('type','page')->find($id);
         $page->slug=$slug;
         $page->files=$files;
         if($submit=='publish'){
             $page->title=$title;
             $page->content=$content;
-            $page->status=0;
-            Draft::where('type','page')->where('post_id',$id)->delete();
+            $page->type='page';
+            Content::where('type','page_draft')->where('post_id',$id)->delete();
         }elseif($submit=='save'){
             if($page->status==0)
                 Draft::updateOrCreate(['post_id'=>$id,'type'=>'page'],['uid'=>$uid,'title'=>$title,'content'=>$content]);
@@ -89,12 +93,12 @@ class PageController extends Controller
     }
 
     public function destroy(Request $request){
-        Page::destroy($request->route('page'));
+        Content::destroy($request->route('page'));
         return redirect()->route('admin::page.index');
     }
 
     public function delete(Request $request){
-        Page::destroy($request->post('del'));
+        Content::destroy($request->post('del'));
         return redirect()->route('admin::page.index');
     }
 }

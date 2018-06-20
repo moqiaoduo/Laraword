@@ -24,7 +24,7 @@
         </div>
         <!-- /.col-lg-12 -->
     </div>
-    <form class="form-horizontal" role="form" method="post" action="{{route('admin::category.update',$data['id'])}}">
+    <form class="form-horizontal" role="form" method="post" action="{{route('admin::category.update',$data['mid'])}}">
         <div class="row">
             {{ method_field('PUT') }}
             @csrf
@@ -33,7 +33,7 @@
                     <div class="col-sm-12">
                         <label for="title">分类名称 *</label>
                             <input type="text" class="form-control" id="title" name="title"
-                                   placeholder="请输入名称" value="{{$data['title']}}">
+                                   placeholder="请输入名称" value="{{$data['name']}}">
                     </div>
                 </div>
                 <div class="form-group">

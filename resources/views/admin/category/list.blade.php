@@ -64,22 +64,22 @@
                         <th>@lang('admin.title')</th>
                         <th>@lang('admin.slug')</th>
                         <th>@lang('admin.sub')</th>
-                        <th>@lang('admin.category')</th>
+                        <th>@lang('admin.count')</th>
                         <th>@lang('admin.created_at')</th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($data as $v)
                         <tr>
-                            <td><input type="checkbox" name="del[]" value="{{$v['id']}}"></td>
-                            <td><a href="{{route('admin::category.edit',[$v['id']])}}">{{$v['name']}}</a></td>
+                            <td><input type="checkbox" name="del[]" value="{{$v['mid']}}"></td>
+                            <td><a href="{{route('admin::category.edit',[$v['mid']])}}">{{$v['name']}}</a></td>
                             <td>{{$v['slug']}}</td>
                             <td>
                                 @if($v['sub']>0)
-                                    <a href="{{route('admin::category.index',['parent'=>$v['id']])}}">查看子分类</a>
+                                    <a href="{{route('admin::category.index',['parent'=>$v['mid']])}}">查看子分类</a>
                                 @endif
                             </td>
-                            <td>{{$v['c']}}</td>
+                            <td>{{$v['count']}}</td>
                             <td>{{$v['created_at']}}</td>
                         </tr>
                     @endforeach
