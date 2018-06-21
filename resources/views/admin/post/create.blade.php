@@ -29,10 +29,12 @@
                 },
                 onNodeSelected: function(event, node) { //选中节点
                     category.push(node.id)
+                    $("#categories").val(JSON.stringify(category))
                     $('#category').treeview('checkNode',[node.nodeId])
                 },
                 onNodeUnselected: function(event, node) { //选中节点
                     category.remove(node.id)
+                    $("#categories").val(JSON.stringify(category))
                     $('#category').treeview('uncheckNode',[node.nodeId])
                 },
             });
@@ -56,6 +58,7 @@
     <form role="form" method="post" action="{{route('admin::post.store')}}">
         <div class="row">
             @csrf
+            <input type="hidden" name="category" id="categories">
             <div class="col-md-8 col-xl-9">
                 <div class="form-group">
                     <div class="col-sm-12">

@@ -47,7 +47,7 @@
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="javascript:document.operations.submit();">@lang('admin.delete')</a>
                     </div>
-                    <a href="{{route('admin::media.create')}}" class="btn btn-success" style="margin-left: 5px;">@lang('admin.new_media')</a>
+                    <a href="{{route('admin::media.create')}}" class="btn btn-success" style="margin-left: 5px;">@lang('admin.add')</a>
                 </div>
                 <div class="row"><br></div>
             <table width="100%" class="table">
@@ -59,18 +59,18 @@
                         @endif
                     </th>
                     <th>@lang('admin.title')</th>
-                    <th>@lang('admin.author')</th>
-                    <th>@lang('admin.slave')</th>
-                    <th>@lang('admin.created_at')</th>
+                    <th>@lang('admin.uploader')</th>
+                    <th>@lang('admin.slave_article')</th>
+                    <th>@lang('admin.uploaded_at')</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($data as $v)
                     <tr>
-                        <td><input type="checkbox" name="del[]" value="{{$v['id']}}"></td>
-                        <td><a href="{{route('admin::post.edit',[$v['id']])}}">{{$v['title']}}</a></td>
+                        <td><input type="checkbox" name="del[]" value="{{$v['cid']}}"></td>
+                        <td><a href="{{route('admin::media.edit',[$v['cid']])}}">{{$v['title']}}</a></td>
                         <td>{{$v['author']}}</td>
-                        <td></td>
+                        <td><a href="{{route('admin::post.edit',[$v['parent']])}}">{{$v['slave']}}</a></td>
                         <td>{{$v['created_at']}}</td>
                     </tr>
                 @endforeach

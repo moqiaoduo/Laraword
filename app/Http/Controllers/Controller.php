@@ -32,15 +32,11 @@ class Controller extends BaseController
 EOT;
     }
 
-    protected function getCategoriesHTML($cr,$data){
+    protected function getCategoriesHTML($cr,$cid){
         $html='';
-        foreach ($data as $key=>$val){
-            $info=Meta::where('type','category')->find($val);
-            if(empty($info)){
-                $info['title']='uncategorized';
-                $info['slug']='uncategorized';
-            }
-            $html.="<a href=\"".getCustomRoute($cr,["category"=>$info['slug']])."\">{$info['title']}</a>,";
+        $data=Content::find($cid)->contentMeta()->get();
+        foreach ($data as $val){
+            $html.="<a href=\"".getCustomRoute($cr,["slug"=>$val['slug'],"id"=>$val['mid']])."\">{$val['name']}</a>,";
         }
         return substr($html,0,strlen($html)-1);;
     }

@@ -18,7 +18,6 @@ class CategoryController extends Controller
             $data[$key]['sub']=Meta::where('type','category')->where('parent',$val['mid'])->count();
         }
         $breadcrumb=$this->getBreadCrumb($parent,true);
-        //dd($data);
         return view('admin.category.list',['data'=>$data,'parent'=>$parent,'parent_parent'=>Meta::where('type','category')->find($parent),'info'=>$request->get('info'),'alert'=>$request->get('alert')])->with('breadcrumb',$breadcrumb);
     }
 

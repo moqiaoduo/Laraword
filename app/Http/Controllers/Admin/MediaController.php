@@ -16,6 +16,7 @@ class MediaController extends Controller
         $data=Content::where('type','attachment')->paginate(10);
         foreach ($data as $key=>$val){
             $data[$key]['author']=User::find($val['uid'])['name'];
+            $data[$key]['slave']=Content::find($val['parent'])['title'];
         }
         return view('admin.media.list')->with('data',$data)->with('info',$info)->with('alert',$alert);
     }

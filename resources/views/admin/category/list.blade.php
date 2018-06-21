@@ -47,7 +47,7 @@
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="javascript:document.operations.submit();">@lang('admin.delete')</a>
                     </div>
-                    <a href="{{route('admin::category.create')}}" class="btn btn-success" style="margin-left: 5px;">@lang('admin.new_post')</a>
+                    <a href="{{route('admin::category.create')}}" class="btn btn-success" style="margin-left: 5px;">@lang('admin.add')</a>
                 </div>
                 <div class="row"><br></div>
                 @if($parent>0)

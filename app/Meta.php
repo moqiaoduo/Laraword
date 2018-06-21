@@ -11,4 +11,8 @@ class Meta extends Model
     protected $primaryKey='mid';
 
     protected $fillable=['count'];
+
+    public function metaContent(){
+        return $this->belongsToMany('App\Content','relationships','mid','cid');
+    }
 }
