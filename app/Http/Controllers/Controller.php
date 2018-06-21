@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Content;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -45,11 +46,11 @@ EOT;
 
     protected function insertUploadRecord($title,$filename){
         $user=request()->user();
-        $media=new Media;
+        $media=new Content;
         $media->uid=$user->id;
         $media->title=$title;
-        $media->filename=$filename;
-        $media->description="Created by {$user->name}";
+        $media->content=json_encode(['filename'=>$filename,'description'=>"Created by {$user->name}"]);
         $media->save();
+        return $media->cid;
     }
 }

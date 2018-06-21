@@ -14,7 +14,7 @@
     <script type="text/javascript" src="{{asset('js/pages.js')}}"></script>
     <script>
         $(document).ready(function () {
-            $.get("{{route('getPageAttachment',$data['id'])}}",function (data) {
+            $.get("{{route('getPageAttachment',$data['cid'])}}",function (data) {
                 for(i=0;i<data.length;i++){
                     addFiles(data[i])
                 }
@@ -36,7 +36,7 @@
         <div class="col-lg-12">
             <h1>@lang('admin.edit_page')
                 <span style="font-size: 15px">
-                    @if(count($draft)>0)
+                    @if(!empty($draft))
                         您正在编辑的是该页面的草稿
                     @endif
                 </span>
@@ -45,7 +45,7 @@
         </div>
         <!-- /.col-lg-12 -->
     </div>
-    <form class="form-horizontal" role="form" method="post" action="{{route('admin::page.update',$data['id'])}}">
+    <form class="form-horizontal" role="form" method="post" action="{{route('admin::page.update',$data['cid'])}}">
         <div class="row">
             {{ method_field('PUT') }}
             @csrf
@@ -54,7 +54,7 @@
                 <div class="form-group">
                     <div class="col-sm-12">
                         <input type="text" class="form-control" id="title" name="title"
-                               placeholder="请输入标题" value="@if(count($draft)>0){{$draft[0]['title']}}@else{{$data['title']}}@endif">
+                               placeholder="请输入标题" value="@if(empty($draft)){{$data['title']}}@else{{$draft['title']}}@endif">
                     </div>
                 </div>
                 <div class="form-group">
@@ -69,10 +69,10 @@
                     <div class="col-sm-12">
                         <!-- 加载编辑器的容器 -->
                         @component($editor_container)
-                            @if(count($draft)>0)
-                                {!! $draft[0]['content'] !!}
-                            @else
+                            @if(empty($draft))
                                 {!! $data['content'] !!}
+                            @else
+                                {!! $draft['content'] !!}
                             @endif
                         @endcomponent
                     </div>

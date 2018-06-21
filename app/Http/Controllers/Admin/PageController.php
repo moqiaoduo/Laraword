@@ -19,8 +19,7 @@ class PageController extends Controller
                 ->where('parent', 0);
         })->paginate(10);
         foreach ($data as $key=>$val){
-            if(Content::where('type','page_draft')->where('parent',$val['cid'])->count()>0) $data[$key]['title']='(草稿)'.$val['title'];
-            if($val['type']=='page_draft') $data[$key]['title']='(草稿)'.$val['title'];
+            if(Content::where('type','page_draft')->where('parent',$val['cid'])->count()>0 || $val['type']=='page_draft') $data[$key]['title']='(草稿)'.$val['title'];
             $data[$key]['author']=User::find($val['uid'])['name'];
         }
         return view('admin.page.list')->with('data',$data)->with('info',$info)->with('alert',$alert);
@@ -55,9 +54,10 @@ class PageController extends Controller
         $info=$request->get('info');
         $alert=$request->get('alert');
         $data=Content::where('type','page')->find($id);
-        $draft=Content::where('type','page_draft')->where('parent',$id)->get()->toArray();
-        $route=getSetting('route.page','/archive/{id}');
+        $draft=Content::where('type','page_draft')->where('parent',$id)->first();
+        $route=getSetting('route.page','/page/{slug}');
         $url=config('app.url').str_replace('{slug}',self::loadSlugInput($data['slug']),$route);
+        if(!empty($draft)) $url=config('app.url').str_replace('{slug}',self::loadSlugInput($draft['slug']),$route);
         $url=str_replace('{id}',$id,$url);
         $editor=self::loadEditor();
         return view('admin.page.edit')->with('url',$url)->with('head',$editor[0])->with('editor_container',$editor[1])->with('js',$editor[2])->with('data',$data)->with('draft',$draft)->with('info',$info)->with('alert',$alert);
@@ -72,17 +72,16 @@ class PageController extends Controller
         if(empty($slug)) $slug=str_replace(' ', '', $title);
         $content=$request->post('content');
         $uid=$request->user()->id;
-        $page=Content::where('type','page')->find($id);
-        $page->slug=$slug;
-        $page->files=$files;
+        $page=Content::find($id);
         if($submit=='publish'){
             $page->title=$title;
             $page->content=$content;
             $page->type='page';
-            Content::where('type','page_draft')->where('post_id',$id)->delete();
+            $page->slug=$slug;
+            Content::where('type','page_draft')->where('parent',$id)->delete();
         }elseif($submit=='save'){
-            if($page->status==0)
-                Draft::updateOrCreate(['post_id'=>$id,'type'=>'page'],['uid'=>$uid,'title'=>$title,'content'=>$content]);
+            if($page->type=='page')
+                Content::updateOrCreate(['parent'=>$id,'type'=>'page_draft'],['uid'=>$uid,'title'=>$title,'content'=>$content,'slug'=>$slug]);
             else{
                 $page->title=$title;
                 $page->content=$content;

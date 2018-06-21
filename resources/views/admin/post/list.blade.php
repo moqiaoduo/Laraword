@@ -68,8 +68,8 @@
                 <tbody>
                 @foreach($data as $v)
                     <tr>
-                        <td><input type="checkbox" name="del[]" value="{{$v['id']}}"></td>
-                        <td><a href="{{route('admin::post.edit',[$v['id']])}}">{{$v['title']}}</a></td>
+                        <td><input type="checkbox" name="del[]" value="{{$v['cid']}}"></td>
+                        <td><a href="{{route('admin::post.edit',[$v['cid']])}}">{{$v['title']}}</a></td>
                         <td>
                             @switch($v['status'])
                                 @case(0) 已发布 @break
@@ -80,7 +80,7 @@
                             @endswitch
                         </td>
                         <td>{{$v['author']}}</td>
-                        <td>{{$v['c']}}</td>
+                        <td>{{$v['category']}}</td>
                         <td>{{$v['created_at']}}</td>
                     </tr>
                 @endforeach

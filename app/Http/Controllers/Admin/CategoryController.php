@@ -43,7 +43,6 @@ class CategoryController extends Controller
     public function getCategories(Request $request){
         if(!is_null($request->get('selected')))$this->selected=$request->get('selected');
         if(!$request->ajax()) return [];
-        //return [];
         return $this->getAllCategories();
     }
 
@@ -52,8 +51,8 @@ class CategoryController extends Controller
         $json=array();
         if(!empty($data)){
             foreach ($data as $val) {
-                $t=["text"=>$val['title'],"id"=>$val['id'],"nodes"=>$this->getCategoriesNode($val['id'])];
-                if(in_array($val['id'],$this->selected)){$t['state']['checked']=true;$t['state']['selected']=true;}
+                $t=["text"=>$val['name'],"id"=>$val['mid'],"nodes"=>$this->getCategoriesNode($val['mid'])];
+                if(in_array($val['mid'],$this->selected)){$t['state']['checked']=true;$t['state']['selected']=true;}
                 if(count($t['nodes'])<=0) unset($t['nodes']);
                 array_push($json,$t);
             }
@@ -66,8 +65,8 @@ class CategoryController extends Controller
         $json=array();
         if(!empty($data)){
             foreach ($data as $val) {
-                $t=["text"=>$val['title'],"id"=>$val['id'],"nodes"=>$this->getCategoriesNode($val['id'])];
-                if(in_array($val['id'],$this->selected)){$t['state']['checked']=true;$t['state']['selected']=true;}
+                $t=["text"=>$val['name'],"id"=>$val['mid'],"nodes"=>$this->getCategoriesNode($val['mid'])];
+                if(in_array($val['mid'],$this->selected)){$t['state']['checked']=true;$t['state']['selected']=true;}
                 if(count($t['nodes'])<=0) unset($t['nodes']);
                 array_push($json,$t);
             }

@@ -29,16 +29,16 @@
         })
     }
     function addFiles(file) {
-        $.post("{{route('basename')}}",{url:file.url},function (data) {
-            uploadFiles.push(data)
+        $.post("{{route('getAttachmentInfo')}}",{url:file.url},function (data) {
+            uploadFiles.push(data.id)
             $("#laraword_file").val(JSON.stringify(uploadFiles))
-            $("#larawordFileList").append('<li file="'+data+'" class="list-group-item"><a href="javascript:showFile(\''+file.title+'\',\''+data+'\')">'+file.title+'</a><div class="options"><a href="javascript:delFile(\''+data+'\')"><i class="fa fa-trash-o" aria-hidden="true"></i></a></div></li>')
-        })
+            $("#larawordFileList").append('<li file="'+data.id+'" class="list-group-item"><a href="javascript:showFile(\''+file.title+'\',\''+data.filename+'\')">'+file.title+'</a><div class="options"><a href="javascript:delFile(\''+data.id+'\')"><i class="fa fa-trash-o" aria-hidden="true"></i></a></div></li>')
+        },"json")
     }
-    function delFile(fileName) {
-        $.post("{{route('admin::delFile')}}",{"filename":fileName,"_token":"{{csrf_token()}}"},function(data) {
-            $("li[file='"+fileName+"']").remove()
-            uploadFiles.remove(fileName)
+    function delFile(id) {
+        $.post("{{route('admin::delFile')}}",{"id":id,"_token":"{{csrf_token()}}"},function(data) {
+            $("li[file='"+id+"']").remove()
+            uploadFiles.remove(id)
             $("#laraword_file").val(JSON.stringify(uploadFiles))
         })
     }

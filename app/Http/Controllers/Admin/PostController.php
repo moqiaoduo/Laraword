@@ -8,22 +8,29 @@ use App\Post;
 use App\Category;
 use App\User;
 use App\Draft;
+use App\Content;
+use App\Meta;
+use DB;
 
 class PostController extends Controller
 {
     public function index(Request $request){
         $info=$request->get('info');
         $alert=$request->get('alert');
-        $data=Post::paginate(10);
+        $data=Content::where('type','post')->orWhere(function ($query) {
+            $query->where('type', "post_draft")
+                ->where('parent', 0);
+        })->paginate(10);
         foreach ($data as $key=>$val){
-            if(Draft::where('type','post')->where('post_id',$val['id'])->count()>0) $data[$key]['title']='(草稿)'.$val['title'];
+            if(Content::where('type','post_draft')->where('parent',$val['cid'])->count()>0 || $val['type']=='post_draft') $data[$key]['title']='(草稿)'.$val['title'];
             $data[$key]['author']=User::find($val['uid'])['name'];
+            $category=DB::table('relationships')->where('cid',$val['cid'])->get();
             $t='';
-            foreach ($val['category'] as $k=>$v){
-                $t=$t.Category::find($v)['title'];
-                if($k<count($val['category'])-1) $t.=',';
+            foreach ($category as $k=>$v){
+                $t.=Meta::find($v->mid)['name'];
+                if($k<count($category)-1) $t.=',';
             }
-            $data[$key]['c']=$t;
+            $data[$key]['category']=$t;
         }
         return view('admin.post.list')->with('data',$data)->with('info',$info)->with('alert',$alert);
     }
@@ -41,11 +48,9 @@ class PostController extends Controller
         $categories=json_decode($request->post('category'),true);
         if(empty($categories)) $categories=[0];
         $slug=$request->post('slug');
-        $post=new Post;
+        $post=new Content;
         $post->uid=$request->user()->id;
         $post->title=$request->post('title');
-        $post->category=$categories;
-        $post->files=$files;
         $post->content=$request->post('content');
         $post->slug='';
         if($submit=='publish') $post->status=0;
@@ -61,8 +66,8 @@ class PostController extends Controller
         $id=$request->route('post');
         $info=$request->get('info');
         $alert=$request->get('alert');
-        $data=Post::find($id);
-        $draft=Draft::where('type','post')->where('post_id',$id)->get()->toArray();
+        $data=Content::find($id);
+        $draft=Content::where('type','post_draft')->where('post_id',$id)->get()->toArray();
         $route=getSetting('route.post','/archive/{id}');
         $url=config('app.url').str_replace('{slug}',self::loadSlugInput($data['slug']),$route);
         $url=str_replace('{id}',$id,$url);
@@ -74,7 +79,6 @@ class PostController extends Controller
         $submit=$request->post('submit');
         $slug=$request->post('slug');
         $files=json_decode($request->post('files'),true);
-        //dd($files);
         $categories=json_decode($request->post('category'),true);
         if(empty($categories)) $categories=[0];
         $id=$request->route('post');
@@ -82,18 +86,16 @@ class PostController extends Controller
         $title=$request->post('title');
         $content=$request->post('content');
         $uid=$request->user()->id;
-        $post=Post::find($id);
-        $post->slug=$slug;
-        $post->category=$categories;
-        $post->files=$files;
+        $post=Content::find($id);
         if($submit=='publish'){
+            $post->slug=$slug;
             $post->title=$title;
             $post->content=$content;
-            $post->status=0;
-            Draft::where('type','post')->where('post_id',$id)->delete();
+            $post->type='post';
+            Content::where('type','post_draft')->where('parent',$id)->delete();
         }elseif($submit=='save'){
             if($post->status==0)
-            Draft::updateOrCreate(['post_id'=>$id],['uid'=>$uid,'title'=>$title,'content'=>$content]);
+                Content::updateOrCreate(['parent'=>$id, 'type'=>'post_draft'],['uid'=>$uid,'title'=>$title,'content'=>$content,'slug'=>$slug]);
             else{
                 $post->title=$title;
                 $post->content=$content;

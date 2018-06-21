@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Storage;
 use App\Media;
 use App\Post;
+use App\Content;
 
 class APIController extends Controller
 {
@@ -27,41 +28,33 @@ class APIController extends Controller
                 //这里的uploads是配置文件的名称
                 $bool = $val->move(public_path('uploads'),$filename);
                 if($bool){
-                    array_push($arr_return,["state"=>"SUCCESS","url"=>$filename,"original"=>$originalName,"title"=>$originalName]);
-                    $this->insertUploadRecord($originalName,$filename);
+                    $id=$this->insertUploadRecord($originalName,$filename);
+                    array_push($arr_return,["state"=>"SUCCESS","url"=>$filename,"original"=>$originalName,"title"=>$originalName,"id"=>$id]);
                 }
             }
         }
         return $arr_return;
     }
 
+    public function getAttachmentInfo(Request $request){
+        $filename=basename($request->post('url'));
+        $rs=Content::where('content','like','%"filename":"'.$filename.'"%')->first();
+        if(empty($rs)) return [];
+        return ["id"=>$rs['cid'],"filename"=>json_decode($rs['content'],true)['filename']];
+    }
+
     public function delFile(Request $request){
-        $filename=$request->post('filename');
-        //dd($filename);
-        Storage::disk('uploads')->delete($filename);
-        return Media::where('filename',$filename)->delete();
+        $id=$request->post('id');
+        $file=Content::find($id);
+        Storage::disk('uploads')->delete(json_decode($file['content'],true)['filename']);
+        return ['result'=>$file->delete()];
     }
 
-    public function getPostAttachment($id){
-        $post=Post::find($id);
-        if(empty($post)) return [];
-        $files=$post->files;
+    public function getPAttachment($id){
+        $files=Content::where('parent',$id)->get()->toArray();
         $arr_return=[];
-        foreach ($files as $val){
-            $data=Media::where('filename',$val)->get()->toArray()[0];
-            array_push($arr_return,["state"=>"SUCCESS","url"=>$data['filename'],"original"=>$data['title'],"title"=>$data['title']]);
-        }
-        return $arr_return;
-    }
-
-    public function getPageAttachment($id){
-        $page=Page::find($id);
-        if(empty($page)) return [];
-        $files=$page->files;
-        $arr_return=[];
-        foreach ($files as $val){
-            $data=Media::where('filename',$val)->get()->toArray()[0];
-            array_push($arr_return,["state"=>"SUCCESS","url"=>$data['filename'],"original"=>$data['title'],"title"=>$data['title']]);
+        foreach ($files as $data){
+            array_push($arr_return,["state"=>"SUCCESS","url"=>json_decode($data['content'],true)['filename'],"original"=>$data['title'],"title"=>$data['title']]);
         }
         return $arr_return;
     }

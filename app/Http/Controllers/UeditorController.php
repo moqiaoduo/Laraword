@@ -66,7 +66,6 @@ class UeditorController extends Controller
     {
         File::delete($file['file_native_path']);
         File::delete($file['origin_pic_native_path']);
-        //dd($file['file_native_path']);
         return true;
     }
 }
