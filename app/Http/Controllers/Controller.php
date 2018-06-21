@@ -11,6 +11,7 @@ use App\Category;
 use App\Post;
 use App\Media;
 use App\Meta;
+use DB;
 
 class Controller extends BaseController
 {
@@ -48,9 +49,18 @@ EOT;
         $user=request()->user();
         $media=new Content;
         $media->uid=$user->id;
+        $media->type='attachment';
         $media->title=$title;
         $media->content=json_encode(['filename'=>$filename,'description'=>"Created by {$user->name}"]);
         $media->save();
         return $media->cid;
     }
+
+    protected function updateCategoryCount(){
+        $data=Meta::where('type','category')->get();
+        foreach ($data as $val){
+            Meta::find($val->mid)->update(['count'=>DB::table('relationships')->where('mid',$val->mid)->count()]);
+        }
+    }
+
 }

@@ -41,8 +41,10 @@ class CategoryController extends Controller
 
     public function getCategories(Request $request){
         if(!$request->ajax()) return [];
-        $category=DB::table('relationships')->where('cid',$request->get('cid'))->get();
-        return $this->getAllCategories();
+        $data=DB::table('relationships')->where('cid',$request->get('cid'))->get();
+        $category=[];
+        foreach ($data as $val) array_push($category,$val->mid);
+        return $this->getAllCategories($category);
     }
 
     protected function getAllCategories($selected=[]){
@@ -50,7 +52,7 @@ class CategoryController extends Controller
         $json=array();
         if(!empty($data)){
             foreach ($data as $val) {
-                $t=["text"=>$val['name'],"id"=>$val['mid'],"nodes"=>$this->getCategoriesNode($val['mid'])];
+                $t=["text"=>$val['name'],"id"=>$val['mid'],"nodes"=>$this->getCategoriesNode($val['mid'],$selected)];
                 if(in_array($val['mid'],$selected)){$t['state']['checked']=true;$t['state']['selected']=true;}
                 if(count($t['nodes'])<=0) unset($t['nodes']);
                 array_push($json,$t);
@@ -64,7 +66,8 @@ class CategoryController extends Controller
         $json=array();
         if(!empty($data)){
             foreach ($data as $val) {
-                $t=["text"=>$val['name'],"id"=>$val['mid'],"nodes"=>$this->getCategoriesNode($val['mid'])];
+                //dd($selected);
+                $t=["text"=>$val['name'],"id"=>$val['mid'],"nodes"=>$this->getCategoriesNode($val['mid'],$selected)];
                 if(in_array($val['mid'],$selected)){$t['state']['checked']=true;$t['state']['selected']=true;}
                 if(count($t['nodes'])<=0) unset($t['nodes']);
                 array_push($json,$t);

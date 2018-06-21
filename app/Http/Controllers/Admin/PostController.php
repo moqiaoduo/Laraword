@@ -46,20 +46,33 @@ class PostController extends Controller
         $submit=$request->post('submit');
         $files=json_decode($request->post('files'),true);
         $categories=json_decode($request->post('category'),true);
-        if(empty($categories)) $categories=[0];
         $slug=$request->post('slug');
         $post=new Content;
         $post->uid=$request->user()->id;
         $post->title=$request->post('title');
         $post->content=$request->post('content');
         $post->slug='';
-        if($submit=='publish') $post->status=0;
-        elseif($submit=='save') $post->status=1;
+        if($submit=='save') $post->type="post_draft";
         $post->save();
-        if(empty($slug)) $slug=$post->id;
+        $id=$post->cid;
+        if(empty($slug)) $slug=$id;
+        $this->setCategory($id,$categories);
         $post->slug=$slug;
         $post->save();
+        $this->setSlaveFile($id,$files);
+        $this->updateCategoryCount();
         return redirect()->route('admin::post.index',['info'=>'文章已保存或发布','alert'=>'success']);
+    }
+
+    protected function setCategory($cid,$category){
+        if(empty($category)) $category=[getSetting('default_category',0)];
+        foreach ($category as $val){
+            if($val>0) DB::table('relationships')->insert(["cid"=>$cid,"mid"=>$val]);
+        }
+    }
+
+    protected function setSlaveFile($cid,$files){
+        if(!empty($files)) Content::whereIn('cid',$files)->update(['parent'=>$cid]);
     }
 
     public function edit(Request $request){
@@ -87,7 +100,7 @@ class PostController extends Controller
         $content=$request->post('content');
         $uid=$request->user()->id;
         $post=Content::find($id);
-        updateCategory($id,$categories);
+        $this->updateCategory($id,$categories);
         if($submit=='publish'){
             $post->slug=$slug;
             $post->title=$title;
@@ -103,31 +116,26 @@ class PostController extends Controller
             }
         }
         $post->save();
+        $this->setSlaveFile($id,$files);
+        $this->updateCategoryCount();
         return redirect()->route('admin::post.edit',[$id,'info'=>'文章已保存或发布','alert'=>'success']);
     }
 
-    public function setCategory($cid,$category){
-        if(empty($category)) $category=[getSetting('default_category',1)];
-        foreach ($category as $val){
-            DB::table('relationships')->insert(["cid"=>$cid,"mid"=>$val]);
-        }
-    }
-
-    public function updateCategory($cid,$category){
-        if(empty($category)) $category=[getSetting('default_category',1)];
+    protected function updateCategory($cid,$category){
+        if(empty($category)) $category=[getSetting('default_category',0)];
         $old=DB::table('relationships')->where('cid',$cid)->get();
         if($old->count()>0){
-            foreach ($old as $val){
-                $s=array_search($val['mid'],$category);
+            foreach ($old as $key=>$val){
+                $s=array_search($val->mid,$category);
                 if($s===false){
-                    $val->delete();
+                    DB::table('relationships')->where('mid',$val->mid)->delete();
                 }else{
                     unset($category[$s]);
                 }
             }
-            foreach ($category as $val){
-                DB::table('relationships')->insert(["cid"=>$cid,"mid"=>$val]);
-            }
+        }
+        foreach ($category as $val){
+            if($val>0) DB::table('relationships')->insert(["cid"=>$cid,"mid"=>$val]);
         }
     }
 

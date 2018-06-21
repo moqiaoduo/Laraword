@@ -51,7 +51,7 @@ class APIController extends Controller
     }
 
     public function getPAttachment($id){
-        $files=Content::where('parent',$id)->get()->toArray();
+        $files=Content::where('type','attachment')->where('parent',$id)->get()->toArray();
         $arr_return=[];
         foreach ($files as $data){
             array_push($arr_return,["state"=>"SUCCESS","url"=>json_decode($data['content'],true)['filename'],"original"=>$data['title'],"title"=>$data['title']]);

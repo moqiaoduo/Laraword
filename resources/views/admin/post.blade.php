@@ -1,5 +1,26 @@
+<style>
+    /* 半透明的遮罩层 */
+    .mask {
+        position: absolute; top: 0px; filter: alpha(opacity=60); background-color: #777;
+        z-index: 1002; left: 0px;
+        opacity:0.5; -moz-opacity:0.5;
+    }
+</style>
 <script>
+    //兼容火狐、IE8
+    //显示遮罩层
+    function showMask(){
+        $("#mask").css("height",$(document).height());
+        $("#mask").css("width",$(document).width());
+        $("#mask").show();
+    }
+    //隐藏遮罩层
+    function hideMask(){
+
+        $("#mask").hide();
+    }
     function ajaxUpload() {
+        showMask()
         var files = document.getElementById("laraword_upload_files").files; // js 获取文件对象
         if (typeof (files[0]) == "undefined" || files[0].size <= 0) {
             return;
@@ -24,6 +45,7 @@
             success: function (result) {
                 result.forEach(function(val){
                     addFiles(val)
+                    hideMask()
                 })
             },
         })
@@ -50,30 +72,16 @@
         })
         $("#insertFile").modal('show')
     }
-
-    function insertFile() {
-        ueditor.focus();
-        var html_code=$("#file_insertHTML").html();
-        ueditor.execCommand('inserthtml',HtmlUtil.htmlDecode(html_code));
-        $("#insertFile").modal('hide')
-    }
-    function updateCode(title,url) {
-        $("#file_insertHTML").html('<a href="'+url+'">'+title+'</a>')
-        $("#file_insertMD").html('['+title+']('+url+')')
-    }
-    $(function(){
-        //输入框的值改变时触发
-        $("#file_title").on("input",function(e){
-            //获取input输入的值
-            updateCode(e.delegateTarget.value,$("#file_name").val())
-        });
-    });
     $(document).ready(function () {
+        @if(!empty($data))
+        showMask()
         $.get("{{route('getPAttachment',$data['cid'])}}",function (data) {
             for(i=0;i<data.length;i++){
                 addFiles(data[i])
             }
-        })
+            hideMask()
+        });
+        @endif
     })
     function copyUrl(selector) {
         var Url=document.getElementById(selector);
@@ -82,7 +90,25 @@
         $("#insertFile").modal('hide')
         alert("复制成功！");
     }
+    $(function(){
+        //输入框的值改变时触发
+        $("#file_title").on("input",function(e){
+            //获取input输入的值
+            updateCode(e.delegateTarget.value,$("#file_name").val())
+        });
+    });
+    function insertFile() {
+        ueditor.focus();
+        var html_code=$("#file_insertHTML").html();
+        ueditor.execCommand('inserthtml',HtmlUtil.htmlDecode(html_code));
+        $("#insertFile").modal('hide')
+    }
+    function updateCode(title,url) {
+        $("#file_insertHTML").html('<a href="'+url+'">['+title+']</a>')
+        $("#file_insertMD").html('['+title+']('+url+')')
+    }
 </script>
+<div id="mask" class="mask"></div>
 <!-- 模态框 -->
 <div class="modal fade" id="insertFile">
     <div class="modal-dialog modal-sm">

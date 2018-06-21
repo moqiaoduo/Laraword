@@ -29,7 +29,7 @@ function getSetting($key='',$default=''){
         $val=DB::table('options')->where('name',$key)->get()->toArray();
         if(!empty($val)){
             $val=$val[0];
-            $val=$val->val;
+            $val=$val->value;
         }
     }
     if(empty($val)) return $default;
