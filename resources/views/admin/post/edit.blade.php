@@ -16,11 +16,7 @@
     <script type="text/javascript" src="{{asset('js/post.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/posts.js')}}"></script>
     <script type="text/javascript">
-        $.getJSON("{{url('/api/category')}}",{selected:
-            @php
-                print_r(json_encode($data['category']))
-            @endphp
-        },function (data) {
+        $.getJSON("{{url('/api/category?cid='.$data['cid'])}}",function (data) {
             $('#category').treeview({
                 data: data,
                 showCheckbox: true,
@@ -47,13 +43,6 @@
             })
             $("#categories").val(JSON.stringify(category))
         })
-        $(document).ready(function () {
-            $.get("{{route('getPostAttachment',$data['id'])}}",function (data) {
-                for(i=0;i<data.length;i++){
-                    addFiles(data[i])
-                }
-            })
-        })
     </script>
 @endsection
 
@@ -70,7 +59,7 @@
         <div class="col-lg-12">
             <h1>@lang('admin.edit_post')
                 <span style="font-size: 15px">
-                    @if(count($draft)>0)
+                    @if(!empty($draft))
                         您正在编辑的是该文章的草稿
                     @endif
                 </span>
@@ -79,7 +68,7 @@
         </div>
         <!-- /.col-lg-12 -->
     </div>
-    <form class="form-horizontal" role="form" method="post" action="{{route('admin::post.update',$data['id'])}}">
+    <form class="form-horizontal" role="form" method="post" action="{{route('admin::post.update',$data['cid'])}}">
         <div class="row">
             {{ method_field('PUT') }}
             @csrf
@@ -88,7 +77,7 @@
                 <div class="form-group">
                     <div class="col-sm-12">
                         <input type="text" class="form-control" id="title" name="title"
-                               placeholder="请输入标题" value="@if(count($draft)>0){{$draft[0]['title']}}@else{{$data['title']}}@endif">
+                               placeholder="请输入标题" value="@if(empty($draft)){{$data['title']}}@else{{$draft['title']}}@endif">
                     </div>
                 </div>
                 <div class="form-group">
@@ -103,10 +92,10 @@
                     <div class="col-sm-12">
                         <!-- 加载编辑器的容器 -->
                         @component($editor_container)
-                            @if(count($draft)>0)
-                                {!! $draft[0]['content'] !!}
-                            @else
+                            @if(empty($draft))
                                 {!! $data['content'] !!}
+                            @else
+                                {!! $draft['content'] !!}
                             @endif
                         @endcomponent
                     </div>

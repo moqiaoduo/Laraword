@@ -5,7 +5,7 @@
             return;
         }
         var formFile = new FormData();
-        //console.log(files)
+
         formFile.append("action", "UploadVMKImagePath");
         for(i=0;i<files.length;i++){
             formFile.append("file[]", files[i]); //加入文件对象
@@ -68,6 +68,13 @@
             updateCode(e.delegateTarget.value,$("#file_name").val())
         });
     });
+    $(document).ready(function () {
+        $.get("{{route('getPAttachment',$data['cid'])}}",function (data) {
+            for(i=0;i<data.length;i++){
+                addFiles(data[i])
+            }
+        })
+    })
     function copyUrl(selector) {
         var Url=document.getElementById(selector);
         Url.select(); // 选择对象

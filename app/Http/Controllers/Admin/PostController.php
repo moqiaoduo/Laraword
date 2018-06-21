@@ -27,10 +27,10 @@ class PostController extends Controller
             $category=DB::table('relationships')->where('cid',$val['cid'])->get();
             $t='';
             foreach ($category as $k=>$v){
-                $t.=Meta::find($v->mid)['name'];
-                if($k<count($category)-1) $t.=',';
+                $meta=Meta::find($v->mid);
+                if($meta['type']=='category') $t.=$meta['name'].',';
             }
-            $data[$key]['category']=$t;
+            $data[$key]['category']=substr($t,0,strlen($t)-1);
         }
         return view('admin.post.list')->with('data',$data)->with('info',$info)->with('alert',$alert);
     }
@@ -67,9 +67,10 @@ class PostController extends Controller
         $info=$request->get('info');
         $alert=$request->get('alert');
         $data=Content::find($id);
-        $draft=Content::where('type','post_draft')->where('post_id',$id)->get()->toArray();
+        $draft=Content::where('type','post_draft')->where('parent',$id)->first();
         $route=getSetting('route.post','/archive/{id}');
         $url=config('app.url').str_replace('{slug}',self::loadSlugInput($data['slug']),$route);
+        if(!empty($draft)) $url=config('app.url').str_replace('{slug}',self::loadSlugInput($draft['slug']),$route);
         $url=str_replace('{id}',$id,$url);
         $editor=self::loadEditor();
         return view('admin.post.edit')->with('url',$url)->with('head',$editor[0])->with('editor_container',$editor[1])->with('js',$editor[2])->with('data',$data)->with('draft',$draft)->with('info',$info)->with('alert',$alert);
@@ -80,13 +81,13 @@ class PostController extends Controller
         $slug=$request->post('slug');
         $files=json_decode($request->post('files'),true);
         $categories=json_decode($request->post('category'),true);
-        if(empty($categories)) $categories=[0];
         $id=$request->route('post');
         if(empty($slug)) $slug=$id;
         $title=$request->post('title');
         $content=$request->post('content');
         $uid=$request->user()->id;
         $post=Content::find($id);
+        updateCategory($id,$categories);
         if($submit=='publish'){
             $post->slug=$slug;
             $post->title=$title;
@@ -105,13 +106,38 @@ class PostController extends Controller
         return redirect()->route('admin::post.edit',[$id,'info'=>'文章已保存或发布','alert'=>'success']);
     }
 
+    public function setCategory($cid,$category){
+        if(empty($category)) $category=[getSetting('default_category',1)];
+        foreach ($category as $val){
+            DB::table('relationships')->insert(["cid"=>$cid,"mid"=>$val]);
+        }
+    }
+
+    public function updateCategory($cid,$category){
+        if(empty($category)) $category=[getSetting('default_category',1)];
+        $old=DB::table('relationships')->where('cid',$cid)->get();
+        if($old->count()>0){
+            foreach ($old as $val){
+                $s=array_search($val['mid'],$category);
+                if($s===false){
+                    $val->delete();
+                }else{
+                    unset($category[$s]);
+                }
+            }
+            foreach ($category as $val){
+                DB::table('relationships')->insert(["cid"=>$cid,"mid"=>$val]);
+            }
+        }
+    }
+
     public function destroy(Request $request){
-        Post::destroy($request->route('post'));
+        Content::destroy($request->route('post'));
         return redirect()->route('admin::post.index');
     }
 
     public function delete(Request $request){
-        Post::destroy($request->post('del'));
+        Content::destroy($request->post('del'));
         return redirect()->route('admin::post.index');
     }
 }

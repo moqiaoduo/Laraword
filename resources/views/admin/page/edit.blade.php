@@ -12,15 +12,6 @@
     @include('admin.post')
     <script type="text/javascript" src="{{asset('js/post.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/pages.js')}}"></script>
-    <script>
-        $(document).ready(function () {
-            $.get("{{route('getPageAttachment',$data['cid'])}}",function (data) {
-                for(i=0;i<data.length;i++){
-                    addFiles(data[i])
-                }
-            })
-        })
-    </script>
 @endsection
 
 @section('breadcrumb')

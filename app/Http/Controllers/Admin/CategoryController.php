@@ -6,11 +6,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Category;
 use App\Meta;
+use DB;
 
 class CategoryController extends Controller
 {
-    protected $selected=[];
-
     public function index(Request $request){
         $parent=$request->get('parent');
         if($parent===null) $parent=0;
@@ -41,18 +40,18 @@ class CategoryController extends Controller
     }
 
     public function getCategories(Request $request){
-        if(!is_null($request->get('selected')))$this->selected=$request->get('selected');
         if(!$request->ajax()) return [];
+        $category=DB::table('relationships')->where('cid',$request->get('cid'))->get();
         return $this->getAllCategories();
     }
 
-    protected function getAllCategories(){
+    protected function getAllCategories($selected=[]){
         $data=Meta::where('type','category')->where('parent',0)->get()->toArray();
         $json=array();
         if(!empty($data)){
             foreach ($data as $val) {
                 $t=["text"=>$val['name'],"id"=>$val['mid'],"nodes"=>$this->getCategoriesNode($val['mid'])];
-                if(in_array($val['mid'],$this->selected)){$t['state']['checked']=true;$t['state']['selected']=true;}
+                if(in_array($val['mid'],$selected)){$t['state']['checked']=true;$t['state']['selected']=true;}
                 if(count($t['nodes'])<=0) unset($t['nodes']);
                 array_push($json,$t);
             }
@@ -60,13 +59,13 @@ class CategoryController extends Controller
         return $json;
     }
 
-    protected function getCategoriesNode($parent){
+    protected function getCategoriesNode($parent,$selected=[]){
         $data=Meta::where('type','category')->where('parent',$parent)->get()->toArray();
         $json=array();
         if(!empty($data)){
             foreach ($data as $val) {
                 $t=["text"=>$val['name'],"id"=>$val['mid'],"nodes"=>$this->getCategoriesNode($val['mid'])];
-                if(in_array($val['mid'],$this->selected)){$t['state']['checked']=true;$t['state']['selected']=true;}
+                if(in_array($val['mid'],$selected)){$t['state']['checked']=true;$t['state']['selected']=true;}
                 if(count($t['nodes'])<=0) unset($t['nodes']);
                 array_push($json,$t);
             }
