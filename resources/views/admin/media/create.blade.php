@@ -1,180 +1,100 @@
 @extends('admin.layout')
 
-@section('title',__('admin.new_post'))
+@section('title',__('admin.add'))
 
 @section('head')
-    @include($head)
     <style>
-        .url-slug{margin-top:-0.5em;color:#AAA;font-size:.92857em;word-break:break-word;}
-        #slug{padding:2px;border:none;background:#FFFBCC;color:#666;box-sizing: border-box;line-height: normal;font-size: 100%;}
-        .mono{font-family:Menlo,Monaco,Consolas,"Courier New",monospace;}
-        .sr-only{border:0;height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;}
-        #category{overflow-y: auto;}
+        #media-preview{text-align: center;}
+        #media-preview img,video,audio{max-width: 100%;}
     </style>
-    <link rel="stylesheet" href="{{vendor('bootstrap/css/glyphicon.css')}}">
-    <link rel="stylesheet" href="{{asset('css/bootstrap-treeview.min.css')}}">
 @endsection
 
 @section('js')
-    @include($js)
-    <script type="text/javascript">
-        $(function(){
-            $('#slug').bind('input propertychange',function(){
-                $("#preview").html($(this).val())
-            });
-        })
-    </script>
-    <script type="text/javascript" src="{{asset('js/bootstrap-treeview.min.js')}}"></script>
-    <script type="text/javascript">
-        var category=[];
-        function getChildNodeIdArr(node) {
-            var ts = [];
-            if (node.nodes) {
-                for (x in node.nodes) {
-                    ts.push(node.nodes[x].nodeId);
-                    if (node.nodes[x].nodes) {
-                        var getNodeDieDai = getChildNodeIdArr(node.nodes[x]);
-                        for (j in getNodeDieDai) {
-                            ts.push(getNodeDieDai[j]);
-                        }
-                    }
-                }
-            } else {
-                ts.push(node.nodeId);
-            }
-            return ts;
-        }
-        function setParentNodeCheck(node) {
-            var parentNode = $("#category").treeview("getNode", node.parentId);
-            if (parentNode.nodes) {
-                var checkedCount = 0;
-                for (x in parentNode.nodes) {
-                    if (parentNode.nodes[x].state.checked) {
-                        checkedCount ++;
-                    } else {
-                        break;
-                    }
-                }
-                if (checkedCount === parentNode.nodes.length) {
-                    $("#category").treeview("checkNode", parentNode.nodeId);
-                    setParentNodeCheck(parentNode);
-                }
-            }
-        }
-        $.getJSON("{{url('/api/category')}}",function (data) {
-            $('#category').treeview({
-                data: data,
-                showCheckbox: true,
-                multiSelect: true,
-                onNodeChecked: function(event, node) { //选中节点
-                    $('#category').treeview('selectNode',[node.nodeId])
-                },
-                onNodeUnchecked: function(event, node) { //取消选中节点
-                    $('#category').treeview('unselectNode',[node.nodeId])
-                },
-                onNodeSelected: function(event, node) { //选中节点
-                    category.push(node.id)
-                    $('#category').treeview('checkNode',[node.nodeId])
-                },
-                onNodeUnselected: function(event, node) { //选中节点
-                    category.remove(node.id)
-                    $('#category').treeview('uncheckNode',[node.nodeId])
-                },
-            });
-        })
-        Array.prototype.indexOf = function(val) {
-            for (var i = 0; i < this.length; i++) {
-                if (this[i] == val) return i;
-            }
-            return -1;
-        };
-        Array.prototype.remove = function(val) {
-            var index = this.indexOf(val);
-            if (index > -1) {
-                this.splice(index, 1);
-            }
-        };
-    </script>
+    <script src="{{asset('js/drag_upload.js')}}"></script>
     <script>
-        $(document).scroll(float)
-        $(window).resize(float)
-        $(document).ready(float)
-        function float() {
-            if($(window).width()>=751){
-                $("#float .card").css('width',$("#float").width());
-                if($(this).scrollTop()>=145){
-                    $("#category").css('max-height',$(window).height()/2-100);
-                    $("#float .card").css('position','fixed');
-                    $("#float .card").css('top','60px');
-                }else{
-                    $("#category").css('max-height',$(window).height()/2-160);
-                    $("#float .card").css('position','');
-                    $("#float .card").css('top','');
+        container.ondrop = function (e) {
+            var list = e.dataTransfer.files;
+            addUploadFile(list[0])
+        };
+
+        $("#laraword_upload_files").change(function (e) {
+            addUploadFile(e.target.files[0])
+        })
+
+        //ajax上传文件
+        function ajaxUpload(){
+            var data=Dragfiles(); //获取formData
+            data.append('_token','{{csrf_token()}}')
+            $.ajax({
+                url: '{{route('admin::upload')}}',
+                type: 'POST',
+                data: data,
+                async: true,
+                cache: false,
+                contentType:false,
+                processData:false,
+                dataType: "json",
+                beforeSend :function () {
+                    $("#progress_bar").show()
+                    $("#progress").css('width', 0);
+                },
+                xhr:function(){
+                    myXhr = $.ajaxSettings.xhr();
+                    if(myXhr.upload){ // check if upload property exists
+                        myXhr.upload.addEventListener('progress',function(e){
+                            var loaded = e.loaded;                  //已经上传大小情况
+                            var total = e.total;                      //附件总大小
+                            var percent = Math.floor(100*loaded/total)+"%";     //已经上传的百分比
+                            $("#progress").css('width', percent);
+                            $("#progress").html(percent)
+                        }, false); // for handling the progress of the upload
+                    }
+                    return myXhr;
+                },
+                success: function (data) {
+                    alert('上传完成')
+                    window.location.href="{{route("admin::media.index")}}";
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("服务器错误,请重新上传");
+                    //window.location.reload();
+                    $("#progress_bar").hide()
+                    data.deleteAll(); //清空formData
                 }
-            }else{
-                $("#category").css('max-height','');
-                $("#float .card").css('width','');
-                $("#float .card").css('position','');
-                $("#float .card").css('top','');
-            }
+            });
         }
+        $(document).ready(function () {
+            $("#progress_bar").hide()
+        })
     </script>
 @endsection
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{route('admin::post.index')}}">@lang('admin.posts')</a></li>
-    <li class="breadcrumb-item active">@lang('admin.new_post')</li>
+    <li class="breadcrumb-item"><a href="{{route('admin::media.index')}}">@lang('admin.media')</a></li>
+    <li class="breadcrumb-item active">@lang('admin.add')</li>
 @endsection
 
 @section('content')
     <div class="row">
         <div class="col-lg-12">
-            <h1>@lang('admin.new_post')</h1>
+            <h4>@lang('admin.add')</h4>
             <hr>
         </div>
         <!-- /.col-lg-12 -->
     </div>
-    <form role="form" method="post" action="{{route('admin::post.store')}}">
         <div class="row">
-            @csrf
-            <div class="col-md-8 col-xl-9">
-                <div class="form-group">
-                    <div class="col-sm-12">
-                        <input type="text" class="form-control" id="title" name="title"
-                               placeholder="请输入标题">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-12">
-                        <p class="mono url-slug">
-                            <label for="slug" class="sr-only">网址缩略名</label>
-                            <div class="mono url-slug">{!! $url !!}</div>
-                        </p>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-12" id="editor">
-                        <!-- 加载编辑器的容器 -->
-                        @component($editor_container)
-
-                        @endcomponent
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div style="text-align: right" class="col-sm-12">
-                        <button type="submit" class="btn btn-default" name="submit" value="save">保存但不发布</button>
-                        <button type="submit" class="btn btn-primary" name="submit" value="publish">发布文章</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 col-xl-3" id="float">
-                <div class="card">
-                    <div class="card-header">@lang('admin.category')</div>
+            <div class="col-12">
+                <div class="card" id="drag_upload">
                     <div class="card-body">
-                        <div id="category"></div>
+                        <ul class="list-group" style="text-align: center">
+                            <p>拖放文件到这里<br>或者 <a href="javascript:callUploads();">点击这里上传</a></p>
+                            <div class="progress" id="progress_bar">
+                                <div id="progress" class="progress-bar"></div>
+                            </div>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
-    </form>
+    <input type="file" id="laraword_upload_files" style="display:none;"/>
 @endsection

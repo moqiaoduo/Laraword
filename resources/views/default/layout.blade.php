@@ -20,6 +20,10 @@
 
     <!-- Styles -->
     <link href="{{ theme('css/app.css') }}" rel="stylesheet">
+
+    <style>
+        footer{text-align: center;margin-bottom: 20px;}
+    </style>
 </head>
 <body>
 <div id="app">
@@ -71,6 +75,10 @@
     <main class="py-4">
         @yield('content')
     </main>
+
+    <footer>
+        Powered by <a target="_blank" href="https://github.com/moqiaoduo/Laraword">Laraword</a>
+    </footer>
 </div>
 </body>
 </html>

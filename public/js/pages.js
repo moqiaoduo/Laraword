@@ -19,4 +19,5 @@ function float() {
         $("#float .Filelist").css('position','');
         $("#float .Filelist").css('top','');
     }
+    $("#progress_bar").hide()
 }

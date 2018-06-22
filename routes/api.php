@@ -23,3 +23,5 @@ Route::post('getAttachmentInfo','APIController@getAttachmentInfo')->name('getAtt
 
 Route::get('getPAttachment/{id}','APIController@getPAttachment')->name('getPAttachment');
 Route::post('getAttachmentUrl','APIController@getAttachmentUrl')->name('getAttachmentUrl');
+
+Route::get('getMediaPreview/{id}','APIController@getMediaPreview')->name('getMediaPreview');

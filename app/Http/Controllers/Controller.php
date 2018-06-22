@@ -12,6 +12,7 @@ use App\Post;
 use App\Media;
 use App\Meta;
 use DB;
+use Storage;
 
 class Controller extends BaseController
 {
@@ -47,7 +48,21 @@ EOT;
         $media->uid=$user->id;
         $media->type='attachment';
         $media->title=$title;
-        $media->content=json_encode(['filename'=>$filename,'description'=>"Created by {$user->name}"]);
+        $media->content=json_encode(['filename'=>$filename,'description'=>"Uploaded by {$user->name}"]);
+        $media->save();
+        return $media->cid;
+    }
+
+    protected function updateUploadRecord($id,$filename){
+        $user=request()->user();
+        $media=Content::find($id);
+        $media->uid=$user->id;
+        $media->type='attachment';
+        $t=json_decode($media->content,true);
+        $old_filename=$t['filename'];
+        $description=$t['description'];
+        Storage::disk('uploads')->delete($old_filename);
+        $media->content=json_encode(['filename'=>$filename,'description'=>$description]);
         $media->save();
         return $media->cid;
     }
@@ -59,4 +74,24 @@ EOT;
         }
     }
 
+    public function setMediaContent($path,$url){
+        $handle=finfo_open(FILEINFO_MIME_TYPE);
+        $mime=finfo_file($handle,$path);
+        $type=substr($mime,0,5);
+        finfo_close($handle);
+        $content='';
+        if($type=='image'){
+            $content='<img src="'.$url.'">';
+        }elseif($type=='video'){
+            $content='
+            <video src="'.$url.'" controls="controls">
+您的浏览器不支持 video 标签。
+</video>';
+        }elseif($type=='audio'){
+            $content='<audio src="'.$url.'" controls="controls">
+您的浏览器不支持 audio 标签。
+</audio>';
+        }
+        return $content;
+    }
 }

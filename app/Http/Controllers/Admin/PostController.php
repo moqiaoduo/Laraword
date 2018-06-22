@@ -35,6 +35,29 @@ class PostController extends Controller
         return view('admin.post.list')->with('data',$data)->with('info',$info)->with('alert',$alert);
     }
 
+    protected function updateCategory($cid,$category){
+        if(empty($category)) $category=[getSetting('default_category',0)];
+        $old=DB::table('relationships')->where('cid',$cid)->get();
+        if($old->count()>0){
+            foreach ($old as $key=>$val){
+                $s=array_search($val->mid,$category);
+                if($s===false){
+                    DB::table('relationships')->where('mid',$val->mid)->delete();
+                }else{
+                    unset($category[$s]);
+                }
+            }
+        }
+        foreach ($category as $val){
+            if($val>0) DB::table('relationships')->insert(["cid"=>$cid,"mid"=>$val]);
+        }
+    }
+
+    public function show($id){
+        $data=Content::where('type','post')->find($id);
+        return view('content')->with('data',$data);
+    }
+
     public function create(){
         $route=getSetting('route.post','/archive/{id}');
         $url=config('app.url').str_replace('{slug}',self::loadSlugInput(),$route);
@@ -60,6 +83,7 @@ class PostController extends Controller
         $post->save();
         $this->setSlaveFile($id,$files);
         $post->contentMeta()->sync($categories);
+        $this->updateCategoryCount();
         return redirect()->route('admin::post.index',['info'=>'文章已保存或发布','alert'=>'success']);
     }
 
@@ -75,6 +99,8 @@ class PostController extends Controller
         $draft=Content::where('type','post_draft')->where('parent',$id)->first();
         $route=getSetting('route.post','/archive/{id}');
         $url=config('app.url').str_replace('{slug}',self::loadSlugInput($data['slug']),$route);
+        $data['category']=$data->contentMeta()->first()['slug'];
+        $url=getCustomRoute($url,$data);
         if(!empty($draft)) $url=config('app.url').str_replace('{slug}',self::loadSlugInput($draft['slug']),$route);
         $url=str_replace('{id}',$id,$url);
         $editor=self::loadEditor();
@@ -109,6 +135,7 @@ class PostController extends Controller
         $post->save();
         $this->setSlaveFile($id,$files);
         $post->contentMeta()->sync($categories);
+        $this->updateCategoryCount();
         return redirect()->route('admin::post.edit',[$id,'info'=>'文章已保存或发布','alert'=>'success']);
     }
 

@@ -21,6 +21,6 @@ return [
     'created_at'=>'Created At',
     'selected_item'=>'Selected Item',
     'delete'=>'Delete',
-    'edit_post'=>'Edit Post',
+    'edit'=>'Edit',
     'status' => 'Status',
 ];

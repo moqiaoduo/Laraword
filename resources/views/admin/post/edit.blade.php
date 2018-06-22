@@ -2,6 +2,11 @@
 
 @section('title',__('admin.edit_post'))
 
+@php
+    if(empty($draft)) $title=$data['title'];
+    else $title=$draft['title'];
+@endphp
+
 @section('head')
     @include($head)
     <link rel="stylesheet" href="{{asset('css/post.css')}}">
@@ -84,7 +89,7 @@
                     <div class="col-sm-12">
                         <p class="mono url-slug">
                             <label for="slug" class="sr-only">网址缩略名</label>
-                            <div class="mono url-slug">{!! $url !!}</div>
+                            <div class="mono url-slug">{!! $url !!} <a target="_blank" href="{{route('admin::post.show',$data['cid'])}}">预览</a></div>
                         </p>
                     </div>
                 </div>
@@ -121,10 +126,15 @@
                             <div id="category"></div>
                         </div>
                     </div>
-                    <div class="card Filelist">
-                        <div class="card-header">@lang('admin.media') <div style="float: right"><a href="javascript:callUploads();"><span class="badge badge-success">添加附件</span></a></div></div>
+                    <div class="card Filelist" id="drag_upload">
+                        <div class="card-header">@lang('admin.media')
+                            <div style="float: right"><a href="javascript:callUploads();"><span class="badge badge-success">添加附件</span></a></div>
+                        </div>
                         <div class="card-body">
                             <ul class="list-group">
+                                <div class="progress" id="progress_bar">
+                                    <div id="progress" class="progress-bar"></div>
+                                </div>
                                 <div id="larawordFileList"></div>
                             </ul>
                         </div>

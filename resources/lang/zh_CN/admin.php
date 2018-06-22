@@ -21,6 +21,6 @@ return [
     'created_at'=>'创建时间',
     'selected_item'=>'选中项',
     'delete'=>'删除',
-    'edit_post'=>'编辑文章',
+    'edit'=>'编辑',
     'status' => '状态',
 ];

@@ -79,7 +79,7 @@
                                     <a href="{{route('admin::category.index',['parent'=>$v['mid']])}}">查看子分类</a>
                                 @endif
                             </td>
-                            <td>{{$v['count']}}</td>
+                            <td><a title="点击查看分类文章" href="{{route('admin::category.show',$v['mid'])}}">{{$v['count']}}</a></td>
                             <td>{{$v['created_at']}}</td>
                         </tr>
                     @endforeach

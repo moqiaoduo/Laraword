@@ -20,6 +20,7 @@ function float() {
         $("#float").css('position','');
         $("#float").css('top','');
     }
+    $("#progress_bar").hide()
 }
 function getChildNodeIdArr(node) {
     var ts = [];

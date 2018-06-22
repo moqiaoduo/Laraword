@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Category;
 use App\Meta;
 use DB;
+use App\Content;
+use App\User;
 
 class CategoryController extends Controller
 {
@@ -19,6 +21,22 @@ class CategoryController extends Controller
         }
         $breadcrumb=$this->getBreadCrumb($parent,true);
         return view('admin.category.list',['data'=>$data,'parent'=>$parent,'parent_parent'=>Meta::where('type','category')->find($parent),'info'=>$request->get('info'),'alert'=>$request->get('alert')])->with('breadcrumb',$breadcrumb);
+    }
+
+    public function show($id){
+        $data=Meta::find($id)->metaContent()->paginate(10);
+        foreach ($data as $key=>$val){
+            if(Content::where('type','post_draft')->where('parent',$val['cid'])->count()>0 || $val['type']=='post_draft') $data[$key]['title']='(草稿)'.$val['title'];
+            $data[$key]['author']=User::find($val['uid'])['name'];
+            $category=DB::table('relationships')->where('cid',$val['cid'])->get();
+            $t='';
+            foreach ($category as $k=>$v){
+                $meta=Meta::find($v->mid);
+                if($meta['type']=='category') $t.=$meta['name'].',';
+            }
+            $data[$key]['category']=substr($t,0,strlen($t)-1);
+        }
+        return view('admin.post.list',['info'=>null,'alert'=>null])->with('data',$data);
     }
 
     protected function getBreadCrumb($parent,$first=false){

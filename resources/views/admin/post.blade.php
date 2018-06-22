@@ -6,34 +6,12 @@
         opacity:0.5; -moz-opacity:0.5;
     }
 </style>
+<script src="{{asset('js/drag_upload.js')}}"></script>
 <script>
-    //兼容火狐、IE8
-    //显示遮罩层
-    function showMask(){
-        $("#mask").css("height",$(document).height());
-        $("#mask").css("width",$(document).width());
-        $("#mask").show();
-    }
-    //隐藏遮罩层
-    function hideMask(){
-
-        $("#mask").hide();
-    }
     function ajaxUpload() {
-        showMask()
-        var files = document.getElementById("laraword_upload_files").files; // js 获取文件对象
-        if (typeof (files[0]) == "undefined" || files[0].size <= 0) {
-            return;
-        }
-        var formFile = new FormData();
+        var data=Dragfiles(); //获取formData
+        data.append('_token','{{csrf_token()}}')
 
-        formFile.append("action", "UploadVMKImagePath");
-        for(i=0;i<files.length;i++){
-            formFile.append("file[]", files[i]); //加入文件对象
-        }
-        formFile.append("_token","{{csrf_token()}}");
-
-        var data = formFile;
         $.ajax({
             url: "{{route('admin::upload')}}",
             data: data,
@@ -42,12 +20,36 @@
             cache: false,//上传文件无需缓存
             processData: false,//用于对data参数进行序列化处理 这里必须false
             contentType: false, //必须
+            beforeSend :function () {
+                $("#progress_bar").show()
+                $("#progress").css('width', 0);
+            },
+            xhr:function(){
+                myXhr = $.ajaxSettings.xhr();
+                if(myXhr.upload){ // check if upload property exists
+                    myXhr.upload.addEventListener('progress',function(e){
+                        var loaded = e.loaded;                  //已经上传大小情况
+                        var total = e.total;                      //附件总大小
+                        var percent = Math.floor(100*loaded/total)+"%";     //已经上传的百分比
+                        $("#progress").css('width', percent);
+                        $("#progress").html(percent)
+                    }, false); // for handling the progress of the upload
+                }
+                return myXhr;
+            },
             success: function (result) {
+                data.deleteAll(); //清空formData
                 result.forEach(function(val){
                     addFiles(val)
-                    hideMask()
                 })
+                $("#progress_bar").hide()
             },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("服务器错误,请重新上传");
+                $("#progress_bar").hide()
+                data.deleteAll(); //清空formData
+                //window.location.reload();
+            }
         })
     }
     function addFiles(file) {
@@ -74,12 +76,10 @@
     }
     $(document).ready(function () {
         @if(!empty($data))
-        showMask()
         $.get("{{route('getPAttachment',$data['cid'])}}",function (data) {
             for(i=0;i<data.length;i++){
                 addFiles(data[i])
             }
-            hideMask()
         });
         @endif
     })

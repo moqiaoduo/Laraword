@@ -7,6 +7,7 @@ use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Content;
+use Storage;
 
 class MediaController extends Controller
 {
@@ -22,10 +23,7 @@ class MediaController extends Controller
     }
 
     public function create(){
-        $route=getSetting('route.page','/page/{slug}');
-        $url=config('app.url').str_replace('{slug}',self::loadSlugInput(),$route);
-        $editor=self::loadEditor();
-        return view('admin.media.create')->with('url',$url)->with('head',$editor[0])->with('editor_container',$editor[1])->with('js',$editor[2]);
+        return view('admin.media.create');
     }
 
     public function store(Request $request){
@@ -47,15 +45,18 @@ class MediaController extends Controller
     }
 
     public function edit(Request $request){
-        $id=$request->route('page');
+        $id=$request->route('medium');
         $info=$request->get('info');
         $alert=$request->get('alert');
         $data=Content::where('type','attachment')->find($id);
-        $route=getSetting('route.page','/archive/{id}');
-        $url=config('app.url').str_replace('{slug}',self::loadSlugInput($data['slug']),$route);
-        $url=str_replace('{id}',$id,$url);
-        $editor=self::loadEditor();
-        return view('admin.media.edit')->with('url',$url)->with('head',$editor[0])->with('editor_container',$editor[1])->with('js',$editor[2])->with('data',$data)->with('info',$info)->with('alert',$alert);
+        $t=json_decode($data['content'],true);
+        $data['filename']=$t['filename'];
+        $data['description']=$t['description'];
+        $disk=Storage::disk('uploads');
+        $data['size']=toSize($disk->size($t['filename']));
+        $url=$disk->url($t['filename']);
+        $media=$this->setMediaContent($disk->path($t['filename']),$url);
+        return view('admin.media.edit')->with('url',$url)->with('data',$data)->with('info',$info)->with('alert',$alert)->with('media',$media);
     }
 
     public function update(Request $request){

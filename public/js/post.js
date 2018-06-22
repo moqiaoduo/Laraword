@@ -16,12 +16,18 @@ Array.prototype.remove = function(val) {
         this.splice(index, 1);
     }
 };
-function callUploads(){
-    document.getElementById("laraword_upload_files").click();
-}
-$("#laraword_upload_files").change(function () {
-    ajaxUpload()
+$("#laraword_upload_files").change(function (e) {
+    var list=e.target.files;
+    for(i=0;i<list.length;i++){
+        addUploadFile(list[i])
+    }
 })
+container.ondrop = function (e) {
+    var list = e.dataTransfer.files;
+    for(i=0;i<list.length;i++){
+        addUploadFile(list[i])
+    }
+};
 var HtmlUtil = {
     /*1.用浏览器内部转换器实现html转码*/
     htmlEncode:function (html){

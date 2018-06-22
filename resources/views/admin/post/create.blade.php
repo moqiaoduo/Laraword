@@ -97,10 +97,13 @@
                             <div id="category"></div>
                         </div>
                     </div>
-                    <div class="card Filelist">
+                    <div class="card Filelist" id="drag_upload">
                         <div class="card-header">@lang('admin.media') <div style="float: right"><a href="javascript:callUploads();"><span class="badge badge-success">添加附件</span></a></div></div>
                         <div class="card-body">
                             <ul class="list-group">
+                                <div class="progress" id="progress_bar">
+                                    <div id="progress" class="progress-bar"></div>
+                                </div>
                                 <div id="larawordFileList"></div>
                             </ul>
                         </div>

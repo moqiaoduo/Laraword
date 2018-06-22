@@ -25,6 +25,11 @@ class PageController extends Controller
         return view('admin.page.list')->with('data',$data)->with('info',$info)->with('alert',$alert);
     }
 
+    public function show($id){
+        $data=Content::where('type','page')->find($id);
+        return view('content')->with('data',$data);
+    }
+
     public function create(){
         $route=getSetting('route.page','/page/{slug}');
         $url=config('app.url').str_replace('{slug}',self::loadSlugInput(),$route);
