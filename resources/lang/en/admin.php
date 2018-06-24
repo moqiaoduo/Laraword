@@ -22,5 +22,6 @@ return [
     'selected_item'=>'Selected Item',
     'delete'=>'Delete',
     'edit'=>'Edit',
+    'edit_post'=>'Edit Post',
     'status' => 'Status',
 ];

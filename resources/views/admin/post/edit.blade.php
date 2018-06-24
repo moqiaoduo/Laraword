@@ -1,11 +1,11 @@
 @extends('admin.layout')
 
-@section('title',__('admin.edit_post'))
-
 @php
     if(empty($draft)) $title=$data['title'];
     else $title=$draft['title'];
 @endphp
+
+@section('title',__('admin.edit').$title)
 
 @section('head')
     @include($head)
@@ -62,7 +62,7 @@
     @endif
     <div class="row">
         <div class="col-lg-12">
-            <h1>@lang('admin.edit_post')
+            <h1>@lang('admin.edit') {{$title}}
                 <span style="font-size: 15px">
                     @if(!empty($draft))
                         您正在编辑的是该文章的草稿
@@ -82,7 +82,7 @@
                 <div class="form-group">
                     <div class="col-sm-12">
                         <input type="text" class="form-control" id="title" name="title"
-                               placeholder="请输入标题" value="@if(empty($draft)){{$data['title']}}@else{{$draft['title']}}@endif">
+                               placeholder="请输入标题" value="{{$title}}">
                     </div>
                 </div>
                 <div class="form-group">
@@ -108,10 +108,10 @@
                 <div class="form-group">
                     <div style="text-align: right" class="col-sm-12">
                         <button type="submit" class="btn btn-default" name="submit" value="save">
-                            @if($data['status']==0)
-                                保存草稿
+                            @if($data['type']=='post_draft')
+                                保存但不发布
                             @else
-                            保存但不发布
+                                保存草稿
                             @endif
                         </button>
                         <button type="submit" class="btn btn-primary" name="submit" value="publish">发布文章</button>

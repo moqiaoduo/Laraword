@@ -26,24 +26,6 @@ class MediaController extends Controller
         return view('admin.media.create');
     }
 
-    public function store(Request $request){
-        $submit=$request->post('submit');
-        $files=json_decode($request->post('files'),true);
-        $title=$request->post('title');
-        $slug=$request->post('slug');
-        $page=new Content;
-        $page->uid=$request->user()->id;
-        $page->title=$title;
-        $page->type='attachment';
-        $page->content=$request->post('content');
-        if(empty($slug)) $slug=str_replace(' ', '', $title);
-        $page->slug=$slug;
-        if($submit=='publish') $page->status=0;
-        elseif($submit=='save') $page->status=1;
-        $page->save();
-        return redirect()->route('admin::media.index',['info'=>'页面已保存或发布','alert'=>'success']);
-    }
-
     public function edit(Request $request){
         $id=$request->route('medium');
         $info=$request->get('info');
@@ -60,30 +42,30 @@ class MediaController extends Controller
     }
 
     public function update(Request $request){
-        $submit=$request->post('submit');
         $slug=$request->post('slug');
-        $files=json_decode($request->post('files'),true);
-        $id=$request->route('page');
+        $id=$request->route('medium');
         $title=$request->post('title');
         if(empty($slug)) $slug=str_replace(' ', '', $title);
-        $content=$request->post('content');
-        $uid=$request->user()->id;
         $page=Content::where('type','attachment')->find($id);
         $page->slug=$slug;
-        $page->files=$files;
         $page->title=$title;
-        $page->content=$content;
+        $page->uid=$request->user()->id;
+        $page->content=json_encode(["filename"=>json_decode($page->content,true)['filename'],"description"=>$request->post('description')]);
         $page->save();
         return redirect()->route('admin::media.edit',[$id,'info'=>'页面已保存或发布','alert'=>'success']);
     }
 
     public function destroy(Request $request){
-        Content::destroy($request->route('page'));
+        Content::destroy($request->route('medium'));
         return redirect()->route('admin::media.index');
     }
 
     public function delete(Request $request){
-        Content::destroy($request->post('del'));
+        $data=Content::findMany($request->post('del'));
+        foreach ($data as $val){
+            $val->delete();
+            Storage::disk('uploads')->delete(json_decode($val['content'],true)['filename']);
+        }
         return redirect()->route('admin::media.index');
     }
 }

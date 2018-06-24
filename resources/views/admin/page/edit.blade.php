@@ -5,7 +5,7 @@
     else $title=$draft['title'];
 @endphp
 
-@section('title',__('admin.edit_page'))
+@section('title',__('admin.edit').$title)
 
 @section('head')
     @include($head)
@@ -30,7 +30,7 @@
     @endif
     <div class="row">
         <div class="col-lg-12">
-            <h1>@lang('admin.edit_page')
+            <h1>@lang('admin.edit') {{$title}}
                 <span style="font-size: 15px">
                     @if(!empty($draft))
                         您正在编辑的是该页面的草稿
