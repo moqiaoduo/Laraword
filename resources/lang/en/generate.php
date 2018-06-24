@@ -4,5 +4,6 @@ return [
     'login' => 'Login',
     'register' => 'Register',
     'logout' => 'Logout',
-    'cancel'=>'Cancel'
+    'cancel'=>'Cancel',
+    'home'=>"Home",
 ];

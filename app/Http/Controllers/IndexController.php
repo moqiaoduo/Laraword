@@ -2,13 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Post;
-use App\Category;
-use App\Page;
 use App\Content;
-use DB;
 use App\Meta;
+use Illuminate\Http\Request;
 
 class IndexController extends Controller
 {
@@ -36,18 +32,16 @@ class IndexController extends Controller
         $showArticleList=getSetting('showArticleList',true);
         if($request->getRequestUri()==$articles && $indexPage>0 && $showArticleList){
             $data=Content::where('type','post')->whereIn('status',[0,3])->paginate(10);
-            $cr=getSetting('route.category','/category/{slug}');
-            $data=$this->contentDealWith($cr,$data);
+            $data=$this->contentDealWith($category,$data);
             return view('articles')->with('data',$data)->with('route',$post);
         }
         if(empty($request->route()->parameters)){
             if($indexPage>0){
                 $data=$this->getContent(["id"=>$indexPage],'page');
-                if(!empty($data)) return view('content')->with('data',$data)->with('route',$page);
+                if(!empty($data)) return view('content')->with('data',$data);
             }else{
                 $data=Content::where('type','post')->whereIn('status',[0,3])->paginate(10);
-                $cr=getSetting('route.category','/category/{slug}');
-                $data=$this->contentDealWith($cr,$data);
+                $data=$this->contentDealWith($category,$data);
                 return view('articles')->with('data',$data)->with('route',$post);
             }
         }

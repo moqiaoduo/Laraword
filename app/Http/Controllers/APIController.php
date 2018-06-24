@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Page;
+use App\Content;
 use Illuminate\Http\Request;
 use Storage;
-use App\Media;
-use App\Post;
-use App\Content;
 
 class APIController extends Controller
 {
@@ -16,21 +13,7 @@ class APIController extends Controller
         $arr_return=[];
         foreach ($files as $val){
             if ($val->isValid()) {
-                // 获取文件相关信息
-                $originalName = $val->getClientOriginalName(); // 文件原名
-                $ext = $val->getClientOriginalExtension();     // 扩展名
-                $realPath = $val->getRealPath();   //临时文件的绝对路径
-                $type = $val->getClientMimeType();     // image/jpeg
-
-                // 上传文件
-                $filename = date('YmdHis') . '_' . uniqid() . '.' . $ext;
-                // 使用我们新建的uploads本地存储空间（目录）
-                //这里的uploads是配置文件的名称
-                $bool = $val->move(public_path('uploads'),$filename);
-                if($bool){
-                    $id=$this->insertUploadRecord($originalName,$filename);
-                    array_push($arr_return,["state"=>"SUCCESS","url"=>$filename,"original"=>$originalName,"title"=>$originalName,"id"=>$id]);
-                }
+                array_push($arr_return,$this->addOrUpdateFile($val));
             }
         }
         return $arr_return;
@@ -41,21 +24,28 @@ class APIController extends Controller
         $id=$request->route('id');
         $arr_return=[];
         if ($file->isValid()) {
-            // 获取文件相关信息
-            $originalName = $file->getClientOriginalName(); // 文件原名
-            $ext = $file->getClientOriginalExtension();     // 扩展名
-            $realPath = $file->getRealPath();   //临时文件的绝对路径
-            $type = $file->getClientMimeType();     // image/jpeg
+            $arr_return=$this->addOrUpdateFile($file,'update',$id);
+        }
+        return $arr_return;
+    }
 
-            // 上传文件
-            $filename = date('YmdHis') . '_' . uniqid() . '.' . $ext;
-            // 使用我们新建的uploads本地存储空间（目录）
-            //这里的uploads是配置文件的名称
-            $bool = $file->move(public_path('uploads'),$filename);
-            if($bool){
-                $id=$this->updateUploadRecord($id,$filename);
-                array_push($arr_return,["state"=>"SUCCESS","url"=>$filename,"original"=>$originalName,"title"=>$originalName,"id"=>$id]);
-            }
+    protected function addOrUpdateFile($val,$method='add',$id=0){
+        // 获取文件相关信息
+        $originalName = $val->getClientOriginalName(); // 文件原名
+        $ext = $val->getClientOriginalExtension();     // 扩展名
+        $realPath = $val->getRealPath();   //临时文件的绝对路径
+        $type = $val->getClientMimeType();     // image/jpeg
+
+        // 上传文件
+        $filename = date('YmdHis') . '_' . uniqid() . '.' . $ext;
+        // 使用我们新建的uploads本地存储空间（目录）
+        //这里的uploads是配置文件的名称
+        $bool = $val->move(public_path('uploads'),$filename);
+        $arr_return=["state"=>"FAIL","id"=>$id,"url"=>$filename,"origin"=>$originalName,"title"=>$originalName];
+        if($bool){
+            if($method=='add') $id=$this->insertUploadRecord($originalName,$filename);
+            else $id=$this->updateUploadRecord($id,$filename);
+            $arr_return['id']=$id;$arr_return['state']="SUCCESS";
         }
         return $arr_return;
     }

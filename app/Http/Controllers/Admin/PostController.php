@@ -4,10 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Post;
-use App\Category;
 use App\User;
-use App\Draft;
 use App\Content;
 use App\Meta;
 use DB;
