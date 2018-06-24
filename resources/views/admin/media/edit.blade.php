@@ -55,6 +55,7 @@
                     $.getJSON("{{route('getMediaPreview',$data['cid'])}}",function (json) {
                         $("#media-preview").html(json.media)
                         $("#media_url").val(json.url)
+                        $("#file_size").html(json.size)
                     })
                     $("#progress_bar").hide()
                 },
@@ -94,7 +95,7 @@
             @csrf
             <div class="col-md-6 col-xl-7">
                 <p id="media-preview">{!! $media !!}</p>
-                <p><a href="{{route('admin::media.show',$data['cid'])}}">{{$data['title']}}</a> {{$data['size']}}</p>
+                <p><a href="{{route('admin::media.show',$data['cid'])}}">{{$data['title']}}</a> <span id="file_size">{{$data['size']}}</span></p>
                 <p><input readonly value="{{$url}}" class="form-control" id="media_url"></p>
                 <div class="card" id="drag_upload">
                     <div class="card-body">

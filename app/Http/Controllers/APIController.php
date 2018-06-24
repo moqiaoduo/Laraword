@@ -91,6 +91,6 @@ class APIController extends Controller
         $data=Content::where('type','attachment')->find($id);
         $filename=json_decode($data['content'],true)['filename'];
         $d=Storage::disk('uploads');
-        return ["media"=>$this->setMediaContent($d->path($filename),$d->url($filename)),"url"=>$d->url($filename)];
+        return ["media"=>$this->setMediaContent($d->path($filename),$d->url($filename)),"url"=>$d->url($filename),"size"=>tosize($d->size($filename))];
     }
 }
