@@ -9,25 +9,26 @@ use Illuminate\Http\Request;
 class IndexController extends Controller
 {
     public function index(Request $request){
-        $post=getSetting('route.post','/archive/{id}');
+        $routeTable=json_decode(getSetting('routeTable'),true);
+        $post=getCustomUri($routeTable,'post');
         $params1=$this->matchRoute($request->getRequestUri(),$post,$request->route()->parameters);
         if(!empty($params1)){
             $data=$this->getContent($params1);
             if(!empty($data)) return view('content')->with('data',$data);
         }
-        $page=getSetting('route.page','/page/{slug}');
+        $page=getCustomUri($routeTable,'page');
         $params2=$this->matchRoute($request->getRequestUri(),$page,$request->route()->parameters);
         if(!empty($params2)){
             $data=$this->getContent($params2,'page');
             if(!empty($data)) return view('content')->with('data',$data);
         }
-        $category=getSetting('route.category','/category/{slug}');
+        $category=getCustomUri($routeTable,'category');
         $params3=$this->matchRoute($request->getRequestUri(),$category,$request->route()->parameters);
         if(!empty($params3)){
             $data=$this->getMetaPost($category,$params3);
             if(!empty($data)) return view('articles')->with('data',$data['data'])->with('category',$data['category'])->with('route',$post);
         }
-        $articles=getSetting('route.articleList','/articles');
+        $articles=getCustomUri($routeTable,'articleList');
         $indexPage=getSetting('indexPage',0);
         $showArticleList=getSetting('showArticleList',true);
         if($request->getRequestUri()==$articles && $indexPage>0 && $showArticleList){
