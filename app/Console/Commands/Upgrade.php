@@ -47,6 +47,7 @@ class Upgrade extends Command
         }
 
         if($continue){
+            $class="\App\Upgrade\\".$class;
             (new $class)->run();
             $this->info($class."的更新已经完成");
             DB::table('upgrade_record')->insert(["class"=>$class]);
