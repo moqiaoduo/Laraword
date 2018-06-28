@@ -26,54 +26,74 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="@lang('admin.dashboard')">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="@lang('Dashboard')">
                 <a class="nav-link" href="{{route('admin::index')}}">
                     <i class="fa fa-fw fa-dashboard"></i>
-                    <span class="nav-link-text">@lang('admin.dashboard')</span>
+                    <span class="nav-link-text">@lang('Dashboard')</span>
                 </a>
             </li>
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="@lang('admin.posts')">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="@lang('Posts')">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#posts" data-parent="#posts">
-                    <i class="fa fa-fw fa-wrench"></i>
-                    <span class="nav-link-text">@lang('admin.posts')</span>
+                    <i class="fa fa-fw fa-book"></i>
+                    <span class="nav-link-text">@lang('Posts')</span>
                 </a>
                 <ul class="sidenav-second-level collapse" id="posts">
                     <li>
-                        <a href="{{route('admin::post.index')}}">@lang('admin.all_posts')</a>
+                        <a href="{{route('admin::post.index')}}">@lang('All Posts')</a>
                     </li>
                     <li>
-                        <a href="{{route('admin::post.create')}}">@lang('admin.new_post')</a>
+                        <a href="{{route('admin::post.create')}}">@lang('Write Post')</a>
                     </li>
                     <li>
-                        <a href="{{route('admin::category.index')}}">@lang('admin.category')</a>
+                        <a href="{{route('admin::category.index')}}">@lang('Category')</a>
                     </li>
                 </ul>
             </li>
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="@lang('admin.media')">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="@lang('Media')">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#media" data-parent="#media">
-                    <i class="fa fa-fw fa-wrench"></i>
-                    <span class="nav-link-text">@lang('admin.media')</span>
+                    <i class="fa fa-fw fa-medium"></i>
+                    <span class="nav-link-text">@lang('Media')</span>
                 </a>
                 <ul class="sidenav-second-level collapse" id="media">
                     <li>
-                        <a href="{{route('admin::media.index')}}">@lang('admin.media_library')</a>
+                        <a href="{{route('admin::media.index')}}">@lang('Media Library')</a>
                     </li>
                     <li>
-                        <a href="{{route('admin::media.create')}}">@lang('admin.add')</a>
+                        <a href="{{route('admin::media.create')}}">@lang('Add')</a>
                     </li>
                 </ul>
             </li>
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="@lang('Pages')">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#page" data-parent="#page">
-                    <i class="fa fa-fw fa-wrench"></i>
-                    <span class="nav-link-text">@lang('admin.page')</span>
+                    <i class="fa fa-fw fa-file"></i>
+                    <span class="nav-link-text">@lang('Pages')</span>
                 </a>
                 <ul class="sidenav-second-level collapse" id="page">
                     <li>
-                        <a href="{{route('admin::page.index')}}">@lang('admin.all_pages')</a>
+                        <a href="{{route('admin::page.index')}}">@lang('All Pages')</a>
                     </li>
                     <li>
-                        <a href="{{route('admin::page.create')}}">@lang('admin.new_page')</a>
+                        <a href="{{route('admin::page.create')}}">@lang('New Page')</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="@lang('Settings')">
+                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#settings" data-parent="#settings">
+                    <i class="fa fa-fw fa-wrench"></i>
+                    <span class="nav-link-text">@lang('Settings')</span>
+                </a>
+                <ul class="sidenav-second-level collapse" id="settings">
+                    <li>
+                        <a href="{{route('admin::page.index')}}">@lang('Generic')</a>
+                    </li>
+                    <li>
+                        <a href="{{route('admin::page.create')}}">@lang('Read')</a>
+                    </li>
+                    <li>
+                        <a href="{{route('admin::page.create')}}">@lang('Comments')</a>
+                    </li>
+                    <li>
+                        <a href="{{route('admin::page.create')}}">@lang('Links')</a>
                     </li>
                 </ul>
             </li>
@@ -93,11 +113,11 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{route('main')}}" target="_blank">{{ __('generate.home') }}</a>
+                <a class="nav-link" href="{{route('main')}}" target="_blank">{{ __('Home') }}</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-toggle="modal" data-target="#logoutModal">
-                    <i class="fa fa-fw fa-sign-out"></i>{{ __('generate.logout') }}</a>
+                    <i class="fa fa-fw fa-sign-out"></i>{{ __('Logout') }}</a>
             </li>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                 @csrf
@@ -110,7 +130,7 @@
         <!-- Breadcrumbs-->
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{route('admin::index')}}">@lang('admin.dashboard')</a>
+                <a href="{{route('admin::index')}}">@lang('Dashboard')</a>
             </li>
             @yield('breadcrumb')
         </ol>
@@ -134,18 +154,18 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">@lang('generate.logout')</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">@lang('Logout')</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
                 <div class="modal-body">@lang('message.ready_to_logout')</div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">@lang('generate.cancel')</button>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">@lang('Cancel')</button>
                     <a class="btn btn-primary" href="{{ route('logout') }}"
                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                        {{ __('generate.logout') }}
+                        {{ __('Logout') }}
                     </a>
                 </div>
             </div>

@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title',__('admin.posts'))
+@section('title',__('Posts'))
 
 @section('js')
     <script>
@@ -23,7 +23,7 @@
 @endsection
 
 @section('breadcrumb')
-    <li class="breadcrumb-item active">@lang('admin.posts')</li>
+    <li class="breadcrumb-item active">@lang('Posts')</li>
 @endsection
 
 @section('content')
@@ -32,7 +32,7 @@
     @endif
     <div class="row">
         <div class="col-lg-12">
-            <h1>@lang('admin.posts')</h1>
+            <h1>@lang('All Posts')</h1>
             <hr>
         </div>
     </div>
@@ -42,12 +42,12 @@
                 @csrf
                 <div class="dropdown">
                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                        @lang('admin.selected_item')
+                        @lang('Selected Items')
                     </button>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="javascript:document.operations.submit();">@lang('admin.delete')</a>
+                        <a class="dropdown-item" href="javascript:document.operations.submit();">@lang('Delete')</a>
                     </div>
-                    <a href="{{route('admin::post.create')}}" class="btn btn-success" style="margin-left: 5px;">@lang('admin.new_post')</a>
+                    <a href="{{route('admin::post.create')}}" class="btn btn-success" style="margin-left: 5px;">@lang('Add')</a>
                 </div>
                 <div class="row"><br></div>
             <table width="100%" class="table">
@@ -58,11 +58,11 @@
                             <input type="checkbox" id="all">
                         @endif
                     </th>
-                    <th>@lang('admin.title')</th>
-                    <th>@lang('admin.status')</th>
-                    <th>@lang('admin.author')</th>
-                    <th>@lang('admin.category')</th>
-                    <th>@lang('admin.created_at')</th>
+                    <th>@lang('Title')</th>
+                    <th>@lang('Status')</th>
+                    <th>@lang('Author')</th>
+                    <th>@lang('Category')</th>
+                    <th>@lang('Created At')</th>
                 </tr>
                 </thead>
                 <tbody>

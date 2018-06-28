@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title',__('admin.media'))
+@section('title',__('Media'))
 
 @section('js')
     <script>
@@ -23,7 +23,7 @@
 @endsection
 
 @section('breadcrumb')
-    <li class="breadcrumb-item active">@lang('admin.media')</li>
+    <li class="breadcrumb-item active">@lang('Media')</li>
 @endsection
 
 @section('content')
@@ -32,7 +32,7 @@
     @endif
     <div class="row">
         <div class="col-lg-12">
-            <h1>@lang('admin.media')</h1>
+            <h1>@lang('Media Library')</h1>
             <hr>
         </div>
     </div>
@@ -42,12 +42,12 @@
                 @csrf
                 <div class="dropdown">
                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                        @lang('admin.selected_item')
+                        @lang('Selected Items')
                     </button>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="javascript:document.operations.submit();">@lang('admin.delete')</a>
+                        <a class="dropdown-item" href="javascript:document.operations.submit();">@lang('Delete')</a>
                     </div>
-                    <a href="{{route('admin::media.create')}}" class="btn btn-success" style="margin-left: 5px;">@lang('admin.add')</a>
+                    <a href="{{route('admin::media.create')}}" class="btn btn-success" style="margin-left: 5px;">@lang('Add')</a>
                 </div>
                 <div class="row"><br></div>
             <table width="100%" class="table">
@@ -58,10 +58,10 @@
                             <input type="checkbox" id="all">
                         @endif
                     </th>
-                    <th>@lang('admin.title')</th>
-                    <th>@lang('admin.uploader')</th>
-                    <th>@lang('admin.slave_article')</th>
-                    <th>@lang('admin.uploaded_at')</th>
+                    <th>@lang('Title')</th>
+                    <th>@lang('Uploader')</th>
+                    <th>@lang('Slave Article')</th>
+                    <th>@lang('Uploaded At')</th>
                 </tr>
                 </thead>
                 <tbody>

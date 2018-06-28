@@ -70,14 +70,14 @@
 @endsection
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{route('admin::media.index')}}">@lang('admin.media')</a></li>
-    <li class="breadcrumb-item active">@lang('admin.add')</li>
+    <li class="breadcrumb-item"><a href="{{route('admin::media.index')}}">@lang('Media')</a></li>
+    <li class="breadcrumb-item active">@lang('Add')</li>
 @endsection
 
 @section('content')
     <div class="row">
         <div class="col-lg-12">
-            <h4>@lang('admin.add')</h4>
+            <h4>@lang('Add')</h4>
             <hr>
         </div>
         <!-- /.col-lg-12 -->

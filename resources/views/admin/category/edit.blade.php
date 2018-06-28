@@ -1,6 +1,8 @@
 @extends('admin.layout')
 
-@section('title',__('admin.edit_category'))
+@php($title=$data['name'])
+
+@section('title',__('admin.Edit').$title)
 
 @section('head')
     <style>
@@ -10,7 +12,7 @@
 
 @section('breadcrumb')
     {!! $breadcrumb !!}
-    <li class="breadcrumb-item active">@lang('admin.edit_category')</li>
+    <li class="breadcrumb-item active">@lang('Edit Category')</li>
 @endsection
 
 @section('content')
@@ -19,7 +21,7 @@
     @endif
     <div class="row">
         <div class="col-lg-12">
-            <h1>@lang('admin.edit_category')</h1>
+            <h1>@lang('Edit Category')</h1>
             <hr>
         </div>
         <!-- /.col-lg-12 -->
@@ -33,7 +35,7 @@
                     <div class="col-sm-12">
                         <label for="title">分类名称 *</label>
                             <input type="text" class="form-control" id="title" name="title"
-                                   placeholder="请输入名称" value="{{$data['name']}}">
+                                   placeholder="请输入名称" value="{{$title}}">
                     </div>
                 </div>
                 <div class="form-group">

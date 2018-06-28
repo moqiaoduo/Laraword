@@ -21,7 +21,7 @@
                     <div class="card-body-icon">
                         <i class="fa fa-fw fa-comments"></i>
                     </div>
-                    <div class="mr-5">123 {{__('admin.new_comments')}}</div>
+                    <div class="mr-5">{{__('admin.new_comments',["num"=>"123"])}}</div>
                 </div>
                 <a class="card-footer text-white clearfix small z-1" href="#">
                     <span class="float-left">View Details</span>
@@ -37,7 +37,7 @@
                     <div class="card-body-icon">
                         <i class="fa fa-fw fa-list"></i>
                     </div>
-                    <div class="mr-5">123 {{__('admin.new_visitors')}}</div>
+                    <div class="mr-5">{{__('admin.new_visitors',["num"=>"123"])}}</div>
                 </div>
                 <a class="card-footer text-white clearfix small z-1" href="#">
                     <span class="float-left">View Details</span>
@@ -53,7 +53,7 @@
                     <div class="card-body-icon">
                         <i class="fa fa-fw fa-shopping-cart"></i>
                     </div>
-                    <div class="mr-5">123 {{__('admin.new_users')}}</div>
+                    <div class="mr-5">{{__('admin.new_users',["num"=>"123"])}}</div>
                 </div>
                 <a class="card-footer text-white clearfix small z-1" href="#">
                     <span class="float-left">View Details</span>

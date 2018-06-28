@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title',__('admin.new_category'))
+@section('title',__('New Category'))
 
 @section('head')
     <style>
@@ -9,14 +9,14 @@
 @endsection
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{route('admin::category.index')}}">@lang('admin.category')</a></li>
-    <li class="breadcrumb-item active">@lang('admin.new_category')</li>
+    <li class="breadcrumb-item"><a href="{{route('admin::category.index')}}">@lang('Category')</a></li>
+    <li class="breadcrumb-item active">@lang('New Category')</li>
 @endsection
 
 @section('content')
     <div class="row">
         <div class="col-lg-12">
-            <h1>@lang('admin.new_category')</h1>
+            <h1>@lang('New Category')</h1>
             <hr>
         </div>
         <!-- /.col-lg-12 -->

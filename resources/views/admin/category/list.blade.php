@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title',__('admin.category'))
+@section('title',__('Category'))
 
 @section('js')
     <script>
@@ -32,7 +32,7 @@
     @endif
     <div class="row">
         <div class="col-lg-12">
-            <h1>@lang('admin.category')</h1>
+            <h1>@lang('Category')</h1>
             <hr>
         </div>
     </div>
@@ -42,16 +42,16 @@
                 @csrf
                 <div class="dropdown">
                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                        @lang('admin.selected_item')
+                        @lang('Selected Items')
                     </button>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="javascript:document.operations.submit();">@lang('admin.delete')</a>
+                        <a class="dropdown-item" href="javascript:document.operations.submit();">@lang('Delete')</a>
                     </div>
-                    <a href="{{route('admin::category.create')}}" class="btn btn-success" style="margin-left: 5px;">@lang('admin.add')</a>
+                    <a href="{{route('admin::category.create')}}" class="btn btn-success" style="margin-left: 5px;">@lang('Add')</a>
                 </div>
                 <div class="row"><br></div>
                 @if($parent>0)
-                    <a href="{{route('admin::category.index',['parent'=>$parent_parent['parent']])}}" class="btn btn-success" style="margin-left: 5px;">&lt; @lang('admin.back')</a><div class="row"><br></div>
+                    <a href="{{route('admin::category.index',['parent'=>$parent_parent['parent']])}}" class="btn btn-success" style="margin-left: 5px;">&lt; @lang('Back')</a><div class="row"><br></div>
                 @endif
                 <table width="100%" class="table">
                     <thead>
@@ -61,11 +61,11 @@
                                 <input type="checkbox" id="all">
                             @endif
                         </th>
-                        <th>@lang('admin.title')</th>
-                        <th>@lang('admin.slug')</th>
-                        <th>@lang('admin.sub')</th>
-                        <th>@lang('admin.count')</th>
-                        <th>@lang('admin.created_at')</th>
+                        <th>@lang('Title')</th>
+                        <th>@lang('Slug')</th>
+                        <th>@lang('Sub Category')</th>
+                        <th>@lang('Count')</th>
+                        <th>@lang('Created At')</th>
                     </tr>
                     </thead>
                     <tbody>

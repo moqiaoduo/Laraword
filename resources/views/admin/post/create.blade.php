@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title',__('admin.new_post'))
+@section('title',__('Write Post'))
 
 @section('head')
     @include($head)
@@ -43,14 +43,14 @@
 @endsection
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{route('admin::post.index')}}">@lang('admin.posts')</a></li>
-    <li class="breadcrumb-item active">@lang('admin.new_post')</li>
+    <li class="breadcrumb-item"><a href="{{route('admin::post.index')}}">@lang('Posts')</a></li>
+    <li class="breadcrumb-item active">@lang('Write Post')</li>
 @endsection
 
 @section('content')
     <div class="row">
         <div class="col-lg-12">
-            <h1>@lang('admin.new_post')</h1>
+            <h1>@lang('Write Post')</h1>
             <hr>
         </div>
         <!-- /.col-lg-12 -->
@@ -92,13 +92,13 @@
             <div class="col-md-4 col-xl-3 float">
                 <div id="float">
                     <div class="card category">
-                        <div class="card-header">@lang('admin.category')</div>
+                        <div class="card-header">@lang('Category')</div>
                         <div class="card-body">
                             <div id="category"></div>
                         </div>
                     </div>
                     <div class="card Filelist" id="drag_upload">
-                        <div class="card-header">@lang('admin.media') <div style="float: right"><a href="javascript:callUploads();"><span class="badge badge-success">添加附件</span></a></div></div>
+                        <div class="card-header">@lang('Media') <div style="float: right"><a href="javascript:callUploads();"><span class="badge badge-success">添加附件</span></a></div></div>
                         <div class="card-body">
                             <ul class="list-group">
                                 <div class="progress" id="progress_bar">

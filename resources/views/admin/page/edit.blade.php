@@ -5,7 +5,7 @@
     else $title=$draft['title'];
 @endphp
 
-@section('title',__('admin.edit').$title)
+@section('title',__('Edit').$title)
 
 @section('head')
     @include($head)
@@ -20,8 +20,8 @@
 @endsection
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{route('admin::page.index')}}">@lang('admin.page')</a></li>
-    <li class="breadcrumb-item active">@lang('admin.edit_page')</li>
+    <li class="breadcrumb-item"><a href="{{route('admin::page.index')}}">@lang('Pages')</a></li>
+    <li class="breadcrumb-item active">@lang('Edit Page')</li>
 @endsection
 
 @section('content')
@@ -30,7 +30,7 @@
     @endif
     <div class="row">
         <div class="col-lg-12">
-            <h1>@lang('admin.edit') {{$title}}
+            <h1>@lang('Edit') {{$title}}
                 <span style="font-size: 15px">
                     @if(!empty($draft))
                         您正在编辑的是该页面的草稿
@@ -88,7 +88,7 @@
             </div>
             <div class="col-md-4 col-xl-3" id="float">
                 <div class="card Filelist" id="drag_upload">
-                    <div class="card-header">@lang('admin.media') <div style="float: right"><a href="javascript:callUploads();"><span class="badge badge-success">添加附件</span></a></div></div>
+                    <div class="card-header">@lang('Media') <div style="float: right"><a href="javascript:callUploads();"><span class="badge badge-success">添加附件</span></a></div></div>
                     <div class="card-body">
                         <ul class="list-group">
                             <div class="progress" id="progress_bar">

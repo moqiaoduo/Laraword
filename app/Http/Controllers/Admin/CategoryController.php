@@ -48,8 +48,8 @@ class CategoryController extends Controller
             $html=$t.$html;
             $html=$this->getBreadCrumb($data['parent']).$html;
         }else{
-            if($first) $t="<li class=\"breadcrumb-item {$active}\">".__('admin.category')."</li>";
-            else $t="<li class=\"breadcrumb-item {$active}\"><a href=\"".route('admin::category.index')."\">".__('admin.category')."</a></li>";
+            if($first) $t="<li class=\"breadcrumb-item {$active}\">".__('Category')."</li>";
+            else $t="<li class=\"breadcrumb-item {$active}\"><a href=\"".route('admin::category.index')."\">".__('Category')."</a></li>";
             $html=$t.$html;
         }
         return $html;

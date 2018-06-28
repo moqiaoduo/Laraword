@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title',__('admin.edit').$data['title'])
+@section('title',__('Edit').$data['title'])
 
 @section('head')
     <style>
@@ -74,8 +74,8 @@
 @endsection
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{route('admin::media.index')}}">@lang('admin.media')</a></li>
-    <li class="breadcrumb-item active">@lang('admin.edit'){{$data['title']}}</li>
+    <li class="breadcrumb-item"><a href="{{route('admin::media.index')}}">@lang('Media')</a></li>
+    <li class="breadcrumb-item active">@lang('Edit Media'){{$data['title']}}</li>
 @endsection
 
 @section('content')
@@ -84,7 +84,7 @@
     @endif
     <div class="row">
         <div class="col-lg-12">
-            <h4>@lang('admin.edit') {{$data['title']}}</h4>
+            <h4>@lang('Edit') {{$data['title']}}</h4>
             <hr>
         </div>
         <!-- /.col-lg-12 -->
