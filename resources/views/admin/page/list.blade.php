@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title',__('Page'))
+@section('title',__('Pages'))
 
 @section('js')
     <script>
