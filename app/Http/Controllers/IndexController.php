@@ -131,7 +131,6 @@ class IndexController extends Controller
             $data[$key]['category']=Content::find($val['id'])->contentMeta()->first()['slug'];
             if($val['status']=='password') $data[$key]['content']='文章加密，需要输入密码';
             $val['content']=strip_tags($val['content']);
-            $data[$key]['content']=mb_substr($val['content'],0,150,'UTF-8').'...';
         }
         return $data;
     }

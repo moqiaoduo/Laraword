@@ -234,3 +234,8 @@ function installTheme($file){
     delDir(storage_path('app/theme/tmp/'));
     return $rs;
 }
+
+function getThemeConfig($theme){
+    $file=Storage::disk('views')->read($theme."/config.json");
+    return json_decode($file);
+}

@@ -20,7 +20,7 @@
                                 <span class="post-comments-count">
                                 &nbsp; | &nbsp; <a rel="nofollow" href="{{getCustomRoute($route,$v).'#comments'}}">暂无评论</a></span>
                             </div>
-                            <p>{{$v['content']}}</p>
+                            <p>{{mb_strlen($v['content'], 'utf-8') > 150 ? mb_substr($v['content'], 0, 150, 'utf-8').'...' : $v['content']}}</p>
                         </div>
                     </div>
                 @endforeach
