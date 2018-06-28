@@ -1,6 +1,5 @@
 *
 !.gitignore
-!/default/
 !/admin/
 !/auth/
 !/editor/
