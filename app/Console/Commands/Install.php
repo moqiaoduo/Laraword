@@ -50,6 +50,7 @@ class Install extends Command
         $category->slug="default";
         $category->type="category";
         $category->description="这是一个默认分类";
+        $category->count=1;
         $category->save();
         $post=new Content;
         $post->title="您的第一篇文章";
