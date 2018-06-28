@@ -77,6 +77,23 @@
                     </li>
                 </ul>
             </li>
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="@lang('Themes')">
+                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#theme" data-parent="#theme">
+                    <i class="fa fa-fw fa-file"></i>
+                    <span class="nav-link-text">@lang('Themes')</span>
+                </a>
+                <ul class="sidenav-second-level collapse" id="theme">
+                    <li>
+                        <a href="{{route('admin::theme.index')}}">@lang('Themes')</a>
+                    </li>
+                    <li>
+                        <a href="{{route('admin::theme.edit',env('APP_THEME','default'))}}">@lang('Edit Current Theme')</a>
+                    </li>
+                    <li>
+                        <a href="{{route('admin::theme.create')}}">@lang('Add')</a>
+                    </li>
+                </ul>
+            </li>
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="@lang('Settings')">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#settings" data-parent="#settings">
                     <i class="fa fa-fw fa-wrench"></i>

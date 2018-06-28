@@ -235,7 +235,7 @@ function installTheme($file){
     return $rs;
 }
 
-function getThemeConfig($theme){
-    $file=Storage::disk('views')->read($theme."/config.json");
+function getThemeConfig(){
+    $file=Storage::disk('views')->read(env('APP_THEME','default')."/config.json");
     return json_decode($file);
 }

@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title',__('admin.add'))
+@section('title',__('Add Media'))
 
 @section('head')
     <style>

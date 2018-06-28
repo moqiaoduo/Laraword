@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title',__('Category'))
+@section('title',__('Theme'))
 
 @section('js')
     <script>
@@ -23,7 +23,7 @@
 @endsection
 
 @section('breadcrumb')
-    {!! $breadcrumb !!}
+    <li class="breadcrumb-item active">@lang('Theme')</li>
 @endsection
 
 @section('content')
@@ -32,13 +32,13 @@
     @endif
     <div class="row">
         <div class="col-lg-12">
-            <h1>@lang('Category')</h1>
+            <h1>@lang('Theme')</h1>
             <hr>
         </div>
     </div>
     <div class="row">
         <div class="col-lg-12">
-            <form action="{{route('admin::category.del')}}" method="post" name="operations">
+            <form action="{{route('admin::theme.del')}}" method="post" name="operations">
                 @csrf
                 <div class="dropdown">
                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -47,12 +47,9 @@
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="javascript:document.operations.submit();">@lang('Delete')</a>
                     </div>
-                    <a href="{{route('admin::category.create')}}" class="btn btn-success" style="margin-left: 5px;">@lang('Add')</a>
+                    <a href="{{route('admin::theme.create')}}" class="btn btn-success" style="margin-left: 5px;">@lang('Add')</a>
                 </div>
                 <div class="row"><br></div>
-                @if($parent>0)
-                    <a href="{{route('admin::category.index',['parent'=>$parent_parent['parent']])}}" class="btn btn-success" style="margin-left: 5px;">&lt; @lang('Back')</a><div class="row"><br></div>
-                @endif
                 <table width="100%" class="table">
                     <thead>
                     <tr>
@@ -63,8 +60,9 @@
                         </th>
                         <th>@lang('Name')</th>
                         <th>@lang('Slug')</th>
-                        <th>@lang('Sub Category')</th>
-                        <th>@lang('Count')</th>
+                        <th>@lang('Version')</th>
+                        <th>@lang('Author')</th>
+                        <th>@lang('Publish URL')</th>
                         <th>@lang('Created At')</th>
                     </tr>
                     </thead>
