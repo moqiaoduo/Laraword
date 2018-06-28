@@ -2,7 +2,7 @@
 
 @php($title=$data['name'])
 
-@section('title',__('admin.Edit').$title)
+@section('title',__('Edit').$title)
 
 @section('head')
     <style>

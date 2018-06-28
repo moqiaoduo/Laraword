@@ -84,16 +84,16 @@
                 </a>
                 <ul class="sidenav-second-level collapse" id="settings">
                     <li>
-                        <a href="{{route('admin::page.index')}}">@lang('Generic')</a>
+                        <a href="{{route('admin::setting','generic')}}">@lang('Generic')</a>
                     </li>
                     <li>
-                        <a href="{{route('admin::page.create')}}">@lang('Read')</a>
+                        <a href="{{route('admin::setting','read')}}">@lang('Read')</a>
                     </li>
                     <li>
-                        <a href="{{route('admin::page.create')}}">@lang('Comments')</a>
+                        <a href="{{route('admin::setting','comment')}}">@lang('Comments')</a>
                     </li>
                     <li>
-                        <a href="{{route('admin::page.create')}}">@lang('Links')</a>
+                        <a href="{{route('admin::setting','link')}}">@lang('Links')</a>
                     </li>
                 </ul>
             </li>

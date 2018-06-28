@@ -26,6 +26,8 @@ Route::group(['middleware'=>'admin','prefix'=>'admin','as'=>'admin::'],function 
     Route::post('delFile','APIController@delFile')->name('delFile');
     Route::resource('media','Admin\MediaController',["except"=>["show"]]);
     Route::post('media/del','Admin\MediaController@delete')->name('media.del');
+    Route::get('setting/{page}','Admin\SettingController@index')->name('setting');
+    Route::post('setting/{page}','Admin\SettingController@update')->name('setting.save');
 });
 
 Auth::routes();
