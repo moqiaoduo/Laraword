@@ -6,6 +6,7 @@
 
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 function modifyEnv(array $data)
 {
@@ -208,4 +209,28 @@ function toSize($bytes,$prec=2){
 
     }
     return $size." ".$unit;
+}
+
+function installTheme($file){
+    $ext=substr(strrchr($file, '.'), 1);
+    if(!Storage::disk('theme')->exists($file)) return("文件不存在，无法继续。\nFile doesn't exist, please try another file. \n");
+    if($ext!=='zip') return("文件类型不符，无法继续。\nFile extension isn't zip, please try another file. \n");
+    $zip = new ZipArchive;
+    $zip->open(storage_path('app/theme/'.$file));
+    $toDir = storage_path('app/theme/tmp');
+    $zip->extractTo($toDir);
+    $json=json_decode(Storage::disk('theme')->read('tmp/theme.json'),true);
+    if(Storage::disk('theme')->exists('tmp/assets') && Storage::disk('theme')->exists('tmp/views')){
+        Storage::disk('theme')->rename('tmp/assets','tmp/'.$json['slug']);
+        doMoveDir(storage_path('app/theme/tmp/'.$json['slug'].'/'),public_path('theme/'));
+        delDir(storage_path('app/theme/tmp/'.$json['slug'].'/'));
+        Storage::disk('theme')->rename('tmp/views','tmp/'.$json['slug']);
+        doMoveDir(storage_path('app/theme/tmp/'.$json['slug'].'/'),resource_path('views/'));
+        rename(storage_path('app/theme/tmp/theme.json'),resource_path('views/'.$json['slug'].'/theme.json'));
+        $rs= "安装成功。";
+    }else{
+        $rs= "压缩包内目录格式不正确，安装失败。";
+    }
+    delDir(storage_path('app/theme/tmp/'));
+    return $rs;
 }
