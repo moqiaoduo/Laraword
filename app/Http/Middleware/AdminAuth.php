@@ -16,6 +16,7 @@ class AdminAuth
      */
     public function handle($request, Closure $next)
     {
+        if(!$request->user()) return redirect()->guest('login');
 
         if($request->user() && $request->user()->isAdmin()){
             return $next($request);
@@ -24,7 +25,7 @@ class AdminAuth
         if ($request->ajax()) {
             return response('Unauthorized.', 401);
         } else {
-            return redirect()->guest('login');
+            return redirect()->guest('/');
         }
     }
 }
