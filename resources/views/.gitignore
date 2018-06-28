@@ -1,8 +1,8 @@
 *
 !.gitignore
-!default
-!admin
-!auth
-!editor
-!layouts
-!vendor
+!/default/
+!/admin/
+!/auth/
+!/editor/
+!/layouts/
+!/vendor/
