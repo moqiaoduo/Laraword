@@ -37,9 +37,13 @@ function getSetting($key='',$default=''){
     return $val;
 }
 
-function setSetting($key,$val){
-    DB::table('options')->where('name',$key)->delete();
-    return DB::table('settings')->insert(['key'=>$key,'val'=>$val]);
+function setSetting($arr){
+    foreach ($arr as $key=>$val){
+        DB::table('options')->where('name',$key)->delete();
+        $bool=DB::table('options')->insert(['name'=>$key,'value'=>$val]);
+        if(!$bool) return false;
+    }
+    return true;
 }
 
 function theme($file){
