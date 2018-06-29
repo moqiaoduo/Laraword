@@ -28,6 +28,15 @@ class ThemeController extends Controller
         foreach (Storage::disk('assets')->allFiles($theme) as $val) array_push($dir['assets'],mb_substr($val,mb_strlen($theme,'utf-8')+1,null,'utf-8'));
         foreach (Storage::disk('views')->allFiles($theme) as $val) array_push($dir['views'],mb_substr($val,mb_strlen($theme,'utf-8')+1,null,'utf-8'));
         $content=Storage::disk($type)->read($theme."/".$file);
-        return view('admin.theme.edit',['info'=>null,'alert'=>null])->with('data',$json)->with('file',$file)->with('dir',$dir)->with('content',$content)->with('theme',$theme);
+        return view('admin.theme.edit',['info'=>$request->get('info'),'alert'=>$request->get('alert')])->with('data',$json)->with('file',$file)->with('dir',$dir)->with('type',$type)->with('content',$content)->with('theme',$theme);
+    }
+
+    public function update(Request $request,$theme){
+        $type=$request->get('type','views');
+        $file=$request->get('file','articles.blade.php');
+        $bool=Storage::disk($type)->put($theme."/".$file,$request->post('content'));
+        if($bool){$info='更新模板成功！';$alert='success';}
+        else{$info='更新模板失败！';$alert='error';}
+        return redirect()->route('admin::theme.edit',[$theme,"info"=>$info,"alert"=>$alert,"type"=>$type,"file"=>$file]);
     }
 }
