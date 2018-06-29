@@ -23,7 +23,14 @@
     @endif
     <div class="row">
         <div class="col-lg-12">
-            <h4>@lang('Edit') {{$file}}</h4>
+            <h4>
+                @lang('Edit') {{$file}}
+                <i style="font-size: 15px;font-weight: bold">
+                    @if($file=='theme.json')
+                        您最好不要更改它，除非您知道有什么风险
+                    @endif
+                </i>
+            </h4>
             <hr>
         </div>
         <!-- /.col-lg-12 -->
