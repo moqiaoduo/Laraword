@@ -1,1 +1,8 @@
-{ "name": "默认主题", "ver": "1.0", "slug": "default", "author": "Qiaodows", "url": "https://github.com/moqiaoduo/Laraword" }
+{
+  "name": "默认主题",
+  "ver": "1.0",
+  "slug": "default",
+  "description": "这是一个默认主题",
+  "author": "莫乔多",
+  "url": "https://www.moqiaoduo.cn"
+}

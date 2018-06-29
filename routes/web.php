@@ -29,7 +29,6 @@ Route::group(['middleware'=>'admin','prefix'=>'admin','as'=>'admin::'],function 
     Route::get('setting/{page}','Admin\SettingController@index')->name('setting');
     Route::post('setting/{page}','Admin\SettingController@update')->name('setting.save');
     Route::resource('theme','Admin\ThemeController');
-    Route::post('theme/del','Admin\ThemeController@delete')->name('theme.del');
 });
 
 Auth::routes();

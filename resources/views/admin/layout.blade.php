@@ -205,7 +205,7 @@
     <script>
         var nav_selected=false;
         $('#mainNav').find('a').each(function () {
-            if (this.href == document.location.href) {
+            if (this.href == document.location.origin+document.location.pathname) {
                 nav_selected=true;
                 $(this).parent().parent().parent().children('a').attr('aria-expanded',true);
                 $(this).parent().parent().parent().children('a').removeClass('collapsed');
@@ -215,7 +215,7 @@
         });
         if(!nav_selected){
             $('#mainNav').find('a').each(function () {
-                if (document.location.href.search(this.href) >= 0 && this.href!='{{route('admin::index')}}') {
+                if (document.location.href.search(this.href) >= 0 && this.href!='{{route('admin::index')}}' && !nav_selected) {
                     nav_selected=true;
                     $(this).parent().parent().parent().children('a').attr('aria-expanded',true);
                     $(this).parent().parent().parent().children('a').removeClass('collapsed');

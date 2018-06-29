@@ -77,7 +77,7 @@
 @section('content')
     <div class="row">
         <div class="col-lg-12">
-            <h4>@lang('Add')</h4>
+            <h1>@lang('Add')</h1>
             <hr>
         </div>
         <!-- /.col-lg-12 -->
