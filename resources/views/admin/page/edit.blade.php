@@ -30,13 +30,13 @@
     @endif
     <div class="row">
         <div class="col-lg-12">
-            <h1>@lang('Edit') {{$title}}
+            <h4>@lang('Edit') {{$title}}
                 <span style="font-size: 15px">
                     @if(!empty($draft))
                         您正在编辑的是该页面的草稿
                     @endif
                 </span>
-            </h1>
+            </h4>
             <hr>
         </div>
         <!-- /.col-lg-12 -->

@@ -23,8 +23,10 @@ class ThemeController extends Controller
         $type=$request->get('type','views');
         $file=$request->get('file','articles.blade.php');
         $json=json_decode(Storage::disk('views')->read($theme."/theme.json"),true);
-        $dir['assets']=Storage::disk('assets')->allFiles($theme);
-        $dir['views']=Storage::disk('views')->allFiles($theme);
+        $dir['assets']=[];
+        $dir['views']=[];
+        foreach (Storage::disk('assets')->allFiles($theme) as $val) array_push($dir['assets'],mb_substr($val,mb_strlen($theme,'utf-8')+1,null,'utf-8'));
+        foreach (Storage::disk('views')->allFiles($theme) as $val) array_push($dir['views'],mb_substr($val,mb_strlen($theme,'utf-8')+1,null,'utf-8'));
         $content=Storage::disk($type)->read($theme."/".$file);
         return view('admin.theme.edit',['info'=>null,'alert'=>null])->with('data',$json)->with('file',$file)->with('dir',$dir)->with('content',$content)->with('theme',$theme);
     }

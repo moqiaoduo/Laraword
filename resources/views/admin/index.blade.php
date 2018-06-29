@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title',__('admin.dashboard'))
+@section('title',__('Dashboard'))
 
 @section('head')
     <!-- Morris Charts CSS -->

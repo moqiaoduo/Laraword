@@ -8,6 +8,10 @@
     </style>
 @endsection
 
+@section('js')
+    @include('editor.none.js')
+@endsection
+
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('admin::theme.index')}}">@lang('Themes')</a></li>
     <li class="breadcrumb-item active">@lang('Edit Theme')</li>

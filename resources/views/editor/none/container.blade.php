@@ -1,1 +1,1 @@
-<textarea name="content" class="form-control" style="max-width: 100%" rows="20">{{$slot}}</textarea>
+<textarea name="content" class="form-control" style="max-width: 100%">{{$slot}}</textarea>

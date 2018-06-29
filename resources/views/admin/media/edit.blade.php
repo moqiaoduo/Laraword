@@ -75,7 +75,7 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('admin::media.index')}}">@lang('Media')</a></li>
-    <li class="breadcrumb-item active">@lang('Edit Media'){{$data['title']}}</li>
+    <li class="breadcrumb-item active">@lang('Edit Media')</li>
 @endsection
 
 @section('content')
