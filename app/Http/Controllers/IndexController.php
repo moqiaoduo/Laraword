@@ -99,7 +99,10 @@ class IndexController extends Controller
         else{
             if(!empty($params['category'])){
                 $category=Meta::where('slug',$params['category'])->first();
-                if(!empty($category))$data=$category->metaContent()->where('type',$type)->where('slug',$params['slug'])->first();
+                if(!empty($category))$data=$category->metaContent()->where('type',$type)->where(function ($query) use($params) {
+                    $query->where('slug',$params['slug'])
+                        ->orWhere('id',$params['id']);
+                })->first();
             }elseif(!empty($params['slug'])){
                 $query=Content::where('type',$type)->where('slug',$params['slug']);
                 if(!empty($params['year'])) $query->whereYear('created_at',$params['year']);
