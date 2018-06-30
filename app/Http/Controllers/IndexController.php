@@ -14,7 +14,7 @@ class IndexController extends Controller
         $params1=$this->matchRoute($request->getRequestUri(),$post,$request->route()->parameters);
         if(!empty($params1)){
             $data=$this->getContent($params1);
-            if(!empty($data)) return view('content')->with('data',$data);
+            if(!empty($data)) return view('content')->with('data',$data)->with('route',$post);
         }
         $page=getCustomUri($routeTable,'page');
         $params2=$this->matchRoute($request->getRequestUri(),$page,$request->route()->parameters);

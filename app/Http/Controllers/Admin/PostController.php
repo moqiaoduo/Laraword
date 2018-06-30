@@ -66,6 +66,7 @@ class PostController extends Controller
         $submit=$request->post('submit');
         $files=json_decode($request->post('files'),true);
         $categories=json_decode($request->post('category'),true);
+        if(empty($categories)) $categories=[1];
         $slug=$request->post('slug');
         $post=new Content;
         $post->uid=$request->user()->id;
@@ -109,6 +110,7 @@ class PostController extends Controller
         $slug=$request->post('slug');
         $files=json_decode($request->post('files'),true);
         $categories=json_decode($request->post('category'),true);
+        if(empty($categories)) $categories=[1];
         $id=$request->route('post');
         if(empty($slug)) $slug=$id;
         $title=$request->post('title');
