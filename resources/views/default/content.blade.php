@@ -74,24 +74,29 @@
                 <hr>
                 <textarea rows="8" name="comment" class="form-control" style="width: 100%"></textarea>
                 <div style="max-width: 400px;margin-top: 20px;">
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fa fa-fw fa-user"></i></span>
+                    @guest
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-fw fa-user"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="{{__('Nick Name')}}">
                         </div>
-                        <input type="text" class="form-control" placeholder="{{__('Nick Name')}}">
-                    </div>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fa fa-fw fa-envelope"></i></span>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-fw fa-envelope"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="{{__('E-Mail Address')}}">
                         </div>
-                        <input type="text" class="form-control" placeholder="{{__('E-Mail Address')}}">
-                    </div>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fa fa-fw fa-globe"></i></span>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-fw fa-globe"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="{{__('Your Website')}} ({{__('Optional')}})">
                         </div>
-                        <input type="text" class="form-control" placeholder="{{__('Your Website')}} ({{__('Optional')}})">
-                    </div>
+                    @else
+                        <p>登录身份: {{ Auth::user()->name }}. <a href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">退出 »</a></p>
+                    @endguest
                     <input type="submit" name="comment_submit" value="提交评论" class="btn btn-primary" style="width: 100%">
                 </div>
             </div>
