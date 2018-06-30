@@ -21,6 +21,23 @@ class MediaController extends Controller
         return view('admin.media.list')->with('data',$data)->with('info',$info)->with('alert',$alert);
     }
 
+    public function show($id){
+        $data=Content::where('type','attachment')->find($id);
+        if(!empty($data)){
+            $t=json_decode($data['content'],true);
+            $filename=$t['filename'];
+            $description=$t['description'];
+            $path=Storage::disk('uploads')->path($filename);
+            $url=Storage::disk('uploads')->url($filename);
+            $data['content']=$this->setContent($path,$url,$data['title'],$description);
+            return view('content')->with('data',$data);
+        }
+    }
+
+    protected function setContent($path,$url,$title,$description){
+        return $this->setMediaContent($path,$url).'<br>'.$description.'<br>附件下载：<a target=_blank href="'.$url.'">'.$title.'</a>';
+    }
+
     public function create(){
         return view('admin.media.create');
     }

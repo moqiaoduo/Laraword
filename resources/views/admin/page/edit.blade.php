@@ -5,7 +5,7 @@
     else $title=$draft['title'];
 @endphp
 
-@section('title',__('Edit').$title)
+@section('title',__('Edit').' '.$title)
 
 @section('head')
     @include($head)

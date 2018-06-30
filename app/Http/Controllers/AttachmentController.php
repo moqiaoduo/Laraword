@@ -22,7 +22,7 @@ class AttachmentController extends Controller
         return view('errors.404');
     }
 
-    public function setContent($path,$url,$title,$description){
+    protected function setContent($path,$url,$title,$description){
         return $this->setMediaContent($path,$url).'<br>'.$description.'<br>附件下载：<a target=_blank href="'.$url.'">'.$title.'</a>';
     }
 }

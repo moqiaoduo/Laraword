@@ -56,7 +56,7 @@ class PostController extends Controller
     }
 
     public function create(){
-        $route=getSetting('route.post','/archive/{id}');
+        $route=getCustomUri(json_decode(getSetting('routeTable'),true),'post');
         $url=config('app.url').str_replace('{slug}',self::loadSlugInput(),$route);
         $editor=self::loadEditor();
         return view('admin.post.create')->with('url',$url)->with('head',$editor[0])->with('editor_container',$editor[1])->with('js',$editor[2]);
@@ -94,7 +94,7 @@ class PostController extends Controller
         $alert=$request->get('alert');
         $data=Content::find($id);
         $draft=Content::where('type','post_draft')->where('parent',$id)->first();
-        $route=getSetting('route.post','/archive/{id}');
+        $route=getCustomUri(json_decode(getSetting('routeTable'),true),'post');
         $url=config('app.url').str_replace('{slug}',self::loadSlugInput($data['slug']),$route);
         $data['category']=$data->contentMeta()->first()['slug'];
         $url=getCustomRoute($url,$data);

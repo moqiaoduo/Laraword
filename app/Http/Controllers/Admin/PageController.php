@@ -29,7 +29,7 @@ class PageController extends Controller
     }
 
     public function create(){
-        $route=getSetting('route.page','/page/{slug}');
+        $route=getCustomUri(json_decode(getSetting('routeTable'),true),'page');
         $url=config('app.url').str_replace('{slug}',self::loadSlugInput(),$route);
         $editor=self::loadEditor();
         return view('admin.page.create')->with('url',$url)->with('head',$editor[0])->with('editor_container',$editor[1])->with('js',$editor[2]);
@@ -49,7 +49,12 @@ class PageController extends Controller
         if($submit=='publish') $page->type='page';
         elseif($submit=='save') $page->type='page_draft';
         $page->save();
+        $this->setSlaveFile($page->cid,$files);
         return redirect()->route('admin::page.index',['info'=>'页面已保存或发布','alert'=>'success']);
+    }
+
+    protected function setSlaveFile($cid,$files){
+        if(!empty($files)) Content::whereIn('cid',$files)->update(['parent'=>$cid]);
     }
 
     public function edit(Request $request){
@@ -58,7 +63,7 @@ class PageController extends Controller
         $alert=$request->get('alert');
         $data=Content::where('type','page')->find($id);
         $draft=Content::where('type','page_draft')->where('parent',$id)->first();
-        $route=getSetting('route.page','/page/{slug}');
+        $route=getCustomUri(json_decode(getSetting('routeTable'),true),'page');
         $url=config('app.url').str_replace('{slug}',self::loadSlugInput($data['slug']),$route);
         if(!empty($draft)) $url=config('app.url').str_replace('{slug}',self::loadSlugInput($draft['slug']),$route);
         $url=str_replace('{id}',$id,$url);
@@ -91,6 +96,7 @@ class PageController extends Controller
             }
         }
         $page->save();
+        $this->setSlaveFile($page->cid,$files);
         return redirect()->route('admin::page.edit',[$id,'info'=>'页面已保存或发布','alert'=>'success']);
     }
 

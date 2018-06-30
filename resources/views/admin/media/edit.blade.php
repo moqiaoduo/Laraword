@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title',__('Edit').$data['title'])
+@section('title',__('Edit').' '.$data['title'])
 
 @section('head')
     <style>

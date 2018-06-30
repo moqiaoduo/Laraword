@@ -2,7 +2,7 @@
 
 @php($title=$data['name'])
 
-@section('title',__('Edit').$title)
+@section('title',__('Edit').' '.$title)
 
 @section('head')
     <style>

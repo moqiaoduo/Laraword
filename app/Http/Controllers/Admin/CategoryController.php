@@ -93,14 +93,11 @@ class CategoryController extends Controller
     }
 
     public function delete(Request $request){
-        Category::destroy($request->post('del'));
+        Meta::destroy($request->post('del'));
         return redirect()->route('admin::category.index');
     }
 
     public function create(){
-        $route=getSetting('route.post','/archive/{id}');
-        $url=config('app.url').str_replace('{slug}',self::loadSlugInput(),$route);
-        $editor=self::loadEditor();
         return view('admin.category.create')->with('parent_options',$this->getParentOptions(0));
     }
 
@@ -124,7 +121,7 @@ class CategoryController extends Controller
         $alert=$request->get('alert');
         $data=Meta::where('type','category')->find($id);
         $breadcrumb=$this->getBreadCrumb($data['parent']);
-        return view('admin.category.edit')->with('data',$data)->with('info',$info)->with('alert',$alert)->with('parent_options',$this->getParentOptions(0,$data['parent'],$data['id']))->with('breadcrumb',$breadcrumb);
+        return view('admin.category.edit')->with('data',$data)->with('info',$info)->with('alert',$alert)->with('parent_options',$this->getParentOptions(0,$data['parent'],$data['mid']))->with('breadcrumb',$breadcrumb);
     }
 
     public function update(Request $request){

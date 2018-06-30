@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title',__('Read').' - '.__('Settings'))
+@section('title',__('Links').' - '.__('Settings'))
 
 @section('head')
     <style>
@@ -34,7 +34,7 @@
     @endif
     <div class="row">
         <div class="col-lg-12">
-            <h1>@lang('Edit Settings')</h1>
+            <h1>@lang('Links') @lang('Settings')</h1>
             <hr>
         </div>
         <!-- /.col-lg-12 -->
