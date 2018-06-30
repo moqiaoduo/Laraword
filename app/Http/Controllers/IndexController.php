@@ -30,9 +30,10 @@ class IndexController extends Controller
         }
         $articles=getCustomUri($routeTable,'articleList');
         $indexPage=getSetting('indexPage',0);
-        $showArticleList=getSetting('showArticleList',true);
+        $showArticleList=getSetting('showArticleList');
         if($request->getRequestUri()==$articles && $indexPage>0 && $showArticleList){
-            $data=Content::where('type','post')->whereIn('status',[0,3])->paginate(10);
+            $postsListSize=getSetting('postsListSize',10);
+            $data=Content::where('type','post')->whereIn('status',[0,3])->paginate($postsListSize);
             $data=$this->contentDealWith($category,$data);
             return view('articles')->with('data',$data)->with('route',$post);
         }
@@ -41,7 +42,8 @@ class IndexController extends Controller
                 $data=$this->getContent(["id"=>$indexPage],'page');
                 if(!empty($data)) return view('content')->with('data',$data);
             }else{
-                $data=Content::where('type','post')->whereIn('status',[0,3])->paginate(10);
+                $postsListSize=getSetting('postsListSize',10);
+                $data=Content::where('type','post')->whereIn('status',[0,3])->paginate($postsListSize);
                 $data=$this->contentDealWith($category,$data);
                 return view('articles')->with('data',$data)->with('route',$post);
             }
@@ -122,7 +124,8 @@ class IndexController extends Controller
         if(empty($info)) return [];
         $id=$info['mid'];
         $category=$info['name'];
-        $data=Meta::where('type',$type)->find($id)->metaContent()->paginate(10);
+        $postsListSize=getSetting('postsListSize',10);
+        $data=Meta::where('type',$type)->find($id)->metaContent()->paginate($postsListSize);
         $data=$this->contentDealWith($cr,$data);
         return ["data"=>$data,"category"=>$category];
     }

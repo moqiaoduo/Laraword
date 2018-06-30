@@ -73,6 +73,7 @@ class Install extends Command
         $user->is_admin=1;
         $user->save();
         recurse_copy(config_path('init_settings'),config_path('settings'));
+        setSetting(["attachmentTypes"=>"gif,jpg,jpeg,png,tiff,bmp,mp3,wmv,wma,rmvb,rm,avi,flv,txt,doc,docx,xls,xlsx,ppt,pptx,zip,rar,pdf"]);
         $this->comment('安装完成。 Install completely.');
     }
 }

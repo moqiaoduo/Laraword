@@ -13,24 +13,6 @@
     </style>
 @endsection
 
-@section('js')
-    <script>
-        function delItem(obj){
-            $(obj).parent("td").parent("tr").remove()
-        }
-        function addItem(obj) {
-            console.log($(obj))
-            $(obj).children("i").removeClass("fa-plus").addClass("fa-trash")
-            $(obj).attr("onclick",'delItem(this)')
-            $("#mime").append('<tr>' +
-                '<td><input type="text" name="ext2mime_key[]" class="form-control"></td>' +
-                '<td><input type="text" name="ext2mime_val[]" class="form-control"></td>' +
-                '<td><a href="javascript:;" onclick="addItem(this)"><i class="fa fa-fw fa-plus"></i></a></td>' +
-                '</tr>')
-        }
-    </script>
-@endsection
-
 @section('breadcrumb')
     <li class="breadcrumb-item active">@lang('Edit Settings')</li>
 @endsection
@@ -105,7 +87,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div style="text-align: right" class="col-sm-12">
+                    <div class="col-sm-12">
                         <button type="submit" class="btn btn-primary">保存</button>
                     </div>
                 </div>

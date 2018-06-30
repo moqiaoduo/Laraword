@@ -40,6 +40,6 @@ if(empty(DB::select("SELECT table_name FROM information_schema.TABLES WHERE tabl
         return '请先安装后使用。 Please install first.';
     });
 }else{
-    $routeTable=getSetting('routeTable');
+    $routeTable=json_decode(getSetting('routeTable'),true);
     Route::get(getCustomRoutes(getCustomUri($routeTable,["post","page","category","articleList"])), 'IndexController@index')->name('main');
 }
