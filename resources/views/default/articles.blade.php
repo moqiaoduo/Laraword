@@ -11,7 +11,7 @@
                 @foreach($data as $v)
                     <div class="card">
                         <div class="card-body">
-                            <a href="{{getCustomRoute($route,$v)}}"><h1>{{$v['title']}}</h1></a>
+                            <a href="{{getCustomRoute($route,$v)}}"><h2>{{$v['title']}}</h2></a>
                             <div class="post-meta">
                                 <span class="post-time">发表于 {{$v['created_at']}}</span>
                                 <span class="post-category">
