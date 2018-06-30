@@ -21,10 +21,25 @@
             addUploadFile(e.target.files[0])
         })
 
+        function checkExtAllow(upFileName) {
+            var index1=upFileName.lastIndexOf(".");
+            var index2=upFileName.length;
+            var suffix=upFileName.substring(index1+1,index2);//后缀名
+            ext = suffix;
+            allowType=JSON.parse('{!! json_encode(explode(",",getSetting('attachmentTypes'))) !!}');
+            var allow=false;
+            allowType.forEach(function (val,index) {
+                if(val.toLowerCase()==ext.toLowerCase()) allow=true;
+            })
+            return allow;
+        }
+
         //ajax上传文件
         function ajaxUpload(){
             var data=Dragfiles(); //获取formData
             data.append('_token','{{csrf_token()}}')
+            upFileName=data.get('file[]').name
+            if(!checkExtAllow(upFileName)){data.deleteAll();alert('文件格式不支持');data.deleteAll();return false;}
             $.ajax({
                 url: '{{route('admin::upload')}}',
                 type: 'POST',
@@ -51,9 +66,12 @@
                     }
                     return myXhr;
                 },
-                success: function (data) {
-                    alert('上传完成')
-                    window.location.href="{{route("admin::media.index")}}";
+                success: function (json) {
+                    $("#progress_bar").hide()
+                    data.deleteAll(); //清空formData
+                    if(json[0].state=='FAIL'){
+                        alert('上传失败！原因：'+json[0].reason)
+                    }else window.location.href="../media/"+json[0].id+"/edit";
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     alert("服务器错误,请重新上传");
@@ -88,6 +106,7 @@
                     <div class="card-body">
                         <ul class="list-group" style="text-align: center">
                             <p>拖放文件到这里<br>或者 <a href="javascript:callUploads();">点击这里上传</a></p>
+                            <p>本次只能上传一个文件</p>
                             <div class="progress" id="progress_bar">
                                 <div id="progress" class="progress-bar"></div>
                             </div>

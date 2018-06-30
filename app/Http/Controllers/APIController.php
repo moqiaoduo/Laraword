@@ -36,6 +36,8 @@ class APIController extends Controller
         $realPath = $val->getRealPath();   //临时文件的绝对路径
         $type = $val->getClientMimeType();     // image/jpeg
 
+        if(!in_array($ext,explode(',',getSetting('attachmentTypes')))) return ["state"=>"FAIL","reason"=>"文件格式不支持","title"=>$originalName];
+
         // 上传文件
         $filename = date('YmdHis') . '_' . uniqid() . '.' . $ext;
         // 使用我们新建的uploads本地存储空间（目录）

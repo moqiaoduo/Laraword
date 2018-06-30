@@ -21,7 +21,7 @@ class Install extends Command
      *
      * @var string
      */
-    protected $description = '安装程序（其实是向数据库加记录）';
+    protected $description = '安装程序';
 
     /**
      * Create a new command instance.
@@ -72,6 +72,7 @@ class Install extends Command
         $user->password=bcrypt($password);
         $user->is_admin=1;
         $user->save();
+        recurse_copy(config_path('init_settings'),config_path('settings'));
         $this->comment('安装完成。 Install completely.');
     }
 }

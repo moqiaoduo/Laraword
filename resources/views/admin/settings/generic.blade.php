@@ -13,6 +13,24 @@
     </style>
 @endsection
 
+@section('js')
+    <script>
+        function delItem(obj){
+            $(obj).parent("td").parent("tr").remove()
+        }
+        function addItem(obj) {
+            console.log($(obj))
+            $(obj).children("i").removeClass("fa-plus").addClass("fa-trash")
+            $(obj).attr("onclick",'delItem(this)')
+            $("#mime").append('<tr>' +
+                '<td><input type="text" name="ext2mime_key[]" class="form-control"></td>' +
+                '<td><input type="text" name="ext2mime_val[]" class="form-control"></td>' +
+                '<td><a href="javascript:;" onclick="addItem(this)"><i class="fa fa-fw fa-plus"></i></a></td>' +
+                '</tr>')
+        }
+    </script>
+@endsection
+
 @section('breadcrumb')
     <li class="breadcrumb-item active">@lang('Edit Settings')</li>
 @endsection
@@ -82,8 +100,8 @@
                 <div class="form-group">
                     <div class="col-sm-12">
                         <label for="attachmentTypes">允许上传的文件类型</label>
-                        <textarea class="form-control" id="attachmentTypes" name="options[attachmentTypes]" rows="5">{{$data['attachmentTypes']}}</textarea>
-                        <span class="description">用逗号 "," 将后缀名隔开, 例如: cpp, h, mak</span>
+                        <textarea class="form-control" id="attachmentTypes" name="options[attachmentTypes]" rows="5" style="width: 100%">{{$data['attachmentTypes']}}</textarea>
+                        <span class="description">用逗号 "," 将后缀名隔开, 例如: cpp,h,mak</span>
                     </div>
                 </div>
                 <div class="form-group">

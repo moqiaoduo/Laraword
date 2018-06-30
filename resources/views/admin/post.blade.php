@@ -11,7 +11,9 @@
     function ajaxUpload() {
         var data=Dragfiles(); //获取formData
         data.append('_token','{{csrf_token()}}')
+        upFileName=data.get('file[]').name
 
+        if(!checkExtAllow(upFileName)){data.deleteAll();$("#larawordFileList").append('<li class="list-group-item">'+upFileName+'上传失败<br>原因：文件格式不支持');data.deleteAll();return false;}
         $.ajax({
             url: "{{route('admin::upload')}}",
             data: data,
@@ -40,7 +42,8 @@
             success: function (result) {
                 data.deleteAll(); //清空formData
                 result.forEach(function(val){
-                    addFiles(val)
+                    if(val.state=='FAIL') $("#larawordFileList").append('<li class="list-group-item">'+val.title+'上传失败<br>原因：'+val.reason)
+                    else addFiles(val)
                 })
                 $("#progress_bar").hide()
             },
@@ -51,6 +54,18 @@
                 //window.location.reload();
             }
         })
+    }
+    function checkExtAllow(upFileName) {
+        var index1=upFileName.lastIndexOf(".");
+        var index2=upFileName.length;
+        var suffix=upFileName.substring(index1+1,index2);//后缀名
+        ext = suffix;
+        allowType=JSON.parse('{!! json_encode(explode(",",getSetting('attachmentTypes'))) !!}');
+        var allow=false;
+        allowType.forEach(function (val,index) {
+            if(val.toLowerCase()==ext.toLowerCase()) allow=true;
+        })
+        return allow;
     }
     function addFiles(file) {
         $.post("{{route('getAttachmentInfo')}}",{url:file.url},function (data) {
