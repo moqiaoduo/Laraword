@@ -45,6 +45,7 @@ EOT;
         $media->uid=$user->id;
         $media->type='attachment';
         $media->title=$title;
+        $media->slug=str_replace(".","_",$title);
         $media->content=json_encode(['filename'=>$filename,'description'=>"Uploaded by {$user->name}"]);
         $media->save();
         return $media->cid;
