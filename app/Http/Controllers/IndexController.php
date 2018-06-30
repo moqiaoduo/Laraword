@@ -136,7 +136,7 @@ class IndexController extends Controller
             $data[$key]['categories']=$this->getCategoriesHTML($cr,$val['cid']);
             $data[$key]['category']=Content::find($val['cid'])->contentMeta()->first()['slug'];
             if($val['status']=='password') $data[$key]['content']='文章加密，需要输入密码';
-            $val['content']=strip_tags($val['content']);
+            $data[$key]['content']=strip_tags($val['content']);
         }
         return $data;
     }
