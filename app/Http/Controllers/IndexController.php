@@ -39,7 +39,7 @@ class IndexController extends Controller
         }
         if(empty($request->route()->parameters)){
             if($indexPage>0){
-                $data=$this->getContent(["id"=>$indexPage],'page');
+                $data=$this->getContent(["cid"=>$indexPage],'page');
                 if(!empty($data)) return view('content')->with('data',$data);
             }else{
                 $postsListSize=getSetting('postsListSize',10);
@@ -95,15 +95,16 @@ class IndexController extends Controller
 
     protected function getContent($params,$type='post'){
         $data=array();
-        if(!empty($params['id'])){
-            $data=Content::where('type',$type)->find($params['id']);
+        if(!empty($params['cid'])){
+            $data=Content::where('type',$type)->find($params['cid']);
         }
         else{
             if(!empty($params['category'])){
                 $category=Meta::where('slug',$params['category'])->first();
+                if($params['slug'])
                 if(!empty($category))$data=$category->metaContent()->where('type',$type)->where(function ($query) use($params) {
-                    $query->where('slug',$params['slug'])
-                        ->orWhere('id',$params['id']);
+                    if(!empty($params['slug'])) $query->where('slug',$params['slug']);
+                    if(!empty($params['cid'])) $query->where('cid',$params['cid']);
                 })->first();
             }elseif(!empty($params['slug'])){
                 $query=Content::where('type',$type)->where('slug',$params['slug']);
@@ -119,7 +120,7 @@ class IndexController extends Controller
     }
 
     protected function getMetaPost($cr,$params,$type='category'){
-        @$id=$params['id'];@$slug=$params['slug'];$info=[];
+        @$id=$params['mid'];@$slug=$params['slug'];$info=[];
         $info=Meta::where('type',$type)->where('slug',$slug)->orWhere('mid',$id)->first();
         if(empty($info)) return [];
         $id=$info['mid'];
@@ -132,9 +133,8 @@ class IndexController extends Controller
 
     protected function contentDealWith($cr,$data){
         foreach ($data as $key=>$val){
-            $data[$key]['id']=$val['cid'];
             $data[$key]['categories']=$this->getCategoriesHTML($cr,$val['cid']);
-            $data[$key]['category']=Content::find($val['id'])->contentMeta()->first()['slug'];
+            $data[$key]['category']=Content::find($val['cid'])->contentMeta()->first()['slug'];
             if($val['status']=='password') $data[$key]['content']='文章加密，需要输入密码';
             $val['content']=strip_tags($val['content']);
         }

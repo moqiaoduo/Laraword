@@ -4,7 +4,7 @@
 
 @section('head')
     <style>
-        label{font-weight: bold}
+        .laraword-label{font-weight: bold}
         .description {
             margin: .5em 0 0;
             color: #999;
@@ -31,24 +31,24 @@
     <form class="form-horizontal" role="form" method="post" action="{{route('admin::setting.save',"generic")}}">
         <div class="row">
             @csrf
-            <div class="col-6 offset-3">
+            <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
                 <div class="form-group">
                     <div class="col-sm-12">
-                        <label for="name">网站名称</label>
+                        <label for="name" class="laraword-label">网站名称</label>
                         <input type="text" class="form-control" id="name" name="env[APP_NAME]"
                                value="{{env('APP_NAME')}}">
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-12">
-                        <label for="url">网站地址</label>
+                        <label for="url" class="laraword-label">网站地址</label>
                         <input type="text" class="form-control" id="url" name="env[APP_URL]"
                                value="{{env('APP_URL')}}">
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-12">
-                        <label for="description">站点描述</label>
+                        <label for="description" class="laraword-label">站点描述</label>
                         <input type="text" class="form-control" id="description" name="env[APP_DESCRIPTION]"
                                value="{{env('APP_DESCRIPTION')}}">
                         <span class="description">站点描述将显示在网页代码的头部.</span>
@@ -56,7 +56,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-12">
-                        <label for="keyword">关键词</label>
+                        <label for="keyword" class="laraword-label">关键词</label>
                         <input type="text" class="form-control" id="keyword" name="env[APP_KEYWORD]"
                                value="{{env('APP_KEYWORD')}}">
                         <span class="description">请以半角逗号 "," 分割多个关键字.</span>
@@ -64,7 +64,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-12">
-                        <label>是否允许注册</label>
+                        <label class="laraword-label">是否允许注册</label>
                         <div class="radio">
                             <label class="radio-inline"><input type="radio" @if(!$data['allow_register']) checked @endif name="options[allow_register]" value="0">不允许</label>
                             <label class="radio-inline"><input type="radio" @if($data['allow_register']) checked @endif name="options[allow_register]" value="1">允许</label>
@@ -74,14 +74,14 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-12">
-                        <label for="timezone">时区</label>
+                        <label for="timezone" class="laraword-label">时区</label>
                         <input type="text" class="form-control" id="timezone" name="env[APP_TIMEZONE]"
                                placeholder="Asia/Shanghai" value="{{env('APP_TIMEZONE')}}">
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-12">
-                        <label for="attachmentTypes">允许上传的文件类型</label>
+                        <label for="attachmentTypes" class="laraword-label">允许上传的文件类型</label>
                         <textarea class="form-control" id="attachmentTypes" name="options[attachmentTypes]" rows="5" style="width: 100%">{{$data['attachmentTypes']}}</textarea>
                         <span class="description">用逗号 "," 将后缀名隔开, 例如: cpp,h,mak</span>
                     </div>

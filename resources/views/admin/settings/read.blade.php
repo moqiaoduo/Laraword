@@ -1,10 +1,10 @@
 @extends('admin.layout')
 
-@section('title',__('Generic').' - '.__('Settings'))
+@section('title',__('Read').' - '.__('Settings'))
 
 @section('head')
     <style>
-        label{font-weight: bold}
+        .laraword-label{font-weight: bold}
         .description {
             margin: .5em 0 0;
             color: #999;
@@ -43,10 +43,10 @@
     <form class="form-horizontal" role="form" method="post" action="{{route('admin::setting.save',"read")}}">
         <div class="row">
             @csrf
-            <div class="col-6 offset-3">
+            <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
                 <div class="form-group">
                     <div class="col-sm-12">
-                        <label>站点首页</label>
+                        <label class="laraword-label">站点首页</label>
                         <div>使用<select name="options[indexPage]" id="indexPage">
                                 <option value="0">文章列表</option>
                                 @foreach($data['pages'] as $val)
@@ -59,7 +59,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-12">
-                        <label for="postsListSize">文章列表数目</label>
+                        <label for="postsListSize" class="laraword-label">文章列表数目</label>
                         <input type="text" class="form-control" id="postsListSize" name="options[postsListSize]"
                                placeholder="10" value="{{$data['postsListSize']}}">
                         <span class="description">此数目用于指定显示在侧边栏中的文章列表数目.</span>

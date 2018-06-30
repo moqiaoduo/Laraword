@@ -10,7 +10,7 @@ use Storage;
 class SettingController extends Controller
 {
     public function index(Request $request,$page){
-        $data['routeTable']=json_decode(getSetting('routeTable'),true);
+        $data['routeTable']=getCustomUri(json_decode(getSetting('routeTable'),true),["post","page","category","articleList"]);
         if($page=='generic'){
             $data['allow_register']=getSetting('allow_register',0);
             $data['attachmentTypes']=getSetting('attachmentTypes');
@@ -19,14 +19,23 @@ class SettingController extends Controller
             $data['pages']=Content::where('type','page')->get();
             $data['indexPage']=getSetting('indexPage',0);
             $data['postsListSize']=getSetting('postsListSize',10);
+        }elseif($page=='link'){
+
         }
         return view("admin.settings.{$page}",['info'=>$request->get('request'),'alert'=>$request->get('alert')])->with('data',$data);
+    }
+
+    protected function checkboxOptions($arr=[],&$options){
+        foreach ($arr as $val){
+            if(empty($options[$val])) $options[$val]=0;
+        }
     }
 
     public function update(Request $request,$page){
         $env=$request->post('env');
         $options=$request->post('options');
-        if(empty($options['showArticleList'])) $options['showArticleList']=0;
+        $checkbox=array("showArticleList");
+        $this->checkboxOptions($checkbox,$options);
         if(isset($options['attachmentTypes'])) $options['attachmentTypes']=preg_replace('# #','',$options['attachmentTypes']);
         $routeTable_modified=$request->post('routeTable');
         if(is_array($env)) modifyEnv($env);

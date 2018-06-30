@@ -51,7 +51,7 @@ function theme($file){
 }
 
 function getCustomRoute($route,$arr=array()){
-    return @str_replace(['{id}','{year}','{month}','{day}','{date}','{slug}','{category}'],[$arr['id'],date("Y",strtotime($arr['created_at'])),date("m",strtotime($arr['created_at'])),date("d",strtotime($arr['created_at'])),date("Ymd",strtotime($arr['created_at'])),$arr['slug'],$arr['category']],$route);
+    return @str_replace(['{cid}','{mid}','{year}','{month}','{day}','{date}','{slug}','{category}'],[$arr['cid'],$arr['mid'],date("Y",strtotime($arr['created_at'])),date("m",strtotime($arr['created_at'])),date("d",strtotime($arr['created_at'])),date("Ymd",strtotime($arr['created_at'])),$arr['slug'],$arr['category']],$route);
 }
 
 /*
@@ -75,7 +75,7 @@ function getCustomUri($routeTable,$routeName){
 
 function getDefaultRoute($routeName){
     switch ($routeName){
-        case "post": return "/archive/{id}";
+        case "post": return "/archives/{cid}";
         case "page": return "/page/{slug}";
         case "category": return "/category/{slug}";
         case "articleList": return "/articles";
