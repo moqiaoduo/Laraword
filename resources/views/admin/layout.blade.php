@@ -76,6 +76,12 @@
                     </li>
                 </ul>
             </li>
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="@lang('Comments')">
+                <a class="nav-link" href="{{route('admin::comment')}}">
+                    <i class="fa fa-fw fa-comments"></i>
+                    <span class="nav-link-text">@lang('Comments')</span>
+                </a>
+            </li>
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="@lang('Themes')">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#theme" data-parent="#theme">
                     <i class="fa fa-fw fa-file"></i>

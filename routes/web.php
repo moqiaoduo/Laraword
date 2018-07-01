@@ -29,11 +29,17 @@ Route::group(['middleware'=>'admin','prefix'=>'admin','as'=>'admin::'],function 
     Route::get('setting/{page}','Admin\SettingController@index')->name('setting');
     Route::post('setting/{page}','Admin\SettingController@update')->name('setting.save');
     Route::resource('theme','Admin\ThemeController');
+    Route::get('comment','Admin\CommentController@index')->name('comment');
+    Route::post('comment/{id}','Admin\CommentController@save')->name('comment.edit');
+    Route::post('comment/{id}/{action}','Admin\CommentController@save')->name('comment.status');
+    Route::post('comment/del','Admin\CommentController@delete')->name('comment.del');
 });
 
 Auth::routes();
 
-Route::get('attachment/{id}','AttachmentController@show');
+Route::get('attachment/{id}','AttachmentController@show')->name('attachment');
+
+Route::post('comment/add','CommentController@addComment')->name('comment.add');
 
 if(empty(DB::select("SELECT table_name FROM information_schema.TABLES WHERE table_name ='options';"))){
     Route::get('/',function (){
