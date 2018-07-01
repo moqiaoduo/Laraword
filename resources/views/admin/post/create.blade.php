@@ -89,23 +89,52 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 col-xl-3 float">
-                <div id="float">
-                    <div class="card category">
-                        <div class="card-header">@lang('Category')</div>
-                        <div class="card-body">
+            <div class="col-md-4 col-xl-3">
+                <!--标签-->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#tab-options" role="tab" data-toggle="tab">@lang('Options')</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#tab-media" role="tab" data-toggle="tab">@lang('Media')</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab-options">
+                        <div class="form-group">
+                            <label class="laraword-label">@lang('Created At') (NO FUNCTION)</label>
+                            <input class="form-control" type="datetime-local">
+                        </div>
+                        <div class="form-group">
+                            <label class="laraword-label">@lang('Category')</label>
                             <div id="category"></div>
                         </div>
+                        <div class="form-group">
+                            <label class="laraword-label">@lang('Tags') (NO FUNCTION)</label>
+                            <input class="form-control" type="text">
+                        </div>
+                        <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#advanced">Advanced Options <i class="fa fa-caret-down" aria-hidden="true"></i></button>
+                        <div id="advanced" class="collapse">
+                            <div class="form-group">
+                                <label class="laraword-label">@lang('Status') (NO FUNCTION)</label>
+                                <input class="form-control" type="text">
+                            </div>
+                            <div class="form-group">
+                                <label class="laraword-label">@lang('Authority') (NO FUNCTION)</label>
+                                <label class="form-inline"><input type="checkbox">允许评论</label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card Filelist" id="drag_upload">
-                        <div class="card-header">@lang('Media') <div style="float: right"><a href="javascript:callUploads();"><span class="badge badge-success">添加附件</span></a></div></div>
-                        <div class="card-body">
-                            <ul class="list-group">
-                                <div class="progress" id="progress_bar">
-                                    <div id="progress" class="progress-bar"></div>
-                                </div>
-                                <div id="larawordFileList"></div>
-                            </ul>
+                    <div class="tab-pane" id="tab-media">
+                        <br>
+                        <div class="progress" id="progress_bar">
+                            <div id="progress" class="progress-bar"></div>
+                        </div>
+                        <ul class="list-group" id="larawordFileList">
+                        </ul>
+                        <div id="drag_upload" class="drag_upload">
+                            拖放文件到这里<br>或者 <a href="javascript:callUploads();">选择文件上传</a>
                         </div>
                     </div>
                 </div>

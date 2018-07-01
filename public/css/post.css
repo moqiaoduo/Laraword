@@ -2,5 +2,9 @@
 #slug{padding:2px;border:none;background:#FFFBCC;color:#666;box-sizing: border-box;line-height: normal;font-size: 100%;}
 .mono{font-family:Menlo,Monaco,Consolas,"Courier New",monospace;}
 .sr-only{border:0;height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;}
-#category,#larawordFileList{overflow-y: auto;}
+#category{overflow-y: auto;max-height: 300px;}
+#larawordFileList{overflow-y: auto;max-height: 450px;}
+.list-group-item{word-wrap:break-word ;}
+.drag_upload{border: 1px dashed #D9D9D6;padding: 15px;text-align: center;}
 .list-group-item .options{float: right}
+.laraword-label{font-weight: bold;margin: 10px 0;}

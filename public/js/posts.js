@@ -1,27 +1,4 @@
 var category=[];
-$(document).scroll(float)
-$(window).resize(float)
-$(document).ready(float)
-function float() {
-    if($(window).width()>=751){
-        $("#float .category, .Filelist").css('width',$(".float").width());
-        if($(this).scrollTop()>=145){
-            $("#category, #larawordFileList").css('max-height',$(window).height()/2-180);
-            $("#float").css('position','fixed');
-            $("#float").css('top','80px');
-        }else{
-            $("#category, #larawordFileList").css('max-height',$(window).height()/2-200);
-            $("#float").css('position','');
-            $("#float").css('top','');
-        }
-    }else{
-        $("#category").css('max-height','');
-        $("#float .category, .Filelist").css('width','');
-        $("#float").css('position','');
-        $("#float").css('top','');
-    }
-    $("#progress_bar").hide()
-}
 function getChildNodeIdArr(node) {
     var ts = [];
     if (node.nodes) {

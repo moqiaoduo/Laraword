@@ -1,3 +1,6 @@
+$(document).ready(function () {
+    $("#progress_bar").hide()
+})
 $(function(){
     $('#slug').bind('input propertychange',function(){
         $("#preview").html($(this).val())
