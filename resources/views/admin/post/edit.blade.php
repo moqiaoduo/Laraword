@@ -162,9 +162,9 @@
                         </div>
                         <div id="drag_upload" class="drag_upload">
                             拖放文件到这里<br>或者 <a href="javascript:callUploads();">选择文件上传</a>
-                            <ul class="list-group" id="larawordFileList">
-                            </ul>
                         </div>
+                        <ul class="list-group" id="larawordFileList">
+                        </ul>
                     </div>
                 </div>
             </div>
