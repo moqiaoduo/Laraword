@@ -77,7 +77,7 @@ class PostController extends Controller
         $post->save();
         $id=$post->cid;
         if(empty($slug)) $slug=$id;
-        $post->slug=$slug;
+        $post->slug=$this->autoRenameSlug($slug);
         $post->save();
         $this->setSlaveFile($id,$files);
         $post->contentMeta()->sync($categories);
@@ -98,8 +98,8 @@ class PostController extends Controller
         $route=getCustomUri(json_decode(getSetting('routeTable'),true),'post');
         $url=config('app.url').str_replace('{slug}',self::loadSlugInput($data['slug']),$route);
         $data['category']=$data->contentMeta()->first()['slug'];
+        if(!empty($draft)) $url=config('app.url').str_replace('{slug}',self::loadSlugInput(substr($draft['slug'],1)),$route);
         $url=getCustomRoute($url,$data);
-        if(!empty($draft)) $url=config('app.url').str_replace('{slug}',self::loadSlugInput($draft['slug']),$route);
         $url=str_replace('{id}',$id,$url);
         $editor=self::loadEditor();
         return view('admin.post.edit')->with('url',$url)->with('head',$editor[0])->with('editor_container',$editor[1])->with('js',$editor[2])->with('data',$data)->with('draft',$draft)->with('info',$info)->with('alert',$alert);
@@ -112,23 +112,24 @@ class PostController extends Controller
         $categories=json_decode($request->post('category'),true);
         if(empty($categories)) $categories=[1];
         $id=$request->route('post');
-        if(empty($slug)) $slug=$id;
         $title=$request->post('title');
         $content=$request->post('content');
         $uid=$request->user()->id;
         $post=Content::find($id);
+        if(empty($slug)) $slug=$post->slug;
         if($submit=='publish'){
-            $post->slug=$slug;
+            $post->slug=$this->autoRenameSlug($post->cid,$slug);
             $post->title=$title;
             $post->content=$content;
             $post->type='post';
             Content::where('type','post_draft')->where('parent',$id)->delete();
         }elseif($submit=='save'){
             if($post->status==0)
-                Content::updateOrCreate(['parent'=>$id, 'type'=>'post_draft'],['uid'=>$uid,'title'=>$title,'content'=>$content,'slug'=>$slug]);
+                Content::updateOrCreate(['parent'=>$id, 'type'=>'post_draft'],['uid'=>$uid,'title'=>$title,'content'=>$content,'slug'=>$this->autoRenameSlug($post->cid,"@".$slug)]);
             else{
                 $post->title=$title;
                 $post->content=$content;
+                $post->slug=$this->autoRenameSlug($post->cid,$slug);
             }
         }
         $post->save();

@@ -45,7 +45,7 @@ class PageController extends Controller
         $page->title=$title;
         $page->content=$request->post('content');
         if(empty($slug)) $slug=str_replace(' ', '', $title);
-        $page->slug=$slug;
+        $page->slug=$this->autoRenameSlug(0,$slug);
         if($submit=='publish') $page->type='page';
         elseif($submit=='save') $page->type='page_draft';
         $page->save();
@@ -65,7 +65,7 @@ class PageController extends Controller
         $draft=Content::where('type','page_draft')->where('parent',$id)->first();
         $route=getCustomUri(json_decode(getSetting('routeTable'),true),'page');
         $url=config('app.url').str_replace('{slug}',self::loadSlugInput($data['slug']),$route);
-        if(!empty($draft)) $url=config('app.url').str_replace('{slug}',self::loadSlugInput($draft['slug']),$route);
+        if(!empty($draft)) $url=config('app.url').str_replace('{slug}',self::loadSlugInput(substr($draft['slug'],1)),$route);
         $url=str_replace('{id}',$id,$url);
         $editor=self::loadEditor();
         return view('admin.page.edit')->with('url',$url)->with('head',$editor[0])->with('editor_container',$editor[1])->with('js',$editor[2])->with('data',$data)->with('draft',$draft)->with('info',$info)->with('alert',$alert);
@@ -77,22 +77,23 @@ class PageController extends Controller
         $files=json_decode($request->post('files'),true);
         $id=$request->route('page');
         $title=$request->post('title');
-        if(empty($slug)) $slug=str_replace(' ', '', $title);
         $content=$request->post('content');
         $uid=$request->user()->id;
         $page=Content::find($id);
+        if(empty($slug)) $slug=$page->slug;
         if($submit=='publish'){
             $page->title=$title;
             $page->content=$content;
             $page->type='page';
-            $page->slug=$slug;
+            $page->slug=$this->autoRenameSlug($page->cid,$slug);
             Content::where('type','page_draft')->where('parent',$id)->delete();
         }elseif($submit=='save'){
             if($page->type=='page')
-                Content::updateOrCreate(['parent'=>$id,'type'=>'page_draft'],['uid'=>$uid,'title'=>$title,'content'=>$content,'slug'=>$slug]);
+                Content::updateOrCreate(['parent'=>$id,'type'=>'page_draft'],['uid'=>$uid,'title'=>$title,'content'=>$content,'slug'=>$this->autoRenameSlug($page->cid,"@".$slug)]);
             else{
                 $page->title=$title;
                 $page->content=$content;
+                $page->slug=$this->autoRenameSlug($slug);
             }
         }
         $page->save();

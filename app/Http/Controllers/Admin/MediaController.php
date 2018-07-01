@@ -61,13 +61,13 @@ class MediaController extends Controller
         $slug=$request->post('slug');
         $id=$request->route('medium');
         $title=$request->post('title');
-        if(empty($slug)) $slug=str_replace(' ', '', $title);
-        $page=Content::where('type','attachment')->find($id);
-        $page->slug=$slug;
-        $page->title=$title;
-        $page->uid=$request->user()->id;
-        $page->content=json_encode(["filename"=>json_decode($page->content,true)['filename'],"description"=>$request->post('description')]);
-        $page->save();
+        if(empty($slug)) $slug=str_replace(".","_",$title);
+        $media=Content::where('type','attachment')->find($id);
+        $media->slug=$this->autoRenameSlug($slug);
+        $media->title=$title;
+        $media->uid=$request->user()->id;
+        $media->content=json_encode(["filename"=>json_decode($page->content,true)['filename'],"description"=>$request->post('description')]);
+        $media->save();
         return redirect()->route('admin::media.edit',[$id,'info'=>'页面已保存或发布','alert'=>'success']);
     }
 

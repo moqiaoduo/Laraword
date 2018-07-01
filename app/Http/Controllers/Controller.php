@@ -45,10 +45,20 @@ EOT;
         $media->uid=$user->id;
         $media->type='attachment';
         $media->title=$title;
-        $media->slug=str_replace(".","_",$title);
+        $media->slug=$this->autoRenameSlug(0,str_replace(".","_",$title));
         $media->content=json_encode(['filename'=>$filename,'description'=>"Uploaded by {$user->name}"]);
         $media->save();
         return $media->cid;
+    }
+
+    protected function autoRenameSlug($id,$old_slug,$new_slug='',$count=0){
+        $slug=$old_slug;if(!empty($new_slug)) $slug=$new_slug;
+        $test=Content::where('slug',$slug);
+        if($test->exists() && ($test->first()->cid!=$id && $test->first()->parent!=$id)){
+            $count++;
+            return $this->autoRenameSlug($id,$old_slug,$old_slug.'_'.$count,$count);
+        }
+        return $slug;
     }
 
     protected function updateUploadRecord($id,$filename){
