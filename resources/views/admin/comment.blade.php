@@ -37,7 +37,6 @@
         });
         function switchReplyWindow(id) {
             reply=$("#comment-"+id).children('td').children('.comment-reply');
-            console.log(reply)
             if(reply.is(":hidden")){
                 reply.show();    //如果元素为隐藏,则将它显现
             }else{
