@@ -47,13 +47,13 @@
                 <div class="form-group">
                     <div class="col-sm-12">
                         <label class="laraword-label">站点首页</label>
-                        <div>使用<select name="options[indexPage]" id="indexPage">
+                        <div class="form-inline">使用 <select name="options[indexPage]" id="indexPage" class="form-control">
                                 <option value="0">文章列表</option>
                                 @foreach($data['pages'] as $val)
                                     <option @if($data['indexPage']==$val['cid']) selected @endif value="{{$val['cid']}}">{{$val['title']}}</option>
                                 @endforeach
-                            </select>页面作为首页
-                            <label id="articleListItem" style="text-indent:25px;@if(!$data['indexPage']) display:none; @endif"><input type="checkbox" name="options[showArticleList]" @if($data['showArticleList']) checked @endif id="showArticleList">同时将文章列表页路径更改为<input type="text" name="routeTable[articleList]" id="articleList" value="{{$data['routeTable']['articleList']}}"></label>
+                            </select> 页面作为首页
+                            <label id="articleListItem" style="margin-left: 25px;@if(!$data['indexPage']) display:none; @endif"><input type="checkbox" name="options[showArticleList]" @if($data['showArticleList']) checked @endif id="showArticleList">同时将文章列表页路径更改为<input type="text" name="routeTable[articleList]" id="articleList" value="{{$data['routeTable']['articleList']}}" class="form-control"></label>
                         </div>
                     </div>
                 </div>
