@@ -76,10 +76,10 @@
                 <div class="form-group">
                     <div style="text-align: right" class="col-sm-12">
                         <button type="submit" class="btn btn-default" name="submit" value="save">
-                            @if($data['status']==0)
-                                保存草稿
+                            @if($data['type']=='page_draft')
+                                保存但不发布
                             @else
-                            保存但不发布
+                                保存草稿
                             @endif
                         </button>
                         <button type="submit" class="btn btn-primary" name="submit" value="publish">发布页面</button>
