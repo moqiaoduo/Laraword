@@ -2,16 +2,6 @@
 
 @section('title',__('Dashboard'))
 
-@section('head')
-    <!-- Morris Charts CSS -->
-    <link href="{{vendor('morrisjs/morris.css')}}" rel="stylesheet">
-@endsection
-
-@section('js')
-    <!-- Morris Charts JavaScript -->
-    <script src="{{vendor('raphael/raphael.min.js')}}"></script>
-@endsection
-
 @section('content')
     <!-- Icon Cards-->
     <div class="row">
