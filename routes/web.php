@@ -30,9 +30,9 @@ Route::group(['middleware'=>'admin','prefix'=>'admin','as'=>'admin::'],function 
     Route::post('setting/{page}','Admin\SettingController@update')->name('setting.save');
     Route::resource('theme','Admin\ThemeController');
     Route::get('comment','Admin\CommentController@index')->name('comment');
-    Route::post('comment/{id}','Admin\CommentController@save')->name('comment.edit');
-    Route::post('comment/{id}/{action}','Admin\CommentController@save')->name('comment.status');
+    Route::post('comment','Admin\CommentController@save')->name('comment.edit');
     Route::post('comment/del','Admin\CommentController@delete')->name('comment.del');
+    Route::post('comment/{id}/{action}','Admin\CommentController@update')->name('comment.status');
 });
 
 Auth::routes();

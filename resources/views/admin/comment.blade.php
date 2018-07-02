@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title',__('Posts'))
+@section('title',__('Comments'))
 
 @section('head')
     <style>
@@ -59,7 +59,7 @@
         }
 
         function postEditComment(id) {
-            $.post("{{route('comment.add')}}",
+            $.post("{{route('admin::comment.edit')}}",
                 {
                     id:id,
                     author:$("#author-edit-"+id).val(),
@@ -87,13 +87,13 @@
 @endsection
 
 @section('breadcrumb')
-    <li class="breadcrumb-item active">@lang('Posts')</li>
+    <li class="breadcrumb-item active">@lang('Comments')</li>
 @endsection
 
 @section('content')
     <div class="row">
         <div class="col-lg-12">
-            <h1>@lang('All Posts')</h1>
+            <h1>@lang('Comments')</h1>
             <hr>
         </div>
     </div>
@@ -108,7 +108,6 @@
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="javascript:document.operations.submit();">@lang('Delete')</a>
                     </div>
-                    <a href="{{route('admin::post.create')}}" class="btn btn-success" style="margin-left: 5px;">@lang('Add')</a>
                 </div>
                 <div class="row"><br></div>
             <table width="100%" class="table">
@@ -119,7 +118,7 @@
                             <input type="checkbox" id="all">
                         @endif
                     </th>
-                    <th width="40px">@lang('Author')</th>
+                    <th width="60px">@lang('Author')</th>
                     <th width="15%"></th>
                     <th>@lang('Content')</th>
                 </tr>
@@ -127,7 +126,7 @@
                 <tbody>
                 @foreach($data as $v)
                     <tr id="comment-{{$v['id']}}">
-                        <td><input type="checkbox" name="del[]" value="{{$v['cid']}}"></td>
+                        <td><input type="checkbox" name="del[]" value="{{$v['id']}}"></td>
                         <td><img id="comment-avatar-{{$v['id']}}" src="https://secure.gravatar.com/avatar/{{md5($v['email'])}}?s=40"></td>
                         <td>
                             <span class="laraword-label"><a id="comment-author-{{$v['id']}}" @if(!empty($v['url']))href="{{$v['url']}}@endif">{{$v['name']}}</a></span><br>
@@ -147,7 +146,6 @@
                                 <span><a @if($v['status']!='spam') href="{{route('admin::comment.status',[$v['id'],'spam'])}}" @endif>垃圾</a></span>
                                 <span><a href="javascript:showEditWindow({{$v['id']}});">编辑</a></span>
                                 <span><a href="javascript:switchReplyWindow({{$v['id']}});">回复</a></span>
-                                <span><a href="javascript:delComment({{$v['id']}});">删除</a></span>
                             </div>
                         </td>
                     </tr>
