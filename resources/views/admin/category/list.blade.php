@@ -64,7 +64,7 @@
                         <th>@lang('Name')</th>
                         <th>@lang('Slug')</th>
                         <th>@lang('Sub Category')</th>
-                        <th>@lang('Count')</th>
+                        <th>@lang('Posts Count')</th>
                         <th>@lang('Created At')</th>
                     </tr>
                     </thead>
@@ -77,6 +77,8 @@
                             <td>
                                 @if($v['sub']>0)
                                     <a href="{{route('admin::category.index',['parent'=>$v['mid']])}}">查看子分类</a>
+                                @else
+                                    无
                                 @endif
                             </td>
                             <td><a title="点击查看分类文章" href="{{route('admin::category.show',$v['mid'])}}">{{$v['count']}}</a></td>

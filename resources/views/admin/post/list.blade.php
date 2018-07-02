@@ -62,7 +62,7 @@
                     <th>@lang('Status')</th>
                     <th>@lang('Author')</th>
                     <th>@lang('Category')</th>
-                    <th>@lang('Created At')</th>
+                    <th>@lang('Published At')</th>
                 </tr>
                 </thead>
                 <tbody>

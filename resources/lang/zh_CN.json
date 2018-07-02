@@ -38,7 +38,7 @@
   "Edit Post":"编辑文章",
   "Slug":"别名",
   "Sub Category":"子分类",
-  "Count":"所属文章数",
+  "Posts Count":"文章计数",
   "New Category":"新建分类",
   "Edit Category":"编辑分类",
   "Uploader":"上传者",
@@ -58,5 +58,6 @@
   "Nick Name":"昵称",
   "Your Website":"网站地址",
   "Optional":"可选",
-  "Content":"内容"
+  "Content":"内容",
+  "Published At":"发布日期"
 }
