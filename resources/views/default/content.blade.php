@@ -61,45 +61,53 @@
                     </div>
             </div>
         </div>
+        @if(!$comments->isEmpty())
         <div class="row justify-content-center" style="margin-top: 40px;">
             <div class="col-10">
                 <h4>评论</h4>
                 <hr>
-                @include('comments')
+                @include('comments',["comment"=>$comments])
             </div>
         </div>
-        <div class="row justify-content-center" style="margin-top: 40px;">
-            <div class="col-10">
-                <h4>添加新评论</h4>
-                <hr>
-                <textarea rows="8" name="comment" class="form-control" style="width: 100%"></textarea>
-                <div style="max-width: 400px;margin-top: 20px;">
-                    @guest
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fa fa-fw fa-user"></i></span>
+        @endif
+        <form method="post" action="{{route('comment.add')}}">
+            <div class="row justify-content-center" style="margin-top: 40px;">
+                <div class="col-10">
+                    <h4>添加新评论</h4>
+                    <hr>
+                    <textarea rows="8" name="content" class="form-control" style="width: 100%"></textarea>
+                    <div style="max-width: 400px;margin-top: 20px;">
+
+                        @csrf
+                        @guest
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-fw fa-user"></i></span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="{{__('Nick Name')}}" name="author">
                             </div>
-                            <input type="text" class="form-control" placeholder="{{__('Nick Name')}}">
-                        </div>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fa fa-fw fa-envelope"></i></span>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-fw fa-envelope"></i></span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="{{__('E-Mail Address')}}" name="email">
                             </div>
-                            <input type="text" class="form-control" placeholder="{{__('E-Mail Address')}}">
-                        </div>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fa fa-fw fa-globe"></i></span>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-fw fa-globe"></i></span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="{{__('Your Website')}} ({{__('Optional')}})" name="url">
                             </div>
-                            <input type="text" class="form-control" placeholder="{{__('Your Website')}} ({{__('Optional')}})">
-                        </div>
-                    @else
-                        <p>登录身份: {{ Auth::user()->name }}. <a href="{{ route('logout') }}" onclick="event.preventDefault();
+                        @else
+                            <p>登录身份: {{ Auth::user()->name }}. <a href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">退出 »</a></p>
-                    @endguest
-                    <input type="submit" name="comment_submit" value="提交评论" class="btn btn-primary" style="width: 100%">
+                        @endguest
+                        <input type="submit" name="comment_submit" value="提交评论" class="btn btn-primary" style="width: 100%">
+                        <input type="hidden" name="redirect" value="{{getCustomRoute($route,$data)}}">
+                        <input type="hidden" name="cid" value="{{$data['cid']}}">
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 @endsection
