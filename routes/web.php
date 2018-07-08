@@ -41,6 +41,8 @@ Route::get('attachment/{id}','AttachmentController@show')->name('attachment');
 
 Route::post('comment/add','CommentController@addComment')->name('comment.add');
 
+Route::get('getCommentTemplate','CommentController@getCommentTemplate')->name('getCommentTemplate');
+
 if(empty(DB::select("SELECT table_name FROM information_schema.TABLES WHERE table_name ='options';"))){
     Route::get('/',function (){
         return '请先安装后使用。 Please install first.';

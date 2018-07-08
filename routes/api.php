@@ -25,3 +25,5 @@ Route::get('getPAttachment/{id}','APIController@getPAttachment')->name('getPAtta
 Route::post('getAttachmentUrl','APIController@getAttachmentUrl')->name('getAttachmentUrl');
 
 Route::get('getMediaPreview/{id}','APIController@getMediaPreview')->name('getMediaPreview');
+
+Route::get('comments/{cid}/{parent?}','CommentController@getSubComments')->name('comments');

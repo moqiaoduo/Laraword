@@ -65,8 +65,7 @@
         <div class="row justify-content-center" style="margin-top: 40px;">
             <div class="col-10">
                 <h4>评论</h4>
-                <hr>
-                @include('comments',["comment"=>$comments])
+                <div id="comment-sub-0"></div>
             </div>
         </div>
         @endif
@@ -77,7 +76,6 @@
                     <hr>
                     <textarea rows="8" name="content" class="form-control" style="width: 100%"></textarea>
                     <div style="max-width: 400px;margin-top: 20px;">
-
                         @csrf
                         @guest
                             <div class="input-group mb-3">
@@ -110,4 +108,23 @@
             </div>
         </form>
     </div>
+
+    <script>
+        var page=1;var perPage=10;
+        $(document).ready(function () {
+            getComments()
+        })
+        function getComments(parent) {
+            var url='';
+            if(parent!=null || parent!=undefined) url='/'+parent;
+            $.getJSON("{{route('comments',["cid"=>$data['cid']])}}"+url,{page:page,perpage:perPage},function (data) {
+                data.forEach(function (val,index) {
+                    $.get("{{route('getCommentTemplate')}}",val,function (data) {
+                        $("#comment-sub-"+val['parent']).append(data)
+                        getComments(val['id'])
+                    })
+                })
+            })
+        }
+    </script>
 @endsection

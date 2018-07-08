@@ -39,4 +39,16 @@ class CommentController extends Controller
         if($request->ajax()) return ["id"=>$comment->id,"cid"=>$comment->cid,"author"=>$comment->name,"email"=>$comment->email,"url"=>$comment->url,"content"=>$comment->content,"avatar"=>"https://secure.gravatar.com/avatar/".md5($comment->email)."?s=40"];
         elseif(!empty($redirect)) return redirect($redirect."#comment-1");
     }
+
+    public function getSubComments(Request $request,$cid,$parent=0){
+        $page=$request->get('page',1);
+        $perPage=$request->get('perpage',10);
+        if($parent==0)
+        return Comment::where('cid',$cid)->where('parent',0)->forPage($page,$perPage)->get();
+        else return Comment::where('cid',$cid)->where('parent',$parent)->get();
+    }
+
+    public function getCommentTemplate(Request $request){
+        return view('comments')->with('comment',$request->all());
+    }
 }
