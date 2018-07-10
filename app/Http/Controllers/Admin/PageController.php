@@ -25,7 +25,7 @@ class PageController extends Controller
 
     public function show($id){
         $data=Content::where('type','page')->find($id);
-        return view('content')->with('data',$data);
+        return view(getPageTemplateName($data))->with('data',$data);
     }
 
     public function create(){

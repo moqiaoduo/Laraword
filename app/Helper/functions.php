@@ -275,3 +275,9 @@ function get_ip() {
     echo $res;
     //dump(phpinfo());//所有PHP配置信息
 }
+
+function getPageTemplateName($page){
+    $theme=env('APP_THEME','default');
+    if(empty($page['template']) || Storage::disk('views')->exists($theme.'/pages/'.$page['template'])) return 'pages.default';
+    return 'pages.'.$page;
+}

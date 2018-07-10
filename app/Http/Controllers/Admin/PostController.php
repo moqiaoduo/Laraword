@@ -52,7 +52,7 @@ class PostController extends Controller
 
     public function show($id){
         $data=Content::where('type','post')->find($id);
-        return view('content')->with('data',$data);
+        return view('post')->with('data',$data);
     }
 
     public function create(){

@@ -14,16 +14,16 @@ class IndexController extends Controller
         $post=getCustomUri($routeTable,'post');
         $params1=$this->matchRoute($request->getRequestUri(),$post,$request->route()->parameters);
         if(!empty($params1)){
-            $data=$this->getContent($params1);
-            $comments=Comment::where('cid',$data['cid'])->get();
-            if(!empty($data)) return view('content')->with('data',$data)->with('route',$post)->with('comments',$comments);
+            $data=$this->getContent($params1);$comments=[];
+            if(!empty($data)) $comments=Comment::where('cid',$data['cid'])->get();
+            if(!empty($data)) return view('post')->with('data',$data)->with('route',$post)->with('comments',$comments);
         }
         $page=getCustomUri($routeTable,'page');
         $params2=$this->matchRoute($request->getRequestUri(),$page,$request->route()->parameters);
         if(!empty($params2)){
-            $data=$this->getContent($params2,'page');
-            $comments=Comment::where('cid',$data['cid'])->get();
-            if(!empty($data)) return view('content')->with('data',$data)->with('route',$page)->with('comments',$comments);
+            $data=$this->getContent($params2,'page');$comments=[];
+            if(!empty($data)) $comments=Comment::where('cid',$data['cid'])->get();
+            if(!empty($data)) return view(getPageTemplateName($data))->with('data',$data)->with('route',$page)->with('comments',$comments);
         }
         $category=getCustomUri($routeTable,'category');
         $params3=$this->matchRoute($request->getRequestUri(),$category,$request->route()->parameters);

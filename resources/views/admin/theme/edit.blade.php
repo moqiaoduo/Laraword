@@ -80,13 +80,13 @@
                                     @switch($val)
                                         @case('articles.blade.php')
                                         <br><i style="text-indent:2em;display:block;">文章列表</i> @break
-                                        @case('content.blade.php')
+                                        @case('post.blade.php')
                                         <br><i style="text-indent:2em;display:block;">文章内容页</i> @break
                                         @case('layout.blade.php')
                                         <br><i style="text-indent:2em;display:block;">模板布局</i> @break
                                         @case('errors/404.blade.php')
                                         <br><i style="text-indent:2em;display:block;">404错误页</i> @break
-                                        @case('page/default.blade.php')
+                                        @case('pages/default.blade.php')
                                         <br><i style="text-indent:2em;display:block;">默认页面模板</i> @break
                                         @case('theme.json')
                                         <br><i style="text-indent:2em;display:block;">主题信息</i> @break
