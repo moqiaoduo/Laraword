@@ -8,6 +8,9 @@
             <h1>{{$data['title']}}</h1>
         </div>
         <div class="row justify-content-center">
+            @yield('subheader')
+        </div>
+        <div class="row justify-content-center">
             <div class="col-10">
                 @if(env('APP_SHOW')=='markdown')
                     <div id="doc-content">
@@ -117,13 +120,8 @@
         function getComments(parent) {
             var url='';
             if(parent!=null || parent!=undefined) url='/'+parent;
-            $.getJSON("{{route('comments',["cid"=>$data['cid']])}}"+url,{page:page,perpage:perPage},function (data) {
-                data.forEach(function (val,index) {
-                    $.get("{{route('getCommentTemplate')}}",val,function (data) {
-                        $("#comment-sub-"+val['parent']).append(data)
-                        getComments(val['id'])
-                    })
-                })
+            $.get("{{route('getComments')}}",{cid:{{$data['cid']}},page:page,perpage:perPage},function (data) {
+                $("#comment-sub-0").html(data)
             })
         }
     </script>

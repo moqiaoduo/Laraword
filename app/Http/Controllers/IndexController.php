@@ -12,10 +12,14 @@ class IndexController extends Controller
     public function index(Request $request){
         $routeTable=json_decode(getSetting('routeTable'),true);
         $post=getCustomUri($routeTable,'post');
+        $category=getCustomUri($routeTable,'category');
         $params1=$this->matchRoute($request->getRequestUri(),$post,$request->route()->parameters);
         if(!empty($params1)){
             $data=$this->getContent($params1);$comments=[];
-            if(!empty($data)) $comments=Comment::where('cid',$data['cid'])->get();
+            if(!empty($data)){
+                $comments=Comment::where('cid',$data['cid'])->get();
+                $data['categories']=$this->getCategoriesHTML($category,$data['cid']);
+            }
             if(!empty($data)) return view('post')->with('data',$data)->with('route',$post)->with('comments',$comments);
         }
         $page=getCustomUri($routeTable,'page');
@@ -25,7 +29,6 @@ class IndexController extends Controller
             if(!empty($data)) $comments=Comment::where('cid',$data['cid'])->get();
             if(!empty($data)) return view(getPageTemplateName($data))->with('data',$data)->with('route',$page)->with('comments',$comments);
         }
-        $category=getCustomUri($routeTable,'category');
         $params3=$this->matchRoute($request->getRequestUri(),$category,$request->route()->parameters);
         if(!empty($params3)){
             $data=$this->getMetaPost($category,$params3);

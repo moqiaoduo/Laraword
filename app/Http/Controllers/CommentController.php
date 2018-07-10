@@ -43,12 +43,26 @@ class CommentController extends Controller
     public function getSubComments(Request $request,$cid,$parent=0){
         $page=$request->get('page',1);
         $perPage=$request->get('perpage',10);
-        if($parent==0)
-        return Comment::where('cid',$cid)->where('parent',0)->forPage($page,$perPage)->get();
+        return $this->getSubComments_this($cid,$parent,$page,$perPage);
+    }
+
+    protected function getSubComments_this($cid,$parent=0,$page=1,$perPage=10){
+        if($parent==0) return Comment::where('cid',$cid)->where('parent',0)->forPage($page,$perPage)->get();
         else return Comment::where('cid',$cid)->where('parent',$parent)->get();
     }
 
-    public function getCommentTemplate(Request $request){
-        return view('comments')->with('comment',$request->all());
+    protected function collectComments($cid,$parent=0,$page=1,$perPage=10){
+        $data=$this->getSubComments_this($cid,$parent,$page,$perPage);$html='';
+        if($data->isNotEmpty()){
+            foreach ($data as $val){
+                $sub_comments=$this->collectComments($cid,$val['id'],$page,$perPage);
+                $html.=view('comments')->with('comment',$val)->with('sub_comments',$sub_comments);
+            }
+        }
+        return $html;
+    }
+
+    public function getComments(Request $request){
+        return $this->collectComments($request->get('cid'),0,$request->get('page'),$request->get('perpage'));
     }
 }
