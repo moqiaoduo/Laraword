@@ -83,7 +83,7 @@
                     <div class="col-sm-12">
                         <label for="attachmentTypes" class="laraword-label">允许使用的HTML标签和属性</label>
                         <textarea class="form-control" id="attachmentTypes" name="options[commentsAllowedHTML]" rows="5" style="width: 100%"></textarea>
-                        <span class="description">默认的用户评论不允许填写任何的HTML标签, 你可以在这里填写允许使用的HTML标签.<br>比如: : <code>&lt;a&gt; &lt;img&gt; &lt;blockquote&gt;</code></span>
+                        <span class="description">默认的用户评论不允许填写任何的HTML标签, 你可以在这里填写允许使用的HTML标签.<br>比如: : <code>&lt;a href=&quot;&quot; target=&quot;&quot;&gt; &lt;img src=&quot;&quot; alt=&quot;&quot;&gt; &lt;blockquote&gt;</code> (不需要输入结束标签)</span>
                     </div>
                 </div>
                 <div class="form-group">

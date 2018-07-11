@@ -32,7 +32,7 @@ class CommentController extends Controller
         $comment->name=$author;
         $comment->email=$email;
         $comment->url=$url;
-        $comment->content=$content;
+        $comment->content=cHBL($content,getSetting('commentsAllowedHTML'));
         $comment->agent=$Agent;
         $comment->ip=get_ip();
         $comment->save();
