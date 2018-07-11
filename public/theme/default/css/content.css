@@ -1,2 +1,4 @@
 img,video,audio{max-width: 100%;}
 .laraword-label{font-weight: bold;}
+.comment-title{vertical-align:middle;position:relative;}
+.comment-title #comment-reply-cancel{font-size: 12px;position: absolute;bottom: 0;right: 0;display: none;}
