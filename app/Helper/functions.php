@@ -272,7 +272,7 @@ function get_ip() {
         $ip = $_SERVER['REMOTE_ADDR'];
     }
     $res =  preg_match ( '/[\d\.]{7,15}/', $ip, $matches ) ? $matches [0] : '';
-    echo $res;
+    return $res;
     //dump(phpinfo());//所有PHP配置信息
 }
 
