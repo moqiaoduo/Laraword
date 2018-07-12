@@ -30,10 +30,16 @@ class CommentController extends Controller
         $author=$request->post('author');
         $email=$request->post('email');
         $url=$request->post('url');
-        $content=$request->post('content');
+        $content=@cHBL($request->post('content'),getSetting('commentsAllowedHTML'));
         if(!preg_match("/^(.*?):/", $url) && !empty($url)){
             $url = 'http://'.$url;
         }
+        $comment=Comment::find($id);
+        $comment->name=$author;
+        $comment->email=$email;
+        $comment->url=$url;
+        $comment->content=$content;
+        $comment->save();
         return ["id"=>$id,"author"=>$author,"email"=>$email,"url"=>$url,"content"=>$content,"avatar"=>"https://secure.gravatar.com/avatar/".md5($email)."?s=40"];
     }
 

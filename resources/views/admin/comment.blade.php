@@ -83,6 +83,20 @@
             $("#comment-avatar-"+data.id).attr("src",data.avatar)
             hideEditWindow(data.id);
         }
+
+        function addReply(id,cid) {
+            console.log('starting...')
+            $.post("{{route('comment.add')}}",
+                {
+                    cid:cid,
+                    parent:id,
+                    content:$("#reply-content-"+id).val(),
+                    _token:"{{csrf_token()}}"
+                },function (data) {
+                console.log('end.')
+                    window.location.href="{{route('admin::comment')}}";
+                },"json");
+        }
     </script>
 @endsection
 
@@ -137,8 +151,9 @@
                             <p>{{$v['created_at']}} 在 <a href="{{getCustomRoute($route,$v['cid_data'])}}#comment-{{$v['id']}}">{{$v['cid_data']['title']}}</a></p>
                             <p id="comment-content-{{$v['id']}}">{!! $v['content'] !!}</p>
                             <div class="comment-reply">
-                                <p><textarea rows="5" class="form-control"></textarea></p>
-                                <p><a href="" class="btn btn-primary">回复</a> <button type="button" onclick="hideReplyWindow({{$v['id']}})" class="btn">取消</button></p>
+                                <p><textarea rows="5" class="form-control" id="reply-content-{{$v['id']}}"></textarea></p>
+                                <p><button type="button" class="btn btn-primary" onclick="addReply({{$v['id']}},{{$v['cid']}})">回复</button>
+                                    <button type="button" onclick="hideReplyWindow({{$v['id']}})" class="btn">取消</button></p>
                             </div>
                             <div class="comment-options">
                                 <span><a @if($v['status']!='approved') href="{{route('admin::comment.status',[$v['id'],'approved'])}}" @endif>通过</a></span>

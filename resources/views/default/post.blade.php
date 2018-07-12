@@ -13,3 +13,7 @@
                                 &nbsp; | &nbsp; <a rel="nofollow" href="{{getCustomRoute($route,$data).'#comments'}}">暂无评论</a></span>
     </div>
 @endsection
+
+@section('comments')
+    @include('comment')
+@endsection

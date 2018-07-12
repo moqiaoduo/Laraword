@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class CommentController extends Controller
 {
     public function addComment(Request $request){
-        if(!$request->post('comment_submit')) return null;
+        if(!$request->post('comment_submit') && !$request->ajax()) return null;
         $cid=$request->post('cid');
         $user=$request->user();
         $uid=0;
@@ -53,7 +53,6 @@ class CommentController extends Controller
         $count=$data->count();
         if($parent==0) return $data->forPage($page,$perPage)->get();
         else return $data->get();
-
     }
 
     protected function collectComments($cid,$parent=0,$page=1,$perPage=10){
