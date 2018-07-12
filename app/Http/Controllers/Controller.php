@@ -34,7 +34,7 @@ EOT;
         $html='';
         $data=Content::find($cid)->contentMeta()->get();
         foreach ($data as $val){
-            $html.="<a href=\"".getCustomRoute($cr,["slug"=>$val['slug'],"id"=>$val['mid']])."\">{$val['name']}</a>,";
+            $html.="<a href=\"".getCustomRoute($cr,["slug"=>$val['slug'],"mid"=>$val['mid']])."\">{$val['name']}</a>,";
         }
         return substr($html,0,strlen($html)-1);;
     }

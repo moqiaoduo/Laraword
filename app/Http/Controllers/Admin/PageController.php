@@ -15,7 +15,7 @@ class PageController extends Controller
         $data=Content::where('type','page')->orWhere(function ($query) {
             $query->where('type', "page_draft")
                 ->where('parent', 0);
-        })->paginate(10);
+        })->orderBy("created_at",'desc')->paginate(10);
         foreach ($data as $key=>$val){
             if(Content::where('type','page_draft')->where('parent',$val['cid'])->count()>0 || $val['type']=='page_draft') $data[$key]['title']='(草稿)'.$val['title'];
             $data[$key]['author']=User::find($val['uid'])['name'];
@@ -39,15 +39,22 @@ class PageController extends Controller
         $submit=$request->post('submit');
         $files=json_decode($request->post('files'),true);
         $title=$request->post('title');
+        $status=$request->post('status');
+        $password=$request->post('password');
         $slug=$request->post('slug');
+        $created_at=$request->post('created_at');
+        if(empty($created_at)) $created_at=date("Y-m-d H:i:s");
         $page=new Content;
         $page->uid=$request->user()->id;
         $page->title=$title;
         $page->content=$request->post('content');
         if(empty($slug)) $slug=str_replace(' ', '', $title);
         $page->slug=$this->autoRenameSlug(0,$slug);
+        $page->status=$status;
+        $page->password=$password;
         if($submit=='publish') $page->type='page';
         elseif($submit=='save') $page->type='page_draft';
+        $page->created_at=str_replace('T',' ',$created_at);
         $page->save();
         $this->setSlaveFile($page->cid,$files);
         return redirect()->route('admin::page.index',['info'=>'页面已保存或发布','alert'=>'success']);
@@ -75,6 +82,11 @@ class PageController extends Controller
         $submit=$request->post('submit');
         $slug=$request->post('slug');
         $files=json_decode($request->post('files'),true);
+        $created_at=$request->post('created_at');
+        $password=$request->post('password');
+        $status=$request->post('status');
+        if(empty($created_at)) $created_at=date("Y-m-d H:i:s");
+        $created_at=str_replace('T',' ',$created_at);
         $id=$request->route('page');
         $title=$request->post('title');
         $content=$request->post('content');
@@ -86,14 +98,20 @@ class PageController extends Controller
             $page->content=$content;
             $page->type='page';
             $page->slug=$this->autoRenameSlug($page->cid,$slug);
+            $page->created_at=$created_at;
+            $page->status=$status;
+            $post->password=$password;
             Content::where('type','page_draft')->where('parent',$id)->delete();
         }elseif($submit=='save'){
             if($page->type=='page')
-                Content::updateOrCreate(['parent'=>$id,'type'=>'page_draft'],['uid'=>$uid,'title'=>$title,'content'=>$content,'slug'=>$this->autoRenameSlug($page->cid,"@".$slug)]);
+                Content::updateOrCreate(['parent'=>$id,'type'=>'page_draft'],['uid'=>$uid,'title'=>$title,'content'=>$content,'slug'=>$this->autoRenameSlug($page->cid,"@".$slug),'created_at'=>$created_at,'status'=>$status,'password'=>$password]);
             else{
                 $page->title=$title;
                 $page->content=$content;
-                $page->slug=$this->autoRenameSlug($slug);
+                $page->slug=$this->autoRenameSlug($page->cid,$slug);
+                $page->created_at=$created_at;
+                $page->status=$status;
+                $post->password=$password;
             }
         }
         $page->save();

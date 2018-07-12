@@ -39,7 +39,7 @@ class IndexController extends Controller
         $showArticleList=getSetting('showArticleList');
         if($request->getRequestUri()==$articles && $indexPage>0 && $showArticleList){
             $postsListSize=getSetting('postsListSize',10);
-            $data=Content::where('type','post')->whereIn('status',[0,3])->paginate($postsListSize);
+            $data=Content::where('type','post')->whereIn('status',['publish','password'])->paginate($postsListSize);
             $data=$this->contentDealWith($category,$data);
             return view('articles')->with('data',$data)->with('route',$post);
         }
@@ -49,7 +49,7 @@ class IndexController extends Controller
                 if(!empty($data)) return view('content')->with('data',$data);
             }else{
                 $postsListSize=getSetting('postsListSize',10);
-                $data=Content::where('type','post')->whereIn('status',[0,3])->paginate($postsListSize);
+                $data=Content::where('type','post')->whereIn('status',['publish','password'])->paginate($postsListSize);
                 $data=$this->contentDealWith($category,$data);
                 return view('articles')->with('data',$data)->with('route',$post);
             }

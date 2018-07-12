@@ -14,7 +14,7 @@ class CategoryController extends Controller
     public function index(Request $request){
         $parent=$request->get('parent');
         if($parent===null) $parent=0;
-        $data=Meta::where('type','category')->where('parent',$parent)->paginate(10);
+        $data=Meta::where('type','category')->where('parent',$parent)->orderBy("mid",'desc')->paginate(10);
         foreach ($data as $key=>$val) {
             $data[$key]['sub']=Meta::where('type','category')->where('parent',$val['mid'])->count();
         }
@@ -27,15 +27,9 @@ class CategoryController extends Controller
         foreach ($data as $key=>$val){
             if(Content::where('type','post_draft')->where('parent',$val['cid'])->count()>0 || $val['type']=='post_draft') $data[$key]['title']='(草稿)'.$val['title'];
             $data[$key]['author']=User::find($val['uid'])['name'];
-            $category=DB::table('relationships')->where('cid',$val['cid'])->get();
-            $t='';
-            foreach ($category as $k=>$v){
-                $meta=Meta::find($v->mid);
-                if($meta['type']=='category') $t.=$meta['name'].',';
-            }
-            $data[$key]['category']=substr($t,0,strlen($t)-1);
+            $data[$key]['category']=$this->getCategoriesHTML(env('APP_URL').'/admin/category/{mid}',$val['cid']);
         }
-        return view('admin.post.list',['info'=>null,'alert'=>null])->with('data',$data);
+        return view('admin.post.list',['info'=>null,'alert'=>null])->with('data',$data)->with('category',$id);
     }
 
     protected function getBreadCrumb($parent,$first=false){

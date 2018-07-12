@@ -48,8 +48,10 @@
                         <a class="dropdown-item" href="javascript:document.operations.submit();">@lang('Delete')</a>
                     </div>
                     <a href="{{route('admin::post.create')}}" class="btn btn-success" style="margin-left: 5px;">@lang('Add')</a>
+
                 </div>
                 <div class="row"><br></div>
+                @if($category>0)<a href="{{route('admin::post.index')}}" class="btn btn-success" style="margin-left: 5px;">&lt; @lang('Back')</a><div class="row"><br></div>@endif
             <table width="100%" class="table">
                 <thead>
                 <tr>
@@ -80,7 +82,7 @@
                             @endswitch
                         </td>
                         <td>{{$v['author']}}</td>
-                        <td>{{$v['category']}}</td>
+                        <td>{!! $v['category'] !!}</td>
                         <td>{{$v['created_at']}}</td>
                     </tr>
                 @endforeach

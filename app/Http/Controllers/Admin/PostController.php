@@ -17,37 +17,13 @@ class PostController extends Controller
         $data=Content::where('type','post')->orWhere(function ($query) {
             $query->where('type', "post_draft")
                 ->where('parent', 0);
-        })->paginate(10);
+        })->orderBy('created_at','desc')->paginate(10);
         foreach ($data as $key=>$val){
             if(Content::where('type','post_draft')->where('parent',$val['cid'])->count()>0 || $val['type']=='post_draft') $data[$key]['title']='(草稿)'.$val['title'];
             $data[$key]['author']=User::find($val['uid'])['name'];
-            $category=DB::table('relationships')->where('cid',$val['cid'])->get();
-            $t='';
-            foreach ($category as $k=>$v){
-                $meta=Meta::find($v->mid);
-                if($meta['type']=='category') $t.=$meta['name'].',';
-            }
-            $data[$key]['category']=substr($t,0,strlen($t)-1);
+            $data[$key]['category']=$this->getCategoriesHTML(env('APP_URL').'/admin/category/{mid}',$val['cid']);
         }
-        return view('admin.post.list')->with('data',$data)->with('info',$info)->with('alert',$alert);
-    }
-
-    protected function updateCategory($cid,$category){
-        if(empty($category)) $category=[getSetting('default_category',0)];
-        $old=DB::table('relationships')->where('cid',$cid)->get();
-        if($old->count()>0){
-            foreach ($old as $key=>$val){
-                $s=array_search($val->mid,$category);
-                if($s===false){
-                    DB::table('relationships')->where('mid',$val->mid)->delete();
-                }else{
-                    unset($category[$s]);
-                }
-            }
-        }
-        foreach ($category as $val){
-            if($val>0) DB::table('relationships')->insert(["cid"=>$cid,"mid"=>$val]);
-        }
+        return view('admin.post.list')->with('data',$data)->with('info',$info)->with('alert',$alert)->with('category',0);;
     }
 
     public function show($id){
@@ -66,18 +42,25 @@ class PostController extends Controller
         $submit=$request->post('submit');
         $files=json_decode($request->post('files'),true);
         $categories=json_decode($request->post('category'),true);
+        $created_at=$request->post('created_at');
+        $status=$request->post('status');
+        $password=$request->post('password');
+        if(empty($created_at)) $created_at=date("Y-m-d H:i:s");
         if(empty($categories)) $categories=[1];
         $slug=$request->post('slug');
         $post=new Content;
         $post->uid=$request->user()->id;
         $post->title=$request->post('title');
         $post->content=$request->post('content');
-        $post->slug='';
+        $post->slug=str_random(32);
+        $post->status=$status;
+        $post->password=$password;
         if($submit=='save') $post->type="post_draft";
         $post->save();
         $id=$post->cid;
         if(empty($slug)) $slug=$id;
-        $post->slug=$this->autoRenameSlug($slug);
+        $post->slug=$this->autoRenameSlug($id,$slug);
+        $post->created_at=str_replace('T',' ',$created_at);
         $post->save();
         $this->setSlaveFile($id,$files);
         $post->contentMeta()->sync($categories);
@@ -107,6 +90,10 @@ class PostController extends Controller
 
     public function update(Request $request){
         $submit=$request->post('submit');
+        $created_at=$request->post('created_at');
+        $status=$request->post('status');
+        $password=$request->post('password');
+        if(empty($created_at)) $created_at=date("Y-m-d H:i:s");
         $slug=$request->post('slug');
         $files=json_decode($request->post('files'),true);
         $categories=json_decode($request->post('category'),true);
@@ -117,19 +104,26 @@ class PostController extends Controller
         $uid=$request->user()->id;
         $post=Content::find($id);
         if(empty($slug)) $slug=$post->slug;
+        $created_at=str_replace('T',' ',$created_at);
         if($submit=='publish'){
             $post->slug=$this->autoRenameSlug($post->cid,$slug);
             $post->title=$title;
             $post->content=$content;
             $post->type='post';
+            $post->created_at=$created_at;
+            $post->status=$status;
+            $post->password=$password;
             Content::where('type','post_draft')->where('parent',$id)->delete();
         }elseif($submit=='save'){
-            if($post->status==0)
-                Content::updateOrCreate(['parent'=>$id, 'type'=>'post_draft'],['uid'=>$uid,'title'=>$title,'content'=>$content,'slug'=>$this->autoRenameSlug($post->cid,"@".$slug)]);
+            if($post->type=='post')
+                Content::updateOrCreate(['parent'=>$id, 'type'=>'post_draft'],['uid'=>$uid,'title'=>$title,'content'=>$content,'slug'=>$this->autoRenameSlug($post->cid,"@".$slug),'created_at'=>$created_at,'status'=>$status,'password'=>$password]);
             else{
                 $post->title=$title;
                 $post->content=$content;
                 $post->slug=$this->autoRenameSlug($post->cid,$slug);
+                $post->created_at=$created_at;
+                $post->status=$status;
+                $post->password=$password;
             }
         }
         $post->save();

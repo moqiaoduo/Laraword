@@ -13,7 +13,7 @@ class MediaController extends Controller
     public function index(Request $request){
         $info=$request->get('info');
         $alert=$request->get('alert');
-        $data=Content::where('type','attachment')->paginate(10);
+        $data=Content::where('type','attachment')->orderBy("created_at",'desc')->paginate(10);
         foreach ($data as $key=>$val){
             $data[$key]['author']=User::find($val['uid'])['name'];
             $data[$key]['slave']=Content::find($val['parent'])['title'];

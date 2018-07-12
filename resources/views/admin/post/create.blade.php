@@ -103,8 +103,8 @@
                 <div class="tab-content">
                     <div class="tab-pane active" id="tab-options">
                         <div class="form-group">
-                            <label class="laraword-label">@lang('Created At') (NO FUNCTION)</label>
-                            <input class="form-control" type="datetime-local">
+                            <label class="laraword-label">@lang('Published At')</label>
+                            <input class="form-control" type="datetime-local" step="1" name="created_at">
                         </div>
                         <div class="form-group">
                             <label class="laraword-label">@lang('Category')</label>
@@ -114,11 +114,18 @@
                             <label class="laraword-label">@lang('Tags') (NO FUNCTION)</label>
                             <input class="form-control" type="text">
                         </div>
-                        <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#advanced">Advanced Options <i class="fa fa-caret-down" aria-hidden="true"></i></button>
+                        <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#advanced">@lang('Advanced Options') <i class="fa fa-caret-down" aria-hidden="true"></i></button>
                         <div id="advanced" class="collapse">
                             <div class="form-group">
-                                <label class="laraword-label">@lang('Status') (NO FUNCTION)</label>
-                                <input class="form-control" type="text">
+                                <label class="laraword-label">@lang('Status')</label>
+                                <select class="form-control" name="status" id="status">
+                                    <option value="publish">公开</option>
+                                    <option value="hidden">隐藏</option>
+                                    <option value="password">密码保护</option>
+                                    <option value="private">私密</option>
+                                    <option value="waiting">待审核</option>
+                                </select>
+                                <input type="hidden" placeholder="内容密码" class="form-control" name="password" id="password">
                             </div>
                             <div class="form-group">
                                 <label class="laraword-label">@lang('Authority') (NO FUNCTION)</label>

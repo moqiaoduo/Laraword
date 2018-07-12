@@ -1,8 +1,8 @@
 @extends('admin.layout')
 
 @php
-    if(empty($draft)) $title=$data['title'];
-    else $title=$draft['title'];
+    if(empty($draft)) {$title=$data['title'];$status=$data['status'];$password=$data['password'];}
+    else {$title=$draft['title'];$status=$draft['status'];$password=$draft['password'];}
 @endphp
 
 @section('title',__('Edit').' '.$title)
@@ -97,18 +97,25 @@
                 <div class="tab-content">
                     <div class="tab-pane active" id="tab-options">
                         <div class="form-group">
-                            <label class="laraword-label">@lang('Created At') (NO FUNCTION)</label>
-                            <input class="form-control" type="datetime-local">
+                            <label class="laraword-label">@lang('Published At')</label>
+                            <input class="form-control" type="datetime-local" name="created_at" step="1" value="{{str_replace(' ','T',$data['created_at'])}}">
                         </div>
                         <div class="form-group">
                             <label class="laraword-label">@lang('Tags') (NO FUNCTION)</label>
                             <input class="form-control" type="text">
                         </div>
-                        <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#advanced">Advanced Options <i class="fa fa-caret-down" aria-hidden="true"></i></button>
+                        <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#advanced">@lang('Advanced Options') <i class="fa fa-caret-down" aria-hidden="true"></i></button>
                         <div id="advanced" class="collapse">
                             <div class="form-group">
-                                <label class="laraword-label">@lang('Status') (NO FUNCTION)</label>
-                                <input class="form-control" type="text">
+                                <label class="laraword-label">@lang('Status')</label>
+                                <select class="form-control" name="status" id="status">
+                                    <option value="publish" @if($status=='publish')selected @endif>公开</option>
+                                    <option value="hidden" @if($status=='hidden')selected @endif>隐藏</option>
+                                    <option value="password" @if($status=='password')selected @endif>密码保护</option>
+                                    <option value="private" @if($status=='private')selected @endif>私密</option>
+                                    <option value="waiting" @if($status=='waiting')selected @endif>待审核</option>
+                                </select>
+                                <input type="hidden" placeholder="内容密码" class="form-control" name="password" id="password" value="{{$password}}">
                             </div>
                             <div class="form-group">
                                 <label class="laraword-label">@lang('Authority') (NO FUNCTION)</label>

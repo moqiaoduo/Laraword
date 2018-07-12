@@ -1,5 +1,6 @@
 $(document).ready(function () {
     $("#progress_bar").hide()
+    $("select#status").trigger("change");
 })
 $(function(){
     $('#slug').bind('input propertychange',function(){
@@ -79,3 +80,8 @@ var HtmlUtil = {
         return s;
     }
 };
+$('select#status').change(function(){
+    console.log('changed')
+    if($(this).val()=='password') $("#password").attr('type','text')
+    else $("#password").attr('type','hidden')
+})
