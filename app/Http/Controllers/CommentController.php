@@ -61,7 +61,7 @@ class CommentController extends Controller
         if($data->isNotEmpty()){
             foreach ($data as $val){
                 $sub_comments=$this->collectComments($cid,$val['id'],$page,$perPage);
-                $html.=view('comments')->with('comment',$val)->with('sub_comments',$sub_comments);
+                $html.=view('comment')->with('comment',$val)->with('sub_comments',$sub_comments);
             }
             if($count>$perPage && $parent==0){
                 $pages=ceil($count/$perPage);

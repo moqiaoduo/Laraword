@@ -62,38 +62,46 @@
                         <p>静态资源</p>
                         <ul role="assets">
                             @foreach($dir['assets'] as $val)
-                                <li>
-                                    <a href="{{route('admin::theme.edit',[$theme,"file"=>$val,"type"=>"assets"])}}">{{$val}}</a>
-                                    @switch($val)
-                                        @case('css/app.css')
-                                        @case('css/style.css')
-                                        <br><i style="text-indent:2em;display:block;">主题样式</i> @break
-                                    @endswitch
-                                </li>
+                                @php($ext=pathinfo($val)['extension'])
+                                @if($ext=='css' || $ext=='js')
+                                    <li>
+                                        <a href="{{route('admin::theme.edit',[$theme,"file"=>$val,"type"=>"assets"])}}">{{$val}}</a>
+                                        @switch($val)
+                                            @case('css/app.css')
+                                            @case('css/style.css')
+                                            <br><i style="text-indent:2em;display:block;">主题样式</i> @break
+                                        @endswitch
+                                    </li>
+                                @endif
                             @endforeach
                         </ul>
                         <p>模板文件</p>
                         <ul role="views">
                             @foreach($dir['views'] as $val)
-                                <li>
-                                    <a href="{{route('admin::theme.edit',[$theme,"file"=>$val,"type"=>"views"])}}">{{$val}}</a>
-                                    @switch($val)
-                                        @case('articles.blade.php')
-                                        <br><i style="text-indent:2em;display:block;">文章列表</i> @break
-                                        @case('post.blade.php')
-                                        <br><i style="text-indent:2em;display:block;">文章内容页</i> @break
-                                        @case('layout.blade.php')
-                                        <br><i style="text-indent:2em;display:block;">模板布局</i> @break
-                                        @case('errors/404.blade.php')
-                                        <br><i style="text-indent:2em;display:block;">404错误页</i> @break
-                                        @case('pages/default.blade.php')
-                                        <br><i style="text-indent:2em;display:block;">默认页面模板</i> @break
-                                        @case('theme.json')
-                                        <br><i style="text-indent:2em;display:block;">主题信息</i> @break
-                                        @case('config.json')
-                                        <br><i style="text-indent:2em;display:block;">主题配置</i> @break
-                                    @endswitch
-                                </li>
+                                @php($ext=pathinfo($val)['extension'])
+                                @if($ext=='php' || $ext=='json')
+                                    <li>
+                                        <a href="{{route('admin::theme.edit',[$theme,"file"=>$val,"type"=>"views"])}}">{{$val}}</a>
+                                        @switch($val)
+                                            @case('articles.blade.php')
+                                            <br><i style="text-indent:2em;display:block;">文章列表</i> @break
+                                            @case('post.blade.php')
+                                            <br><i style="text-indent:2em;display:block;">文章内容页</i> @break
+                                            @case('layout.blade.php')
+                                            <br><i style="text-indent:2em;display:block;">模板布局</i> @break
+                                            @case('errors/404.blade.php')
+                                            <br><i style="text-indent:2em;display:block;">404错误页</i> @break
+                                            @case('pages/default.blade.php')
+                                            <br><i style="text-indent:2em;display:block;">默认页面模板</i> @break
+                                            @case('theme.json')
+                                            <br><i style="text-indent:2em;display:block;">主题信息</i> @break
+                                            @case('config.json')
+                                            <br><i style="text-indent:2em;display:block;">主题配置</i> @break
+                                            @case('comment.blade.php')
+                                            <br><i style="text-indent:2em;display:block;">评论模板(单条)</i> @break
+                                        @endswitch
+                                    </li>
+                                @endif
                             @endforeach
                         </ul>
                     </div>

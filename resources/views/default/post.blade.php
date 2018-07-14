@@ -15,5 +15,5 @@
 @endsection
 
 @section('comments')
-    @include('comment')
+    @include('comments')
 @endsection
