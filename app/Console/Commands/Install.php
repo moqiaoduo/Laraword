@@ -45,6 +45,11 @@ class Install extends Command
         password:
         $password=$this->secret("您的密码？ What's your password? ");
         if(empty($password)) goto password;
+		
+		$this->call('key:generate');
+		
+		$this->call('migrate');
+		
         $category=new Meta;
         $category->name="默认分类";
         $category->slug="default";
