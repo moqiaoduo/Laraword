@@ -12,6 +12,7 @@
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.6.*",
         "laravel/tinker": "^1.0",
+        "laravelchen/laravel-editormd": "^2.5",
         "zhangmazi/laravel-ueditor": "^1.0"
     },
     "require-dev": {
