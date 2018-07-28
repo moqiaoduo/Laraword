@@ -40,10 +40,14 @@ class Install extends Command
      */
     public function handle()
     {
+        $env=[];
         $name=$this->ask("您的名字？ What's your name? ","Laraword");
         $email=$this->ask("您的电子邮箱？ What's your email? ","admin@laraword.cn");
         password:
         $password=$this->secret("您的密码？ What's your password? ");
+		$env['APP_NAME']=$this->ask("您的网站名称？ What's your website name? ","Laraword");
+        $env['APP_NAME']=$this->ask("运行模式/环境？ What's your environment? ","production");
+		
         if(empty($password)) goto password;
 		
 		$this->call('key:generate');
