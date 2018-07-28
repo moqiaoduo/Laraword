@@ -14,7 +14,7 @@ class CategoryController extends Controller
     public function index(Request $request){
         $parent=$request->get('parent');
         if($parent===null) $parent=0;
-        $data=Meta::where('type','category')->where('parent',$parent)->orderBy("mid",'desc')->paginate(10);
+        $data=Meta::where('type','category')->where('parent',$parent)->paginate(10);
         foreach ($data as $key=>$val) {
             $data[$key]['sub']=Meta::where('type','category')->where('parent',$val['mid'])->count();
         }

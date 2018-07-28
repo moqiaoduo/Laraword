@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 class CommentController extends Controller
 {
     public function index(){
-        $data=Comment::paginate(10);
+        $data=Comment::all()->orderBy('id','desc')->paginate(10);
         $routeTable=json_decode(getSetting('routeTable'),true);
         $post=getCustomUri($routeTable,'post');
         foreach ($data as $key=>$val){
