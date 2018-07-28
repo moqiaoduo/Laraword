@@ -53,6 +53,8 @@ class Install extends Command
 		$this->call('key:generate');
 		
 		$this->call('migrate');
+
+		modifyEnv($env);
 		
         $category=new Meta;
         $category->name="默认分类";
