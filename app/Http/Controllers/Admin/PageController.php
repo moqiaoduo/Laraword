@@ -100,7 +100,7 @@ class PageController extends Controller
             $page->slug=$this->autoRenameSlug($page->cid,$slug);
             $page->created_at=$created_at;
             $page->status=$status;
-            $post->password=$password;
+            $page->password=$password;
             Content::where('type','page_draft')->where('parent',$id)->delete();
         }elseif($submit=='save'){
             if($page->type=='page')
@@ -111,7 +111,7 @@ class PageController extends Controller
                 $page->slug=$this->autoRenameSlug($page->cid,$slug);
                 $page->created_at=$created_at;
                 $page->status=$status;
-                $post->password=$password;
+                $page->password=$password;
             }
         }
         $page->save();
