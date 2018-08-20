@@ -38,7 +38,8 @@
                                                      document.getElementById('logout-form').submit();">退出 »</a></p>
                 @endguest
                 <input type="submit" name="comment_submit" value="提交评论" class="btn btn-primary" style="width: 100%">
-                <input type="hidden" name="redirect" value="{{getCustomRoute($route,$data)}}">
+                {{$route}}
+                <input type="hidden" name="redirect" value="{{url(getCustomRoute($route,$data))}}">
                 <input type="hidden" name="cid" value="{{$data['cid']}}">
                 <input type="hidden" name="parent" value="0">
             </div>
