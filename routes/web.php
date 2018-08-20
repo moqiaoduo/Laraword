@@ -32,7 +32,7 @@ Route::group(['middleware'=>'admin','prefix'=>'admin','as'=>'admin::'],function 
     Route::get('comment','Admin\CommentController@index')->name('comment');
     Route::post('comment','Admin\CommentController@save')->name('comment.edit');
     Route::post('comment/del','Admin\CommentController@delete')->name('comment.del');
-    Route::post('comment/{id}/{action}','Admin\CommentController@update')->name('comment.status');
+    Route::get('comment/{id}/{action}','Admin\CommentController@update')->name('comment.status');
 });
 
 Auth::routes();
