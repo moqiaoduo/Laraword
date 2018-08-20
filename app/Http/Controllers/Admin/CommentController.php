@@ -45,7 +45,7 @@ class CommentController extends Controller
 
     public function update($id,$action){
         switch ($action){
-            case "approve":
+            case "approved":
                 $status='approve';break;
             case "spam":
                 $status='spam';break;
