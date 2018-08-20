@@ -49,7 +49,7 @@ class CommentController extends Controller
     }
 
     protected function getSubComments_this($cid,$parent=0,$page=1,$perPage=10,&$count=null){
-        $data=Comment::where('cid',$cid)->where('parent',$parent)->where('status','approve');
+        $data=Comment::where('cid',$cid)->where('parent',$parent)->where('status','approved');
         $count=$data->count();
         if($parent==0) return $data->forPage($page,$perPage)->get();
         else return $data->get();
