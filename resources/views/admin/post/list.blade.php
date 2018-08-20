@@ -52,7 +52,7 @@
                 </div>
                 <div class="row"><br></div>
                 @if($category>0)<a href="{{route('admin::post.index')}}" class="btn btn-success" style="margin-left: 5px;">&lt; @lang('Back')</a><div class="row"><br></div>@endif
-            <table style="width:100%;" class="table table-responsive">
+            <table class="table table-responsive-sm">
                 <thead>
                 <tr>
                     <th>

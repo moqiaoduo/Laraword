@@ -33,7 +33,7 @@
     </div>
     <div class="row">
         <div class="col-lg-12">
-            <table style="width:100%;" class="table table-responsive">
+            <table class="table table-responsive-sm">
                 <thead>
                 <tr>
                     <th width="358px">Preview</th>

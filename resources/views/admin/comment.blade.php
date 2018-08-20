@@ -124,7 +124,7 @@
                     </div>
                 </div>
                 <div class="row"><br></div>
-            <table style="width:100%;" class="table table-responsive">
+            <table class="table table-responsive-sm">
                 <thead>
                 <tr>
                     <th width="15px">

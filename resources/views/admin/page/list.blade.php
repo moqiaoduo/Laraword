@@ -50,7 +50,7 @@
                     <a href="{{route('admin::page.create')}}" class="btn btn-success" style="margin-left: 5px;">@lang('Add')</a>
                 </div>
                 <div class="row"><br></div>
-            <table style="width:100%;" class="table table-responsive">
+            <table class="table table-responsive-sm">
                 <thead>
                 <tr>
                     <th>
