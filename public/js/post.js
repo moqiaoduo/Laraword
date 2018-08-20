@@ -81,7 +81,6 @@ var HtmlUtil = {
     }
 };
 $('select#status').change(function(){
-    console.log('changed')
     if($(this).val()=='password') $("#password").attr('type','text')
     else $("#password").attr('type','hidden')
-})
+});
