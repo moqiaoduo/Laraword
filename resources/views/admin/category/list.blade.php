@@ -53,7 +53,7 @@
                 @if($parent>0)
                     <a href="{{route('admin::category.index',['parent'=>$parent_parent['parent']])}}" class="btn btn-success" style="margin-left: 5px;">&lt; @lang('Back')</a><div class="row"><br></div>
                 @endif
-                <table width="100%" class="table">
+                <table width="100%" class="table table-responsive">
                     <thead>
                     <tr>
                         <th>
